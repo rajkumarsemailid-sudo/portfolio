@@ -64,6 +64,8 @@ export const projects = [
       `${import.meta.env.BASE_URL}screenshots/cicd/04-stylesheet.png`,
       `${import.meta.env.BASE_URL}screenshots/cicd/05-workflow.png`,
       `${import.meta.env.BASE_URL}screenshots/cicd/06-column-config.png`,
+      `${import.meta.env.BASE_URL}screenshots/cicd/DeployPackager_AM.png`,
+      `${import.meta.env.BASE_URL}screenshots/cicd/DeployPackager_AttributeMapping.png`,
     ],
     links: {},
   },
