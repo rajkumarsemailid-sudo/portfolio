@@ -55,9 +55,16 @@ export const projects = [
   {
     title: 'Intelligent CI/CD for PLM',
     description:
-      'AI-assisted CI/CD pipelines that streamline Teamcenter development, integration, and deployment across distributed environments.',
-    tags: ['CI/CD', 'AI', 'DevOps'],
+      'A deployment-package comparison tool that diffs a Teamcenter change package against the live environment across BMIDE, stylesheets, workflows, and column configs -- catching risky changes before they reach production.',
+    tags: ['CI/CD', 'AI', 'DevOps', 'Teamcenter'],
     videoId: null,
+    images: [
+      `${import.meta.env.BASE_URL}screenshots/cicd/01-overview.png`,
+      `${import.meta.env.BASE_URL}screenshots/cicd/02-bmide.png`,
+      `${import.meta.env.BASE_URL}screenshots/cicd/04-stylesheet.png`,
+      `${import.meta.env.BASE_URL}screenshots/cicd/05-workflow.png`,
+      `${import.meta.env.BASE_URL}screenshots/cicd/06-column-config.png`,
+    ],
     links: {},
   },
   {
