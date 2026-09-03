@@ -38,6 +38,16 @@ export default function Contact() {
               LinkedIn
             </a>
           )}
+          {profile.links.resume && (
+            <a
+              href={profile.links.resume}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:border-accent hover:text-accent"
+            >
+              Resume
+            </a>
+          )}
         </div>
       </div>
       <footer className="mt-16 text-center text-xs text-white/30">

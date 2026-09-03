@@ -12,6 +12,9 @@ export default function Hero() {
       <h2 className="mt-3 text-xl font-medium text-white/70 sm:text-2xl">
         {profile.title}
       </h2>
+      {profile.location && (
+        <p className="mt-2 text-sm text-white/40">{profile.location}</p>
+      )}
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/60">
         {profile.tagline}
       </p>
