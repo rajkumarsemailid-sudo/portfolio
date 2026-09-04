@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function MediaPreview({ project }) {
   if (project.videoId) {
@@ -34,6 +34,21 @@ function MediaPreview({ project }) {
 export default function ProjectCard({ project }) {
   const [lightboxIndex, setLightboxIndex] = useState(null)
   const images = project.images ?? []
+
+  const showPrev = () =>
+    setLightboxIndex((i) => (i - 1 + images.length) % images.length)
+  const showNext = () => setLightboxIndex((i) => (i + 1) % images.length)
+
+  useEffect(() => {
+    if (lightboxIndex === null) return
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setLightboxIndex(null)
+      if (e.key === 'ArrowLeft') showPrev()
+      if (e.key === 'ArrowRight') showNext()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [lightboxIndex, images.length])
 
   return (
     <article className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
@@ -116,11 +131,55 @@ export default function ProjectCard({ project }) {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-6"
           onClick={() => setLightboxIndex(null)}
         >
+          <button
+            type="button"
+            onClick={() => setLightboxIndex(null)}
+            className="absolute right-4 top-4 text-3xl leading-none text-white/70 hover:text-white"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+
+          {images.length > 1 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                showPrev()
+              }}
+              className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-2xl text-white hover:bg-white/20 sm:left-6"
+              aria-label="Previous screenshot"
+            >
+              &#8249;
+            </button>
+          )}
+
           <img
             src={images[lightboxIndex]}
             alt={`${project.title} screenshot ${lightboxIndex + 1}`}
             className="max-h-full max-w-full rounded-lg object-contain"
+            onClick={(e) => e.stopPropagation()}
           />
+
+          {images.length > 1 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                showNext()
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-2xl text-white hover:bg-white/20 sm:right-6"
+              aria-label="Next screenshot"
+            >
+              &#8250;
+            </button>
+          )}
+
+          {images.length > 1 && (
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-sm text-white/60">
+              {lightboxIndex + 1} / {images.length}
+            </div>
+          )}
         </div>
       )}
     </article>
