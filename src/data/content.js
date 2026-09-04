@@ -31,6 +31,12 @@ export const skillGroups = [
   },
 ]
 
+export const skillsHighlight = {
+  src: `${import.meta.env.BASE_URL}screenshots/experience/plm-platform.png`,
+  caption:
+    'BOM management across the digital thread: EBOM, MBOM, and SBOM unified from design through manufacturing and service.',
+}
+
 export const clients = [
   { name: 'Ford', logo: `${import.meta.env.BASE_URL}logos/ford.png` },
   { name: 'General Electric', logo: `${import.meta.env.BASE_URL}logos/general-electric.png` },
@@ -65,10 +71,6 @@ export const experience = [
       {
         src: `${import.meta.env.BASE_URL}screenshots/experience/wisk-evtol.jpg`,
         caption: "Wisk Aero's autonomous eVTOL air taxi -- the production program this PLM work supports.",
-      },
-      {
-        src: `${import.meta.env.BASE_URL}screenshots/experience/plm-platform.png`,
-        caption: 'The digital thread this role owned: EBOM, MBOM, and SBOM unified across design, manufacturing, and service.',
       },
     ],
   },
