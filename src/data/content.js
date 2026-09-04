@@ -49,11 +49,12 @@ export const experience = [
       'Manage Teamcenter configurations, solutions, and support for an eVTOL aircraft manufacturer, and build an agentic PLM platform for better user support.',
     scope: [
       'Managed the end-to-end PLM solution, resolving complexities across the program.',
+      'Owned the EBOM -> MBOM -> SBOM digital thread, keeping design, manufacturing, and service structures in sync.',
       'Supported multiple vendors implementing PLM solutions.',
       'Developed the Agentic PLM platform (Cosmos) for better user self-service.',
       'Automated work-instruction generation for composite fabrication.',
     ],
-    stack: ['Teamcenter', 'NX', 'Java', 'ITK', 'Python', 'GitHub', 'AIG'],
+    stack: ['Teamcenter', 'NX', 'Java', 'ITK', 'Python', 'GitHub', 'AIG', 'BOM Management'],
     achievements: [
       'Reduced support time by 50% with AI automation.',
       'Automated Teamcenter validation to reduce sprint cycle time.',
@@ -64,6 +65,10 @@ export const experience = [
       {
         src: `${import.meta.env.BASE_URL}screenshots/experience/wisk-evtol.jpg`,
         caption: "Wisk Aero's autonomous eVTOL air taxi -- the production program this PLM work supports.",
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/experience/plm-platform.png`,
+        caption: 'The digital thread this role owned: EBOM, MBOM, and SBOM unified across design, manufacturing, and service.',
       },
     ],
   },

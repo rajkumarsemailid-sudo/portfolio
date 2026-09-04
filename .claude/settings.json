@@ -38,7 +38,12 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:8078/)",
       "Bash(node shot.js)",
       "Bash(git fetch *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(gh run *)",
+      "Bash(curl -s \"https://api.github.com/repos/rajkumarsemailid-sudo/portfolio/actions/runs?per_page=3\")",
+      "Bash(curl -s \"https://rajkumarsemailid-sudo.github.io/portfolio/\")"
     ]
   }
 }
