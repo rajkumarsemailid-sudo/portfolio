@@ -31,6 +31,145 @@ export const skillGroups = [
   },
 ]
 
+export const clients = [
+  { name: 'Ford', logo: `${import.meta.env.BASE_URL}logos/ford.png` },
+  { name: 'General Electric', logo: `${import.meta.env.BASE_URL}logos/general-electric.png` },
+  { name: 'Emerson Branson', logo: `${import.meta.env.BASE_URL}logos/emerson-branson.png` },
+  { name: 'Velan', logo: `${import.meta.env.BASE_URL}logos/velan.png` },
+  { name: 'Hatch', logo: `${import.meta.env.BASE_URL}logos/hatch.png` },
+  { name: 'Nortrak', logo: `${import.meta.env.BASE_URL}logos/nortrak.png` },
+  { name: 'Leggett & Platt', logo: `${import.meta.env.BASE_URL}logos/leggett-platt.png` },
+]
+
+export const experience = [
+  {
+    client: 'Wisk Aero',
+    title: 'PLM Agentic Platform',
+    objective:
+      'Manage Teamcenter configurations, solutions, and support for an eVTOL aircraft manufacturer, and build an agentic PLM platform for better user support.',
+    scope: [
+      'Managed the end-to-end PLM solution, resolving complexities across the program.',
+      'Supported multiple vendors implementing PLM solutions.',
+      'Developed the Agentic PLM platform (Cosmos) for better user self-service.',
+      'Automated work-instruction generation for composite fabrication.',
+    ],
+    stack: ['Teamcenter', 'NX', 'Java', 'ITK', 'Python', 'GitHub', 'AIG'],
+    achievements: [
+      'Reduced support time by 50% with AI automation.',
+      'Automated Teamcenter validation to reduce sprint cycle time.',
+      'Coordinated and delivered solution-implementation support across vendors.',
+      'Led supplier collaboration, integrations, and manufacturing solution rollouts.',
+    ],
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/experience/wisk-evtol.jpg`,
+        caption: "Wisk Aero's autonomous eVTOL air taxi -- the production program this PLM work supports.",
+      },
+    ],
+  },
+  {
+    client: 'Bombardier',
+    logo: `${import.meta.env.BASE_URL}logos/bombardier.png`,
+    title: 'Aerospace Data Migration',
+    objective: 'Migrate Enovia and CATIA V5 data to a unified Teamcenter platform.',
+    scope: [
+      'Managed the end-to-end data migration program, resolving complexities along the way.',
+      'Migrated Parts, Products, Black Boxes, Catalogs, and metadata.',
+      'Developed automated validation utilities and bulk migration scripts.',
+      'Led a 5-member migration team, ensuring zero data loss.',
+    ],
+    stack: ['Teamcenter', 'CATIA V5', 'TcIC', 'Oracle', 'Java', 'ITK', 'Python', 'GitHub'],
+    achievements: [
+      'Reduced migration time by 30% with automation and an optimized architecture.',
+      'Achieved 100% data validation and traceability.',
+      'Delivered comprehensive migration reports for audit compliance.',
+    ],
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/experience/bombardier-global-7500.jpg`,
+        caption: 'Bombardier Global 7500 -- one of the business-jet programs whose engineering data was migrated.',
+      },
+    ],
+  },
+  {
+    client: 'General Dynamics Land Systems – Canada',
+    logo: `${import.meta.env.BASE_URL}logos/gdls.png`,
+    title: 'Teamcenter ↔ Opcenter Integration',
+    objective: 'Integrate Teamcenter Manufacturing with Opcenter Discrete via AIG.',
+    scope: [
+      'Implemented Teamcenter Manufacturing solutions for MOM (Manufacturing Operations Management).',
+      'Automated BOP transfer, operation-part transfers, and accountability checks.',
+      'Implemented impact analysis and data validation automation.',
+      'Created custom workflow handlers for ERP ↔ MES transactions.',
+    ],
+    stack: ['Teamcenter Manufacturing', 'Opcenter Execution Core', 'AIG', 'Java', 'ITK'],
+    achievements: [
+      'Reduced manual effort by 50%.',
+      'Improved synchronization across PLM → MES → ERP data streams.',
+      'Enabled a seamless digital thread from design to production.',
+    ],
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/experience/gdls-vehicle.jpg`,
+        caption: 'A GDLS armored vehicle platform -- the manufacturing program behind this Teamcenter-Opcenter integration.',
+      },
+    ],
+  },
+  {
+    client: 'Nova Bus',
+    logo: `${import.meta.env.BASE_URL}logos/novabus.png`,
+    title: 'Teamcenter Manufacturing Deployment',
+    objective:
+      'Define and implement Teamcenter Manufacturing solutions as Solution Architect, across production and non-production environments.',
+    scope: [
+      'Managed configurations and deployments across production and non-production environments.',
+      'Implemented key Teamcenter Manufacturing modules: MPP, Easy Plan, Multi-BOM Manager, Process Planner, Work Instructions, and Manufacturing Change Process.',
+      'Developed automation utilities to reduce manual effort, e.g. automated EBOM-MBOM link creation.',
+      'Provided governance in change control, source control, and release management.',
+    ],
+    stack: ['Teamcenter Manufacturing', 'Easy Plan', 'Multi-BOM Manager', 'Deployment Center', 'TEM'],
+    achievements: [
+      'Simplified deployment via Deployment Center and TEM.',
+      'Delivered consistent PLM behavior across engineering and manufacturing.',
+    ],
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/experience/novabus-electric-bus.jpg`,
+        caption: 'A Nova Bus battery-electric transit bus -- one of the manufacturing lines running on this Teamcenter Manufacturing deployment.',
+      },
+    ],
+  },
+  {
+    client: 'Manac & L3Harris',
+    logo: `${import.meta.env.BASE_URL}logos/manac.png`,
+    secondaryLogo: `${import.meta.env.BASE_URL}logos/l3harris.png`,
+    title: 'Teamcenter Upgrades',
+    objective:
+      'Lead Teamcenter upgrade activities, ensuring configuration and customization compatibility across environments.',
+    scope: [
+      'Upgraded and validated Workflows, Stylesheets, Access Rules, and BMIDE objects.',
+      'Modernized Teamcenter Manufacturing modules to align with new business processes.',
+      'Upgraded solutions for automotive supplier processes and Teamcenter Engineering to maintain data continuity.',
+      'Ensured seamless ERP-PLM data integration through custom code enhancements.',
+    ],
+    stack: ['Teamcenter', 'BMIDE', 'Workflow Designer', 'Access Manager'],
+    achievements: [
+      'Achieved 100% production uptime post-upgrade.',
+      'Delivered consistent PLM behavior across engineering and manufacturing.',
+    ],
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/experience/manac-trailer.jpg`,
+        caption: "A Manac flatbed trailer -- the automotive supplier line upgraded as part of this program.",
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/experience/l3harris-drone.jpg`,
+        caption: 'An L3Harris unmanned aircraft system -- the Teamcenter Engineering environment upgraded for this defense program.',
+      },
+    ],
+  },
+]
+
 // Replace videoId with your real YouTube video IDs (unlisted is fine).
 // videoId: null renders a "demo coming soon" placeholder instead of an embed.
 // NOTE: confirm with your employer before recording/publishing any demo of
@@ -43,6 +182,48 @@ export const projects = [
     tags: ['AI', 'Multimodal', 'Manufacturing', 'PLM'],
     videoId: null,
     video: `${import.meta.env.BASE_URL}Videos/automated-work-instructions.mp4`,
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/work-instructions/01-awi-multinode-process.png`,
+        caption:
+          'AWI: upload an engineering drawing and a Fibersim ply table, and the tool builds the full operation-by-operation process diagram -- layup, cure, inspection, and QA sign-off -- automatically.',
+      },
+    ],
+    links: {},
+  },
+  {
+    title: 'PLM Agentic Platform',
+    description:
+      'A browser-based agentic platform (Cosmos) backed by a Teamcenter MCP server -- one hub for BOM roll-ups, MBOM-to-BOP exports, ad-hoc reporting, and Excel import validation, plus a chat assistant that answers live Teamcenter questions. No separate MCP client setup required.',
+    tags: ['AI', 'Agentic', 'MCP', 'Teamcenter'],
+    videoId: null,
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/agentic-platform/01-overview.png`,
+        caption:
+          'Platform hub: PLM and MES tools grouped by function, each backed by live Teamcenter data via MCP.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/agentic-platform/02-bom-rollup.png`,
+        caption:
+          'BOM Roll-up & Flattener: collapses a multi-level BOM into a de-duplicated, quantity-rolled-up Excel report -- deterministic, no AI involved.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/agentic-platform/03-mbom-bop-export.png`,
+        caption:
+          'MBOM to BOP Operations & Tasks Export: resolves MBOM IDs to their related BOPs and flattens BOP -> Operation -> Task into one report.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/agentic-platform/04-report-builder.png`,
+        caption:
+          'Report Builder: ad-hoc reporting for any Teamcenter object type -- typed attribute autocomplete, sortable tables, live charts, Excel export.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/agentic-platform/05-excel-import-validator.png`,
+        caption:
+          'Excel Import Validator: checks a supplier import sheet against live Teamcenter LOVs and formatting rules, flagging every invalid cell before submission.',
+      },
+    ],
     links: {},
   },
   {
@@ -51,6 +232,67 @@ export const projects = [
       'AI-powered automated testing tools for Teamcenter and Active Workspace, improving release quality and reliability across enterprise PLM upgrades.',
     tags: ['AI', 'Test Automation', 'Teamcenter'],
     videoId: null,
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/TestingAutomation/01-login.png`,
+        caption: 'Cadence: the AI-powered test recorder and studio for Teamcenter and Active Workspace.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/TestingAutomation/02-test-scenarios.png`,
+        caption:
+          'Test Library: chain reusable test cases into end-to-end scenarios, then override input parameters per step.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/TestingAutomation/03-test-cases.png`,
+        caption:
+          '60+ recorded test cases across Item Creation, Change Management, SSO, and more, each with full step history.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/TestingAutomation/04-test-case-step-review.png`,
+        caption:
+          'Step-by-step review: expected result, description, and captured screenshot for every recorded action.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/TestingAutomation/05-live-canvas-run.png`,
+        caption:
+          'Live Canvas mirrors the test run in real time as each step executes against the sandbox environment.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/TestingAutomation/06-ai-quality-report.png`,
+        caption:
+          'AI Quality Report: an LLM reviews the full run against the stated acceptance criteria and issues a pass/fail verdict.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/TestingAutomation/07-run-reports-dashboard.png`,
+        caption:
+          'Run Reports dashboard: pass rate, failure trends, and per-step results across hundreds of automated runs.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/TestingAutomation/08-knowledge-graph-brain.png`,
+        caption:
+          'The Brain: a knowledge graph linking every test case, module, and skill learned across the entire test corpus.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/TestingAutomation/09-authoring-agent-plan.png`,
+        caption:
+          'Authoring Agent: describe a goal in plain English and the agent proposes a step-by-step plan for approval.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/TestingAutomation/10-authoring-agent-execution.png`,
+        caption:
+          'Once approved, the agent drives the live Teamcenter UI itself, clicking, filling, and navigating like a real user.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/TestingAutomation/11-authoring-agent-question.png`,
+        caption:
+          'When the agent is unsure a goal was met, it asks an interactive question instead of guessing.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/TestingAutomation/12-authoring-agent-captured-steps.png`,
+        caption:
+          'Every action the agent takes is captured as a reusable test step, ready to load straight into the test editor.',
+      },
+    ],
     links: {},
   },
   {

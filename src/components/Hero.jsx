@@ -3,7 +3,12 @@ import { profile } from '../data/content'
 export default function Hero() {
   return (
     <section id="top" className="mx-auto max-w-5xl px-6 pb-20 pt-16 sm:pt-24">
-      <p className="text-sm font-medium uppercase tracking-widest text-accent">
+      <img
+        src={`${import.meta.env.BASE_URL}profile.jpg`}
+        alt={profile.name}
+        className="h-24 w-24 rounded-full border-2 border-white/10 object-cover sm:h-28 sm:w-28"
+      />
+      <p className="mt-6 text-sm font-medium uppercase tracking-widest text-accent">
         Portfolio
       </p>
       <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-white sm:text-6xl">

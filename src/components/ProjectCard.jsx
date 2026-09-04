@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 
+const getImageSrc = (image) => (typeof image === 'string' ? image : image.src)
+const getImageCaption = (image) => (typeof image === 'string' ? null : image.caption)
+
 function MediaPreview({ project }) {
   if (project.videoId) {
     return (
@@ -30,7 +33,7 @@ function MediaPreview({ project }) {
   if (project.images?.length) {
     return (
       <img
-        src={project.images[0]}
+        src={getImageSrc(project.images[0])}
         alt={`${project.title} screenshot`}
         className="h-full w-full object-cover object-top"
       />
@@ -80,16 +83,16 @@ export default function ProjectCard({ project }) {
       )}
 
       {images.length > 1 && (
-        <div className="flex gap-2 overflow-x-auto p-3">
-          {images.map((src, i) => (
+        <div className="scrollbar-thin flex gap-2 overflow-x-auto p-3">
+          {images.map((image, i) => (
             <button
-              key={src}
+              key={getImageSrc(image)}
               type="button"
               onClick={() => setLightboxIndex(i)}
               className="h-14 w-24 flex-shrink-0 overflow-hidden rounded-md border border-white/10"
             >
               <img
-                src={src}
+                src={getImageSrc(image)}
                 alt={`${project.title} screenshot ${i + 1}`}
                 className="h-full w-full object-cover object-top"
               />
@@ -167,12 +170,23 @@ export default function ProjectCard({ project }) {
             </button>
           )}
 
-          <img
-            src={images[lightboxIndex]}
-            alt={`${project.title} screenshot ${lightboxIndex + 1}`}
-            className="max-h-full max-w-full rounded-lg object-contain"
+          <div
+            className="relative flex max-h-full max-w-full flex-col items-stretch"
             onClick={(e) => e.stopPropagation()}
-          />
+          >
+            <img
+              src={getImageSrc(images[lightboxIndex])}
+              alt={`${project.title} screenshot ${lightboxIndex + 1}`}
+              className={`max-h-[80vh] max-w-full object-contain ${
+                getImageCaption(images[lightboxIndex]) ? 'rounded-t-lg' : 'rounded-lg'
+              }`}
+            />
+            {getImageCaption(images[lightboxIndex]) && (
+              <div className="rounded-b-lg bg-gray-200/95 px-4 py-2 text-sm text-gray-800 shadow-lg">
+                {getImageCaption(images[lightboxIndex])}
+              </div>
+            )}
+          </div>
 
           {images.length > 1 && (
             <button

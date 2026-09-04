@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mv \"Test Scenarios.png\" \"01-test-scenarios.png\")",
+      "Bash(mv \"Test cases.png\" \"02-test-cases.png\")",
+      "Bash(mv \"Test Cases running 1.png\" \"03-test-case-step-review.png\")",
+      "Bash(mv \"Test cases running2.png\" \"04-live-canvas-run.png\")",
+      "Bash(mv \"Test cases running3_Final AI report allng with pass or failed stesp results.png\" \"05-ai-quality-report.png\")",
+      "Bash(npm run *)",
+      "Bash(npx vite *)",
+      "Bash(npm install *)",
+      "PowerShell(npm config get registry)",
+      "PowerShell(npm config get proxy)",
+      "PowerShell(npm config get https-proxy)",
+      "PowerShell(Test-NetConnection registry.npmjs.org -Port 443 -WarningAction SilentlyContinue)",
+      "PowerShell($ProgressPreference = 'SilentlyContinue'; try { $r = Invoke-WebRequest -Uri \"https://registry.npmjs.org/vite\" -UseBasicParsing -TimeoutSec 15; \"HTTP $\\($r.StatusCode\\), bytes: $\\($r.RawContentLength\\)\" } catch { \"FAILED: $\\($_.Exception.Message\\)\" })",
+      "PowerShell([Net.ServicePointManager]::SecurityProtocol)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5183/)",
+      "Bash(powershell -NoProfile -Command \"Stop-Process -Id 97472 -Force -ErrorAction SilentlyContinue\")",
+      "Bash(mv \"01-test-scenarios.png\" \"02-test-scenarios.png\")",
+      "Bash(mv \"02-test-cases.png\" \"03-test-cases.png\")",
+      "Bash(mv \"03-test-case-step-review.png\" \"04-test-case-step-review.png\")",
+      "Bash(mv \"04-live-canvas-run.png\" \"05-live-canvas-run.png\")",
+      "Bash(mv \"05-ai-quality-report.png\" \"06-ai-quality-report.png\")"
+    ]
+  }
+}
