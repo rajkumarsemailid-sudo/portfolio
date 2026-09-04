@@ -42,6 +42,7 @@ export const projects = [
       'A multimodal AI tool that generates operation-by-operation composite work instructions directly from engineering drawings and Fibersim ply tables, running on real production parts at Wisk Aero.',
     tags: ['AI', 'Multimodal', 'Manufacturing', 'PLM'],
     videoId: null,
+    video: `${import.meta.env.BASE_URL}Videos/automated-work-instructions.mp4`,
     links: {},
   },
   {

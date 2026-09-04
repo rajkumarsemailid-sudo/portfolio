@@ -14,6 +14,19 @@ function MediaPreview({ project }) {
     )
   }
 
+  if (project.video) {
+    return (
+      <video
+        className="h-full w-full"
+        controls
+        preload="metadata"
+        poster={project.videoPoster}
+      >
+        <source src={project.video} type="video/mp4" />
+      </video>
+    )
+  }
+
   if (project.images?.length) {
     return (
       <img
