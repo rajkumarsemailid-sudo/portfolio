@@ -2,7 +2,10 @@ import { profile } from '../data/content'
 
 export default function Hero() {
   return (
-    <section id="top" className="mx-auto max-w-5xl px-6 pb-20 pt-16 sm:pt-24">
+    <section
+      id="top"
+      className="mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-5xl flex-col justify-center px-6 py-12 sm:py-16"
+    >
       <img
         src={`${import.meta.env.BASE_URL}profile.jpg`}
         alt={profile.name}

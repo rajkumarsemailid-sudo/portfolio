@@ -21,7 +21,24 @@
       "Bash(mv \"02-test-cases.png\" \"03-test-cases.png\")",
       "Bash(mv \"03-test-case-step-review.png\" \"04-test-case-step-review.png\")",
       "Bash(mv \"04-live-canvas-run.png\" \"05-live-canvas-run.png\")",
-      "Bash(mv \"05-ai-quality-report.png\" \"06-ai-quality-report.png\")"
+      "Bash(mv \"05-ai-quality-report.png\" \"06-ai-quality-report.png\")",
+      "Bash(npm --version)",
+      "Bash(where msedge *)",
+      "Bash(where chrome *)",
+      "Read(//c/Program Files \\\\\\(x86\\\\\\)/Microsoft/Edge/Application//**)",
+      "Read(//c/Program Files/Google/Chrome/Application//**)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 8 https://registry.npmjs.org/vite)",
+      "Bash(python -c \"import json; json.load\\(open\\(r'C:\\\\Users\\\\RAJKUM~1.RAJ\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--workdir-Personal-Projects-portfolio\\\\a67aec3c-635c-4f3e-87ee-4988d39a92d3\\\\scratchpad\\\\server-monitoring-demo\\\\data\\\\servers.json'\\)\\); print\\('valid json'\\)\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5061/)",
+      "Bash(python -c ' *)",
+      "Bash(python -c \"from PIL import Image; im = Image.open\\(r'C:\\\\workdir\\\\Personal-Projects\\\\portfolio\\\\public\\\\screenshots\\\\server-monitoring\\\\Services monitring.png'\\); print\\(im.size\\)\")",
+      "Bash(mv \"Services monitring.png\" \"10-services-monitor.png\")",
+      "Bash(mv \"Logs Monitoring.png\" \"11-logs-monitor.png\")",
+      "Bash(mv \"DatabaseMonitoring.png\" \"12-database-monitor.png\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:8078/)",
+      "Bash(node shot.js)",
+      "Bash(git fetch *)",
+      "Bash(git add *)"
     ]
   }
 }

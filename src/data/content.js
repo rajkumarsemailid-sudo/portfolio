@@ -192,6 +192,61 @@ export const projects = [
     links: {},
   },
   {
+    title: 'Teamcenter MCP Server',
+    description:
+      'An MCP server bridging AI assistants (Claude, Gemini) to Siemens Teamcenter -- 60 typed tools covering items, BOM, workflow, change management, and files, plus 17 specialized domain-expert agent skills. SSO-based per-user auth, a read-only mode for external sharing, and a zero-crash-tolerant core built to DO-178C/ISO 26262-grade reliability standards. Powers the PLM Agentic Platform below.',
+    tags: ['AI', 'MCP', 'Agents', 'Teamcenter'],
+    videoId: null,
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/tc-mcp/01-architecture.png`,
+        caption:
+          'Requests flow from the AI client through the MCP server\'s transport, tool registry, tc_api wrappers, and network layers into Teamcenter -- with retries and a zero-crash exception boundary at every hop.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/tc-mcp/02-tools.png`,
+        caption:
+          '60 tools across items, BOM, files, change/workflow, search, and attribute mapping -- 24 read-only, 36 authoring.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/tc-mcp/03-agents.png`,
+        caption:
+          '17 domain-expert agent skills (Access Manager, Change Management, EasyPlan, Workflow, and more), each pairing a skill definition, tool-client wrapper, and test suite.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/tc-mcp/04-security.png`,
+        caption:
+          'Per-user SSO sessions, a one-flag read-only mode for external/supplier access, and source-free distribution via a compiled executable or a centrally hosted server.',
+      },
+    ],
+    links: {},
+  },
+  {
+    title: 'BGS Gateway Monitoring MCP Server',
+    description:
+      "A companion, read-only-by-construction MCP server giving AI assistants live observability into Siemens' AIG/T4x Gateway (BGS Admin UI) -- 39 tools across 9 monitoring domains (transaction/system/workflow/session logs, batch jobs, diagnostics, server admin), with a deterministic diagnosis engine that matches live log failures against a curated known-issue catalog instead of guessing.",
+    tags: ['AI', 'MCP', 'Agents', 'Observability'],
+    videoId: null,
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/bgs-mcp/01-architecture.png`,
+        caption:
+          "Domain agents call one shared server over stdio or Streamable-HTTP; a deterministic diagnosis case study cross-references live transaction logs against a curated catalog of known AIG/T4x failure signatures -- match or 'no known pattern,' never a fabricated cause.",
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/bgs-mcp/02-domains.png`,
+        caption:
+          "9 monitoring domains mapped directly from the BGS Admin UI's own navigation, each with its own skill, tool-client wrapper, and test suite -- all 39 tools are read/list/decode only.",
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/bgs-mcp/03-security.png`,
+        caption:
+          "With no write surface to gate, security focuses on the connect-URL allowlist, content-scan secret redaction in command history, a bearer+Origin gate on the remote transport, and inheriting Teamcenter's own role-based log visibility rather than second-guessing it.",
+      },
+    ],
+    links: {},
+  },
+  {
     title: 'PLM Agentic Platform',
     description:
       'A browser-based agentic platform (Cosmos) backed by a Teamcenter MCP server -- one hub for BOM roll-ups, MBOM-to-BOP exports, ad-hoc reporting, and Excel import validation, plus a chat assistant that answers live Teamcenter questions. No separate MCP client setup required.',
@@ -313,11 +368,65 @@ export const projects = [
     links: {},
   },
   {
-    title: 'Enterprise System Integrations',
+    title: 'Server Monitoring & Reservation Dashboard',
     description:
-      'CAD, ERP, and MES integrations connecting Teamcenter with NX, CATIA, Solid Edge, SolidWorks, D365, and OpCenter -- keeping engineering, manufacturing, and supply chain data in sync.',
-    tags: ['SOA', 'CAD', 'ERP', 'MES'],
+      'A full-stack Flask + vanilla JS dashboard that tracks, claims, and monitors a fleet of Teamcenter dev/test/stage/prod servers -- with a lightweight Windows agent reporting service health, log alerts, and database preference changes back to it.',
+    tags: ['Full-Stack', 'Flask', 'Ops', 'Windows Service'],
     videoId: null,
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/server-monitoring/01-login.png`,
+        caption: 'Sign in as a named user or elevate with an admin PIN for management features.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/server-monitoring/02-dashboard-table.png`,
+        caption:
+          'Table view: every server grouped by environment, with live status, claimant, purpose, and time-in-use.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/server-monitoring/03-dashboard-grid.png`,
+        caption: 'Card view of the same fleet -- claim, release, or join a waiting list at a glance.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/server-monitoring/04-server-detail.png`,
+        caption: 'Claiming a server records who has it and why, so nobody steps on an in-progress test.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/server-monitoring/05-admin-toolbar.png`,
+        caption: 'Admin mode unlocks add/edit/delete on servers plus user and group management.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/server-monitoring/06-manage-users.png`,
+        caption: 'User directory with per-user password management, all driven from the admin panel.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/server-monitoring/07-manage-groups.png`,
+        caption: 'Groups scope which environments each user can see, including external/supplier access.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/server-monitoring/08-access-log.png`,
+        caption: 'A full audit trail of every claim, release, and waiting-list event across the fleet.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/server-monitoring/09-notification-settings.png`,
+        caption:
+          'Email and Google Chat alerts on claim/release events, plus the agent key used by the Windows monitoring service.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/server-monitoring/10-services-monitor.png`,
+        caption:
+          'Per-server drill-down: the Windows agent reports live service and process status back to the dashboard.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/server-monitoring/11-logs-monitor.png`,
+        caption: 'Log Monitors tail configured log files and surface recent alerts as they happen.',
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/server-monitoring/12-database-monitor.png`,
+        caption:
+          'Database Monitor flags newly-changed Teamcenter preference values, read-only against the database.',
+      },
+    ],
     links: {},
   },
 ]

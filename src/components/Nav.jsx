@@ -14,7 +14,7 @@ export default function Nav() {
         <a href="#top" className="font-semibold tracking-tight text-white">
           {profile.name}
         </a>
-        <ul className="flex gap-6 text-sm text-white/70">
+        <ul className="hidden gap-6 text-sm text-white/70 sm:flex">
           {links.map((link) => (
             <li key={link.href}>
               <a href={link.href} className="transition hover:text-accent">
