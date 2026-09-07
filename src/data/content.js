@@ -294,6 +294,70 @@ export const projects = [
       'A Teamcenter Manufacturing workflow automation that reconciles material consumption between the MBOM and its Bill of Process. On every new Collaboration Context, it automatically validates each BOP for broken/ghost links, generates a per-BOP report when it finds any, attaches that report to the workflow reference for review, and blocks Collaboration Context creation until the links are fixed -- removing a manual reconciliation step manufacturing engineers used to do by hand.',
     tags: ['Teamcenter Manufacturing', 'Workflow Automation', 'MBOM/BOP', 'ITK'],
     videoId: null,
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/mbom-bop-validation/01-cc-creation.png`,
+        caption: 'A new Collaboration Context references the MBOM and its BOP.',
+        annotations: [
+          {
+            x: '50%',
+            y: '35%',
+            side: 'top',
+            text: "These are exactly the links the automation checks for broken/ghost references before the CC is allowed to proceed.",
+          },
+        ],
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/mbom-bop-validation/02-broken-link-error.png`,
+        caption: 'Validation runs automatically and fails the workflow the moment it finds a problem.',
+        annotations: [
+          {
+            x: '8%',
+            y: '18%',
+            side: 'bottom',
+            text: 'No manual review needed — the check runs as part of the CC-creation workflow itself.',
+          },
+          {
+            x: '50%',
+            y: '44%',
+            side: 'top',
+            text: 'The error names the exact BOP(s) with broken or ghost links, so nobody has to go hunting for them.',
+          },
+        ],
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/mbom-bop-validation/04-sample-report.png`,
+        caption: 'A plain-text report is generated automatically, one line per broken/ghost link.',
+        annotations: [
+          {
+            x: '50%',
+            y: '10%',
+            side: 'top',
+            text: 'Each line gives the failing operation, the missing part, and its replacement — enough to fix it without opening Teamcenter first.',
+          },
+        ],
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/mbom-bop-validation/03-report-attached-to-workflow.png`,
+        caption: 'The report is attached to the workflow task, ready for the manufacturing engineer.',
+        annotations: [
+          {
+            x: '50%',
+            y: '34%',
+            side: 'top',
+            text: 'It lands as a reference on the task already in their worklist — no separate email or file share.',
+          },
+        ],
+      },
+    ],
+    links: {},
+  },
+  {
+    title: 'Reference-Drawing Revision Impact & MES Resend',
+    description:
+      "When an engineering reference drawing (an installation drawing, say) is revised, every operation that attaches it goes stale -- but the operations themselves are never revised, so nothing signals MES that the shop floor is now working to an outdated print. Finding those operations used to be a manual hunt. This workflow walks the impacted drawing back to every latest operation revision that references it, filters down to the ones already published to MES, and automatically resends them from Teamcenter to Opcenter EX-DS with the updated drawing attached -- so the floor sees the current revision without anyone chasing it.",
+    tags: ['Teamcenter Manufacturing', 'Workflow Automation', 'Opcenter EX-DS', 'PLM-MES Integration'],
+    videoId: null,
     links: {},
   },
   {
