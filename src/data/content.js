@@ -179,7 +179,7 @@ export const projects = [
   {
     title: 'AI Work-Instruction Generator',
     description:
-      'A multimodal AI tool that generates operation-by-operation composite work instructions directly from engineering drawings and Fibersim ply tables, running on real production parts at Wisk Aero.',
+      "A multimodal AI tool that turns an engineering drawing (PDF) and a Fibersim ply table (HTML) into operation-by-operation composite work instructions, instead of an author transcribing ply counts, orientations and drawing callouts by hand. It reads both documents together and builds the whole fabrication route as a process diagram: raw-material kitting and cut, core cutting, milling, cleaning and dry, layup against projected laser targets, bagging, cure, de-bag and de-flash, trim, drill and deburr, NDI and CMM dimensional inspection, and the quality steps that close a part out -- recorded part mass, part marking, visual and cure-profile inspection, trim authorization, and shop-lead and final QA sign-offs. Each branch is generated as its own operation chain with its own header and hold points, so the routing mirrors how the shop actually runs the part rather than collapsing into one flat list, and the result can be panned, zoomed and reviewed in the browser before it goes downstream. It runs on real production parts at Wisk Aero.",
     tags: ['AI', 'Multimodal', 'Manufacturing', 'PLM'],
     videoId: null,
     video: `${import.meta.env.BASE_URL}Videos/automated-work-instructions.mp4`,
