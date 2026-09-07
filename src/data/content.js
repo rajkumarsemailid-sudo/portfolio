@@ -358,6 +358,58 @@ export const projects = [
       "When an engineering reference drawing (an installation drawing, say) is revised, every operation that attaches it goes stale -- but the operations themselves are never revised, so nothing signals MES that the shop floor is now working to an outdated print. Finding those operations used to be a manual hunt. This workflow walks the impacted drawing back to every latest operation revision that references it, filters down to the ones already published to MES, and automatically resends them from Teamcenter to Opcenter EX-DS with the updated drawing attached -- so the floor sees the current revision without anyone chasing it.",
     tags: ['Teamcenter Manufacturing', 'Workflow Automation', 'Opcenter EX-DS', 'PLM-MES Integration'],
     videoId: null,
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/AutomatedDesignImpact/01-impact-analysis.png`,
+        caption:
+          'Design release triggers the impact analysis that finds every BOP operation referencing the revised drawing.',
+        annotations: [
+          {
+            x: '13%',
+            y: '47%',
+            side: 'bottom',
+            text: 'The revised drawing is only a reference on the operation — the operation itself never revises, so nothing flags it as stale.',
+          },
+          {
+            x: '43%',
+            y: '99%',
+            side: 'top',
+            text: 'Where-referenced, filtered to Operation Revisions: every operation the drawing touches, found automatically.',
+          },
+          {
+            x: '84%',
+            y: '99%',
+            side: 'top',
+            text: 'Each impacted operation is attached as a target on an MES_Integration process — no hand-built list.',
+          },
+        ],
+      },
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/AutomatedDesignImpact/02-resend-to-mes.png`,
+        caption:
+          'The workflow narrows to the latest operation revisions already sent to MES and resends them to Opcenter EX-DS.',
+        annotations: [
+          {
+            x: '30%',
+            y: '25%',
+            side: 'top',
+            text: 'Find, review, send — one workflow, no manual hunting.',
+          },
+          {
+            x: '21%',
+            y: '64%',
+            side: 'bottom',
+            text: 'The released operation still carries the old print until it is resent.',
+          },
+          {
+            x: '75%',
+            y: '99%',
+            side: 'top',
+            text: 'Every impacted operation lands as a reference on one review task before it goes out to the shop floor.',
+          },
+        ],
+      },
+    ],
     links: {},
   },
   {
