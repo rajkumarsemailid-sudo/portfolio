@@ -13,5 +13,23 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- GoatCounter analytics -- dashboard at https://rajkumar.goatcounter.com -->
+    <script
+      data-goatcounter="https://rajkumar.goatcounter.com/count"
+      async
+      src="//gc.zgo.at/count.js"
+    ></script>
+    <script>
+      // The site is one hash-routed page, so section jumps (#projects, #experience)
+      // are not page loads. Count each one explicitly, including its hash.
+      window.addEventListener('hashchange', function () {
+        if (window.goatcounter && window.goatcounter.count) {
+          window.goatcounter.count({
+            path: location.pathname + location.search + location.hash,
+          })
+        }
+      })
+    </script>
   </body>
 </html>
