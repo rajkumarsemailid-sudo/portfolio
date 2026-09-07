@@ -303,7 +303,7 @@ export const projects = [
             x: '50%',
             y: '35%',
             side: 'top',
-            text: "These are exactly the links the automation checks for broken/ghost references before the CC is allowed to proceed.",
+            text: 'The attached MBOM and BOP -- broken/ghost links are identified between these two structures before the CC is allowed to proceed.',
           },
         ],
       },
