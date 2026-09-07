@@ -2,6 +2,29 @@ import { useEffect, useState } from 'react'
 
 const getImageSrc = (image) => (typeof image === 'string' ? image : image.src)
 const getImageCaption = (image) => (typeof image === 'string' ? null : image.caption)
+const getImageAnnotations = (image) =>
+  typeof image === 'string' ? [] : image.annotations ?? []
+
+function AnnotationBubble({ x, y, side = 'top', text }) {
+  const isTop = side === 'top'
+  const bubble = (
+    <div className="max-w-[180px] rounded-2xl bg-white px-3 py-2 text-xs font-medium leading-snug text-ink shadow-xl sm:max-w-[240px] sm:text-sm">
+      {text}
+    </div>
+  )
+  const tail = <div className="h-2.5 w-2.5 rotate-45 bg-white" />
+
+  return (
+    <div
+      className="pointer-events-none absolute z-10 flex flex-col items-center"
+      style={{ left: x, top: y, transform: isTop ? 'translate(-50%, -100%)' : 'translate(-50%, 0%)' }}
+    >
+      {isTop && bubble}
+      <div className={isTop ? '-mt-[5px]' : '-mb-[5px] order-first'}>{tail}</div>
+      {!isTop && bubble}
+    </div>
+  )
+}
 
 function MediaPreview({ project }) {
   if (project.videoId) {
@@ -171,16 +194,21 @@ export default function ProjectCard({ project }) {
           )}
 
           <div
-            className="relative flex max-h-full max-w-full flex-col items-stretch"
+            className="flex max-h-full max-w-full flex-col items-stretch"
             onClick={(e) => e.stopPropagation()}
           >
-            <img
-              src={getImageSrc(images[lightboxIndex])}
-              alt={`${project.title} screenshot ${lightboxIndex + 1}`}
-              className={`max-h-[80vh] max-w-full object-contain ${
-                getImageCaption(images[lightboxIndex]) ? 'rounded-t-lg' : 'rounded-lg'
-              }`}
-            />
+            <div className="relative">
+              <img
+                src={getImageSrc(images[lightboxIndex])}
+                alt={`${project.title} screenshot ${lightboxIndex + 1}`}
+                className={`max-h-[80vh] max-w-full object-contain ${
+                  getImageCaption(images[lightboxIndex]) ? 'rounded-t-lg' : 'rounded-lg'
+                }`}
+              />
+              {getImageAnnotations(images[lightboxIndex]).map((note, i) => (
+                <AnnotationBubble key={i} {...note} />
+              ))}
+            </div>
             {getImageCaption(images[lightboxIndex]) && (
               <div className="rounded-b-lg bg-gray-200/95 px-4 py-2 text-sm text-gray-800 shadow-lg">
                 {getImageCaption(images[lightboxIndex])}
