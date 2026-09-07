@@ -289,6 +289,14 @@ export const projects = [
     links: {},
   },
   {
+    title: 'Automated MBOM-BOP Broken-Link Validation',
+    description:
+      'A Teamcenter Manufacturing workflow automation that reconciles material consumption between the MBOM and its Bill of Process. On every new Collaboration Context, it automatically validates each BOP for broken/ghost links, generates a per-BOP report when it finds any, attaches that report to the workflow reference for review, and blocks Collaboration Context creation until the links are fixed -- removing a manual reconciliation step manufacturing engineers used to do by hand.',
+    tags: ['Teamcenter Manufacturing', 'Workflow Automation', 'MBOM/BOP', 'ITK'],
+    videoId: null,
+    links: {},
+  },
+  {
     title: 'AI-Driven PLM Test Automation',
     description:
       'AI-powered automated testing tools for Teamcenter and Active Workspace, improving release quality and reliability across enterprise PLM upgrades.',
