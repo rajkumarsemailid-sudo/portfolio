@@ -49,7 +49,7 @@ export const experience = [
       'Manage Teamcenter configurations, solutions, and support for an eVTOL aircraft manufacturer, and build an agentic PLM platform for better user support.',
     scope: [
       'Managed the end-to-end PLM solution, resolving complexities across the program.',
-      'Owned the EBOM -> MBOM -> SBOM digital thread, keeping design, manufacturing, and service structures in sync.',
+      'Owned the EBOM -> MBOM -> BOP digital thread, keeping design, manufacturing, and process structures in sync.',
       'Supported multiple vendors implementing PLM solutions.',
       'Developed the Agentic PLM platform (Cosmos) for better user self-service.',
       'Automated work-instruction generation for composite fabrication.',
