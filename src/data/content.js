@@ -31,12 +31,6 @@ export const skillGroups = [
   },
 ]
 
-export const skillsHighlight = {
-  src: `${import.meta.env.BASE_URL}screenshots/experience/plm-platform.png`,
-  caption:
-    'BOM management across the digital thread: EBOM, MBOM, and SBOM unified from design through manufacturing and service.',
-}
-
 export const clients = [
   { name: 'Ford', logo: `${import.meta.env.BASE_URL}logos/ford.png` },
   { name: 'General Electric', logo: `${import.meta.env.BASE_URL}logos/general-electric.png` },

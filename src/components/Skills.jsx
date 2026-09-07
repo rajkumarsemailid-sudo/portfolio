@@ -1,4 +1,4 @@
-import { skillGroups, skillsHighlight } from '../data/content'
+import { skillGroups } from '../data/content'
 
 export default function Skills() {
   return (
@@ -26,19 +26,6 @@ export default function Skills() {
           </div>
         ))}
       </div>
-
-      {skillsHighlight && (
-        <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-white/5">
-          <img
-            src={skillsHighlight.src}
-            alt={skillsHighlight.caption}
-            className="w-full object-contain"
-          />
-          <p className="border-t border-white/10 bg-white/5 px-6 py-3 text-sm text-white/60">
-            {skillsHighlight.caption}
-          </p>
-        </div>
-      )}
     </section>
   )
 }
