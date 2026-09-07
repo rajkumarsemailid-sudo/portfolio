@@ -47,6 +47,10 @@ function MediaPreview({ project }) {
         controls
         preload="metadata"
         poster={project.videoPoster}
+        onLoadedMetadata={(event) => {
+          event.currentTarget.defaultPlaybackRate = 2
+          event.currentTarget.playbackRate = 2
+        }}
       >
         <source src={project.video} type="video/mp4" />
       </video>
