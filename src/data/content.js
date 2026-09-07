@@ -413,6 +413,21 @@ export const projects = [
     links: {},
   },
   {
+    title: 'Bulk Classification Migration Utility',
+    description:
+      "A Teamcenter ITK batch utility (C++) that classifies migrated documents in bulk instead of one dialog at a time. It reads a CSV of item ID, revision ID, and target classification class, resolves each revision through a multi-field key, creates the classification object (ICO) under the right ICS class, then sets ownership -- routing each record to the correct owning group from its ID range. It runs under privilege bypass so migration data isn't blocked by access rules, and every row is wrapped in its own error boundary with timestamped logging, so one bad record is recorded and skipped rather than killing a run of tens of thousands.",
+    tags: ['Teamcenter', 'ITK', 'C++', 'Data Migration'],
+    videoId: null,
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/bulk-classification/01-batch-run.gif`,
+        caption:
+          'The batch run, one record at a time: read the CSV row, resolve the revision, create the classification object, set ownership from the ID range, log it, move on — and when a record fails, log the failure and keep going.',
+      },
+    ],
+    links: {},
+  },
+  {
     title: 'AI-Driven PLM Test Automation',
     description:
       'AI-powered automated testing tools for Teamcenter and Active Workspace, improving release quality and reliability across enterprise PLM upgrades.',
