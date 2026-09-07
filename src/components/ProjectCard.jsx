@@ -58,7 +58,7 @@ function MediaPreview({ project }) {
       <img
         src={getImageSrc(project.images[0])}
         alt={`${project.title} screenshot`}
-        className="h-full w-full object-cover object-top"
+        className="h-full w-full object-contain"
       />
     )
   }
