@@ -415,6 +415,21 @@ export const projects = [
     links: {},
   },
   {
+    title: 'Legacy-to-Teamcenter Migration Pipeline',
+    description:
+      "A ten-stage ETL pipeline that moves an aerospace standards and document library out of legacy systems into Teamcenter, driven end to end by a single master batch script. Java validators screen every input row first -- duplicates, mandatory attributes, field lengths, LOV values, classification classes, file existence, date formats -- so only clean data reaches a database. The run then walks four staging layers: a raw landing stage kept untouched for audit, a pre-clean stage that rebuilds physical file paths from part numbers, a clean stage that defaults revisions and corrects LOVs, sub-types and owning groups, and a target stage whose tables carry Teamcenter's own attribute names. Mapping SQL translates legacy columns into Item, ItemRevision, Form and Dataset attributes, Java extractors write import-ready CSVs, csv2tcxml converts them to TCXML, and tcxml_import bulk-loads them. Post-migration, documents are classified in bulk and validation and clash reports go out for audit sign-off. Every stage logs its own output and can be re-run on its own, so a failed run restarts from the stage that broke rather than from the beginning.",
+    tags: ['Data Migration', 'ETL', 'Teamcenter', 'Java', 'SQL', 'TCXML'],
+    videoId: null,
+    images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/data-migration/01-etl-pipeline.gif`,
+        caption:
+          'The full run, stage by stage: validate the input, land it in source staging, clean it across two staging layers, map it onto the Teamcenter data model, extract it as CSV, convert to TCXML, bulk-load it, then classify and report.',
+      },
+    ],
+    links: {},
+  },
+  {
     title: 'Bulk Classification Migration Utility',
     description:
       "A Teamcenter ITK batch utility (C++) that classifies migrated documents in bulk instead of one dialog at a time. It reads a CSV of item ID, revision ID, and target classification class, resolves each revision through a multi-field key, creates the classification object (ICO) under the right ICS class, then sets ownership -- routing each record to the correct owning group from its ID range. It runs under privilege bypass so migration data isn't blocked by access rules, and every row is wrapped in its own error boundary with timestamped logging, so one bad record is recorded and skipped rather than killing a run of tens of thousands.",
