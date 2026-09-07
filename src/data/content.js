@@ -290,6 +290,10 @@ export const projects = [
     videoId: null,
     images: [
       {
+        src: `${import.meta.env.BASE_URL}screenshots/mbom-bop-validation/00-overview.svg`,
+        caption: 'How it works: validation runs on every new Collaboration Context and blocks it until broken links are fixed.',
+      },
+      {
         src: `${import.meta.env.BASE_URL}screenshots/mbom-bop-validation/01-cc-creation.png`,
         caption: 'A new Collaboration Context references the MBOM and its BOP.',
         annotations: [
@@ -353,6 +357,10 @@ export const projects = [
     tags: ['Teamcenter Manufacturing', 'Workflow Automation', 'Opcenter EX-DS', 'PLM-MES Integration'],
     videoId: null,
     images: [
+      {
+        src: `${import.meta.env.BASE_URL}screenshots/AutomatedDesignImpact/00-overview.svg`,
+        caption: 'How it works: from a revised drawing to an automatic resend, with no manual hunting in between.',
+      },
       {
         src: `${import.meta.env.BASE_URL}screenshots/AutomatedDesignImpact/01-impact-analysis.png`,
         caption:

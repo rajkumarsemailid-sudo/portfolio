@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 760" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af" />
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="760" fill="#0b0f14" />
+
+  <!-- Step 1 -->
+  <rect x="230" y="30" width="440" height="80" rx="16" fill="#5eead4" fill-opacity="0.12" stroke="#5eead4" stroke-width="1.5" />
+  <text x="450" y="65" text-anchor="middle" fill="#ffffff" font-size="21" font-weight="600">New Collaboration Context created</text>
+  <text x="450" y="92" text-anchor="middle" fill="#9ca3af" font-size="16">references the MBOM and its BOP</text>
+
+  <line x1="450" y1="110" x2="450" y2="150" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Step 2 -->
+  <rect x="180" y="150" width="540" height="90" rx="16" fill="#5eead4" fill-opacity="0.12" stroke="#5eead4" stroke-width="1.5" />
+  <text x="450" y="188" text-anchor="middle" fill="#ffffff" font-size="21" font-weight="600">Automatic validation runs</text>
+  <text x="450" y="215" text-anchor="middle" fill="#9ca3af" font-size="16">every MBOM &#8596; BOP link is checked for broken / ghost references</text>
+
+  <!-- Branch arrows -->
+  <line x1="380" y1="240" x2="240" y2="300" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)" />
+  <line x1="520" y1="240" x2="660" y2="300" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Left branch: no issues -->
+  <rect x="70" y="300" width="340" height="90" rx="16" fill="#4ade80" fill-opacity="0.12" stroke="#4ade80" stroke-width="1.5" />
+  <text x="240" y="336" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="600">No broken links found</text>
+  <text x="240" y="362" text-anchor="middle" fill="#9ca3af" font-size="15">Collaboration Context creation proceeds</text>
+
+  <!-- Right branch: issues found -->
+  <rect x="490" y="300" width="340" height="90" rx="16" fill="#fb923c" fill-opacity="0.14" stroke="#fb923c" stroke-width="1.5" />
+  <text x="660" y="336" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="600">Broken / ghost links found</text>
+  <text x="660" y="362" text-anchor="middle" fill="#9ca3af" font-size="15">in one or more referenced BOPs</text>
+
+  <line x1="660" y1="390" x2="660" y2="430" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Step: generate report -->
+  <rect x="490" y="430" width="340" height="80" rx="16" fill="#5eead4" fill-opacity="0.12" stroke="#5eead4" stroke-width="1.5" />
+  <text x="660" y="465" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="600">Generate a report</text>
+  <text x="660" y="491" text-anchor="middle" fill="#9ca3af" font-size="15">one broken/ghost-link report per affected BOP</text>
+
+  <line x1="660" y1="510" x2="660" y2="550" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Step: attach to workflow -->
+  <rect x="490" y="550" width="340" height="80" rx="16" fill="#5eead4" fill-opacity="0.12" stroke="#5eead4" stroke-width="1.5" />
+  <text x="660" y="585" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="600">Attach to the workflow task</text>
+  <text x="660" y="611" text-anchor="middle" fill="#9ca3af" font-size="15">as a reference, ready for the engineer to review</text>
+
+  <line x1="660" y1="630" x2="660" y2="670" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Step: block CC creation -->
+  <rect x="490" y="670" width="340" height="70" rx="16" fill="#f87171" fill-opacity="0.16" stroke="#f87171" stroke-width="1.5" />
+  <text x="660" y="702" text-anchor="middle" fill="#ffffff" font-size="19" font-weight="600">CC creation is blocked</text>
+  <text x="660" y="726" text-anchor="middle" fill="#9ca3af" font-size="15">until the links are fixed</text>
+</svg>
