@@ -260,6 +260,46 @@ section.sheet .wrap{display:grid;gap:28px}
 .outcome strong{font:700 1.35rem/1.2 var(--display)}
 .outcome p{color:var(--muted)}
 
+/* impact chart: three small multiples, one scale each; colors validated (dataviz validator, light and dark) */
+:root{--bar-hand:#c4574c;--bar-app:#00849c;--grid:#e6ebef}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bar-hand:#d9675c;--bar-app:#1f98ad;--grid:#1d3240}}
+:root[data-theme="dark"]{--bar-hand:#d9675c;--bar-app:#1f98ad;--grid:#1d3240}
+.impact{margin:0;background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:grid;gap:16px;position:relative}
+.impact-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.impact-head b{font:700 1.05rem/1.3 var(--display)}
+.legend{display:flex;gap:16px;font-size:.84rem;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:6px}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+.sw.hand{background:var(--bar-hand)}.sw.app{background:var(--bar-app)}
+.panels{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:760px){.panels{grid-template-columns:1fr}}
+.panel{display:grid;gap:10px;min-width:0}
+.panel-k{font:500 .7rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.panel-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.panel-h strong{font:800 2rem/1 var(--display);font-variant-numeric:tabular-nums;color:var(--ink)}
+.panel-h span{font-size:.86rem;color:var(--muted)}
+.plot{position:relative;height:170px;display:grid;grid-template-columns:2.2rem 1fr;gap:6px}
+.yaxis{position:relative;font:400 .68rem/1 var(--mono);color:var(--muted)}
+.yaxis span{position:absolute;right:0;transform:translateY(50%);font-variant-numeric:tabular-nums}
+.area{position:relative;border-bottom:1px solid var(--muted)}
+.gl{position:absolute;left:0;right:0;height:1px;background:var(--grid)}
+.bars{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:0 14%;align-items:end}
+.bar{position:relative;height:100%;display:flex;align-items:flex-end;justify-content:center;cursor:default;outline:none}
+.bar i{display:block;width:62%;max-width:46px;border-radius:4px 4px 0 0;transform-origin:bottom;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.bar.hand i{background:var(--bar-hand)}.bar.app i{background:var(--bar-app)}
+.bar b{position:absolute;left:0;right:0;text-align:center;font:600 .78rem/1 var(--body);color:var(--ink);font-variant-numeric:tabular-nums;transition:opacity .4s}
+.bar:hover i,.bar:focus-visible i{filter:brightness(1.12)}
+.bar:focus-visible{box-shadow:inset 0 0 0 2px var(--accent);border-radius:4px}
+.impact.grow .bar i{transform:scaleY(0)}
+.impact.notr .bar i,.impact.notr .bar b,.impact.notr .panel-h strong{transition:none}
+.impact.grow .bar b,.impact.grow .panel-h strong{opacity:0}
+.xlab{display:grid;grid-template-columns:2.2rem 1fr;gap:6px;font-size:.74rem;color:var(--muted)}
+.xlab div{display:grid;grid-template-columns:1fr 1fr;padding:0 14%;text-align:center}
+.ctip{position:absolute;z-index:3;pointer-events:none;background:var(--ink);color:var(--paper);border-radius:8px;padding:8px 10px;font-size:.8rem;line-height:1.35;max-width:220px;box-shadow:0 8px 24px -10px rgba(0,0,0,.4)}
+.ctip strong{display:block;font-variant-numeric:tabular-nums}
+.impact figcaption{font-size:.8rem;color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
 /* 5. control */
 .control{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
 .control > *{min-width:0}
@@ -456,6 +496,24 @@ body.present .progress{display:block}
       <div class="outcome rv"><strong>Failures raised as they happen</strong><p>Stopped services and server problems reach the admin team by chat and email when they occur.</p></div>
       <div class="outcome rv"><strong>Upgrades scoped before they start</strong><p>The customizations to carry forward and the conflicts to resolve are known before the project is planned.</p></div>
     </div>
+    <figure class="impact rv" id="impact">
+      <div class="impact-head">
+        <b>Time, risk and cost, before and after</b>
+        <div class="legend" aria-hidden="true"><span><i class="sw hand"></i>By hand</span><span><i class="sw app"></i>With TeamcenterGuru</span></div>
+      </div>
+      <div class="panels" id="panels"></div>
+      <div class="ctip" id="ctip" role="tooltip" hidden></div>
+      <table class="sr-only">
+        <caption>Illustrative example, not measured</caption>
+        <thead><tr><th>Measure</th><th>By hand</th><th>With TeamcenterGuru</th><th>Change</th></tr></thead>
+        <tbody>
+          <tr><td>Release check effort, hours per release</td><td>24</td><td>2</td><td>−92%</td></tr>
+          <tr><td>Configuration issues reaching Production, per quarter</td><td>6</td><td>1</td><td>−83%</td></tr>
+          <tr><td>Monitoring and log analysis, hours per month</td><td>160</td><td>40</td><td>−75%</td></tr>
+        </tbody>
+      </table>
+      <figcaption>Illustrative example, not measured. Assumes a site with four environments, monthly releases, and one admin and one support lead reviewing the agents' work. Replace with your own figures.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -542,6 +600,49 @@ body.present .progress{display:block}
     setTimeout(function(){if(run===heroRun)runOnce();},900+9*650+6000);
   }
   if(!reduce)setTimeout(runOnce,600);
+
+  // Impact chart: three panels, each on its own scale (never a shared or dual axis). Example figures.
+  var IMPACT=[
+    {k:"Time saved",what:"Release check effort",unit:"hours per release",hand:24,app:2,ticks:[0,12,24]},
+    {k:"Risk reduced",what:"Configuration issues reaching Production",unit:"per quarter",hand:6,app:1,ticks:[0,3,6]},
+    {k:"Cost saved",what:"Monitoring and log analysis",unit:"hours per month",hand:160,app:40,ticks:[0,80,160]}
+  ];
+  var panelsEl=document.getElementById("panels"), impact=document.getElementById("impact"), ctip=document.getElementById("ctip"), pctEls=[];
+  IMPACT.forEach(function(d){
+    var max=d.ticks[d.ticks.length-1], pct=Math.round((1-d.app/d.hand)*100);
+    var p=document.createElement("div");p.className="panel";
+    var grid="", ys="";
+    d.ticks.forEach(function(t){var y=(t/max*100);grid+=t?'<i class="gl" style="bottom:'+y+'%"></i>':"";ys+='<span style="bottom:'+y+'%">'+t+'</span>';});
+    function bar(cls,label,v){var h=v/max*100;
+      return '<div class="bar '+cls+'" tabindex="0" data-label="'+label+'" data-v="'+v+'" aria-label="'+label+': '+v+' '+d.unit+'">'+
+        '<i style="height:'+h+'%"></i><b style="bottom:calc('+h+'% + 6px)">'+v+'</b></div>';}
+    p.innerHTML='<div class="panel-k">'+d.k+'</div>'+
+      '<div class="panel-h"><strong>−'+pct+'%</strong><span>'+d.what+', '+d.unit+'</span></div>'+
+      '<div class="plot"><div class="yaxis">'+ys+'</div><div class="area">'+grid+
+        '<div class="bars">'+bar("hand","By hand",d.hand)+bar("app","With TeamcenterGuru",d.app)+'</div></div></div>'+
+      '<div class="xlab"><span></span><div><span>By hand</span><span>With TeamcenterGuru</span></div></div>';
+    panelsEl.appendChild(p);
+    var strong=p.querySelector(".panel-h strong");pctEls.push({el:strong,pct:pct});
+    [].forEach.call(p.querySelectorAll(".bar"),function(b){
+      function tipOn(){var r=b.getBoundingClientRect(), f=impact.getBoundingClientRect();
+        ctip.innerHTML="";var s=document.createElement("strong");s.textContent=b.dataset.v+" "+d.unit;ctip.appendChild(s);ctip.appendChild(document.createTextNode(b.dataset.label+" · "+d.what));
+        ctip.hidden=false;var x=r.left-f.left+r.width/2-ctip.offsetWidth/2;ctip.style.left=Math.max(8,Math.min(f.width-ctip.offsetWidth-8,x))+"px";ctip.style.top=(r.top-f.top-ctip.offsetHeight+30)+"px";}
+      b.addEventListener("mouseenter",tipOn);b.addEventListener("focus",tipOn);
+      b.addEventListener("mouseleave",function(){ctip.hidden=true;});b.addEventListener("blur",function(){ctip.hidden=true;});
+    });
+  });
+  function growImpact(){
+    // collapse without a transition, then grow, each bar a little after the last
+    impact.classList.add("notr","grow");void impact.offsetWidth;impact.classList.remove("notr");
+    [].forEach.call(impact.querySelectorAll(".bar i"),function(b,i){b.style.transitionDelay=(i*140)+"ms";});
+    setTimeout(function(){impact.classList.remove("grow");
+      pctEls.forEach(function(o){var t0=null;(function step(ts){if(!t0)t0=ts;var q=Math.min(1,(ts-t0)/900);o.el.textContent="−"+Math.round(o.pct*q)+"%";if(q<1)requestAnimationFrame(step);})(performance.now());});
+    },120);
+  }
+  if(!reduce&&"IntersectionObserver" in window){
+    var imIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){imIo.disconnect();growImpact();}},{threshold:.35});
+    imIo.observe(impact);
+  }
 
   // Servers watched live: a stop and a log error reach the admin chat; the finished thread is in the HTML.
   var srv={}; [].forEach.call(document.querySelectorAll("#watch .srv"),function(r){srv[r.dataset.s]=r;});
@@ -711,6 +812,7 @@ body.present .progress{display:block}
     if(slides[idx].id==="team"&&!reduce)crewLoop();
     if(slides[idx].id==="risk"&&!reduce)twLoop();
     if(slides[idx].id==="jobs"&&!reduce)watchLoop();
+    if(slides[idx].id==="outcomes"&&!reduce)growImpact();
     pc.textContent=(idx+1)+" / "+slides.length;bar.style.width=((idx+1)/slides.length*100)+"%";
   }
   function start(){on=true;document.body.classList.add("present");show(0);var de=document.documentElement;if(de.requestFullscreen)de.requestFullscreen().catch(function(){});}
