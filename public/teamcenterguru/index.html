@@ -169,8 +169,7 @@ section.sheet .wrap{display:grid;gap:28px}
 .cp-live i,.live-dot{width:8px;height:8px;border-radius:50%;background:#3fcf7f;display:inline-block;animation:beat 1.8s ease-in-out infinite}
 @keyframes beat{0%,100%{box-shadow:0 0 0 0 rgba(63,207,127,.55)}50%{box-shadow:0 0 0 6px rgba(63,207,127,0)}}
 .cp-src{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px 0}
-.cp-src span{font-size:.68rem;padding:3px 8px;border-radius:4px;border:1px solid rgba(255,255,255,.14);color:var(--code-fg);animation:srcon .5s both}
-.cp-src span:nth-child(2){animation-delay:.25s}.cp-src span:nth-child(3){animation-delay:.5s}.cp-src span:nth-child(4){animation-delay:.75s}
+.cp-src span{font-size:.68rem;padding:3px 8px;border-radius:4px;border:1px solid rgba(255,255,255,.14);color:var(--code-fg)}
 @keyframes srcon{from{opacity:.3;border-color:transparent}to{opacity:1}}
 .cp-q{margin:12px 16px 0;padding:10px 12px;border-radius:8px;background:rgba(76,195,214,.14);color:#e4f6fa;font:500 .84rem/1.45 var(--body)}
 .cp-code{margin:0;padding:12px 16px;white-space:pre;overflow-x:auto;color:var(--code-fg);font:400 .74rem/1.6 var(--mono);min-height:19.5em}
@@ -178,6 +177,19 @@ section.sheet .wrap{display:grid;gap:28px}
 @keyframes blink{50%{opacity:0}}
 .cp-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 16px;border-top:1px solid rgba(255,255,255,.08);font-size:.7rem;color:var(--code-dim);transition:opacity .4s}
 .cp-foot .ok{color:#7fe0a5}
+.cp-src span:not(.on){opacity:.35}
+.cp-src span.on{border-color:rgba(76,195,214,.6);color:#e4f6fa}
+.cp-src span{transition:opacity .4s,border-color .4s}
+.cp-code .l-ok,.cp-code .l-add{color:#7fe0a5} .cp-code .l-mod{color:#f3c86e} .cp-code .l-warn{color:#f3c86e} .cp-code .l-bad{color:#ff9d94} .cp-code .l-dim{color:var(--code-dim)}
+.cp-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:0 16px 14px}
+.cp-steps span{display:grid;gap:6px;font-size:.62rem;color:var(--code-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cp-steps i{display:block;height:3px;border-radius:2px;background:rgba(255,255,255,.12);position:relative;overflow:hidden}
+.cp-steps i::after{content:"";position:absolute;inset:0;width:0;background:#4cc3d6}
+.cp-steps .seen i::after{width:100%}
+.cp-steps .cur{color:#e4f6fa}
+.cp-steps .cur i::after{width:100%;animation:fill 9s linear}
+@keyframes fill{from{width:0}to{width:100%}}
+@media (max-width:520px){.cp-steps span{font-size:0}.cp-steps{gap:4px}}
 .cp-foot.wait{opacity:.25}
 
 /* six jobs */
@@ -220,8 +232,23 @@ section.sheet .wrap{display:grid;gap:28px}
 /* lifecycle */
 .flow{position:relative;display:grid;grid-template-columns:repeat(7,1fr);gap:10px;list-style:none;padding:0;margin:0;counter-reset:s}
 .flow::before{content:"";position:absolute;left:4%;right:4%;top:22px;height:2px;background:var(--line)}
-.flow::after{content:"";position:absolute;top:18px;left:4%;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px var(--accent-soft);animation:travel 7s linear infinite}
-@keyframes travel{from{left:4%}to{left:calc(96% - 10px)}}
+.flow{--p:0}
+.flow::after{content:"";position:absolute;left:4%;top:22px;height:2px;width:calc(92% * var(--p));background:var(--accent);transition:width .8s cubic-bezier(.4,0,.2,1)}
+.flow li{cursor:pointer}
+.flow li::before{transition:background .4s,color .4s,box-shadow .4s,transform .4s}
+.flow li.done::before{background:var(--accent-soft)}
+.flow li.on::before{background:var(--accent);color:var(--sheet);box-shadow:0 0 0 7px var(--accent-soft);transform:scale(1.08)}
+.flow li.on strong{color:var(--accent)}
+
+/* lifecycle stage: one change, step by step, with the consultant's note */
+.stage-body{display:grid;grid-template-columns:1.4fr 1fr;align-items:stretch}
+.stage .cp-code{min-height:12.5em;font-size:.78rem}
+.ai{border-left:1px solid rgba(255,255,255,.08);padding:16px;display:grid;gap:10px;align-content:start;transition:opacity .4s}
+.ai b{font:500 .68rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#c4b5fd;display:flex;align-items:center;gap:8px}
+.ai b::before{content:"";width:18px;height:18px;border-radius:6px;background:linear-gradient(135deg,#8b5cf6,#4cc3d6)}
+.ai p{margin:0;font:400 .9rem/1.55 var(--body);color:#e4eef3}
+.ai.wait{opacity:.15}
+@media (max-width:760px){.stage-body{grid-template-columns:1fr}.ai{border-left:0;border-top:1px solid rgba(255,255,255,.08)}}
 .flow li{position:relative;z-index:1;display:grid;gap:8px;justify-items:center;text-align:center;counter-increment:s;min-width:0}
 .flow li::before{content:counter(s);width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--sheet);border:2px solid var(--accent);font:600 .95rem/1 var(--mono);color:var(--accent)}
 .flow strong{font:700 1rem/1.2 var(--display)}
@@ -317,16 +344,16 @@ body.present .progress{display:block}
     <div class="hero-copy">
       <div class="eyebrow">For Teamcenter administrators</div>
       <h1>Administer Teamcenter with a copilot that <span>knows your site.</span></h1>
-      <p class="lede">Built for the people who run and configure Teamcenter, not for its end users. TeamcenterGuru watches your servers, captures every environment's configuration, validates each change before it ships, and answers admin questions from your live site, your integrations, your configuration and Siemens Support Center. It also writes the ITK code.</p>
+      <p class="lede">TeamcenterGuru watches your servers, captures every environment's configuration, validates each change before it ships, and answers admin questions from your live site, your integrations, your configuration and Siemens Support Center. It also writes the ITK code.</p>
       <div class="ctas">
         <a class="btn" href="#pillars" style="text-decoration:none">See what it does</a>
         <button class="btn ghost" type="button" id="presentBtn2">Start presentation</button>
       </div>
     </div>
-    <div class="copilot" aria-label="Example: the copilot drafting an ITK rule handler">
+    <div class="copilot" aria-label="Example admin copilot session, cycling through five jobs">
       <div class="cp-head"><span>Admin copilot · PROD · Tc 2412</span><span class="cp-live"><i></i>4 sources connected</span></div>
-      <div class="cp-src"><span>Live Teamcenter</span><span>Active Integration</span><span>Siemens Support</span><span>Configuration</span></div>
-      <div class="cp-q">Block release of a Wdg4_Part revision that has no material.</div>
+      <div class="cp-src" id="cpSrc"><span class="on">Live Teamcenter</span><span>Active Integration</span><span>Siemens Support</span><span class="on">Configuration</span></div>
+      <div class="cp-q" id="cpQ">Block release of a Wdg4_Part revision that has no material.</div>
 <pre class="cp-code" id="cpCode">EPM_decision_t Wdg_check_material(EPM_rule_message_t msg)
 {
     int n = 0;
@@ -344,7 +371,8 @@ body.present .progress{display:block}
     MEM_free(targets);
     return decision;
 }</pre>
-      <div class="cp-foot"><span class="ok">✓ Compiles against the Tc 2412 ITK reference</span><span>wdg4_material found in the Prod BMIDE export</span></div>
+      <div class="cp-foot" id="cpFoot"><span class="ok">✓ Compiles against the Tc 2412 ITK reference</span><span>wdg4_material found in the Prod BMIDE export</span></div>
+      <div class="cp-steps" id="cpSteps" aria-hidden="true"></div>
     </div>
   </div>
 </section>
@@ -473,8 +501,8 @@ body.present .progress{display:block}
   <div class="wrap">
     <div class="eyebrow">The lifecycle</div>
     <h2>From a captured environment to a verified deployment.</h2>
-    <ol class="flow rv">
-      <li><strong>Capture</strong><span>Upload exports or pull them from the server</span></li>
+    <ol class="flow rv" id="flow">
+      <li class="on"><strong>Capture</strong><span>Upload exports or pull them from the server</span></li>
       <li><strong>Compare</strong><span>Diff any two releases or environments</span></li>
       <li><strong>Change notice</strong><span>Record problem, affected and solution items</span></li>
       <li><strong>Merge</strong><span>Accept or reject each difference</span></li>
@@ -482,7 +510,20 @@ body.present .progress{display:block}
       <li><strong>Deploy</strong><span>Run it; the log records each step</span></li>
       <li><strong>Verify</strong><span>Re-capture and smoke test the target</span></li>
     </ol>
-    <p class="muted">Every release is immutable and content-addressed. Restoring an earlier state is a repoint, not a rebuild.</p>
+    <div class="copilot stage rv" aria-label="Example: one change moving through the lifecycle, with the AI consultant at each step">
+      <div class="cp-head"><span id="stTitle">Step 1 of 7 · Capture</span><span class="cp-live"><i></i>CN-000041 · QA → PROD</span></div>
+      <div class="stage-body">
+<pre class="cp-code" id="stCode"><span class="l-dim">Capturing PROD from tc-app01 …</span>
+<span class="l-ok">✓ admin_data_export     ACLs, revision rules, queries</span>
+<span class="l-ok">✓ BMIDE template        Wdg4 data model</span>
+<span class="l-ok">✓ preferences           10,412 site preferences</span>
+<span class="l-ok">✓ integration config    AIG mapping and conf</span>
+
+Saved as release REL-000124.</pre>
+        <div class="ai" id="stAi"><b>AI consultant</b><p id="stAiText">Prod gained 3 preferences since REL-000123. None of them came through a change notice.</p></div>
+      </div>
+    </div>
+    <p class="muted">Every release is immutable and content-addressed. Restoring an earlier state is a repoint, not a rebuild. Click a step to jump to it.</p>
   </div>
 </section>
 
@@ -608,18 +649,102 @@ body.present .progress{display:block}
   function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
   var reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // ---- Hero: the copilot types its answer. The full code is in the HTML, so the page reads at rest. ----
-  var cp=document.getElementById("cpCode"), cpFoot=document.querySelector(".cp-foot"), FULL=cp.textContent, typing=false;
-  function typeCode(){
-    if(typing)return;typing=true;
-    var full=FULL, i=0;cp.textContent="";cpFoot.classList.add("wait");
-    var caret=el("span","caret");
-    (function step(){
-      i=Math.min(full.length,i+3);cp.textContent=full.slice(0,i);cp.appendChild(caret);
-      if(i<full.length)setTimeout(step,16);else{setTimeout(function(){caret.remove();cpFoot.classList.remove("wait");typing=false;},400);}
-    })();
+  // ---- Hero: the admin copilot loops through five jobs like a GIF. Scene 1 is in the HTML, so the page reads at rest. ----
+  var cp=document.getElementById("cpCode"), cpQ=document.getElementById("cpQ"), cpFoot=document.getElementById("cpFoot"),
+      cpSrc=document.getElementById("cpSrc").children, cpSteps=document.getElementById("cpSteps"), ITK=cp.textContent;
+  // a line is [class, text]; classes: ok / warn / bad / dim
+  var SCENES=[
+    {name:"Write ITK",src:[0,3],q:"Block release of a Wdg4_Part revision that has no material.",
+     lines:ITK.split("\n").map(function(t){return ["",t];}),
+     foot:["✓ Compiles against the Tc 2412 ITK reference","wdg4_material found in the Prod BMIDE export"]},
+    {name:"Watch servers",src:[0],q:"Is anything down on PROD right now?",
+     lines:[["ok","tc-web01   Active Workspace   ● running"],["ok","tc-app01   Pool Manager       ● running"],["ok","tc-app02   Dispatcher         ● running · queue 12"],["bad","tc-fsc01   FSC                ● stopped · 2 reports"],["",""],["warn","Alert sent 02:14 to Google Chat and email."],["","Syslog: the FSC cache volume on tc-fsc01 is full."],["","Next step: clear the cache, then restart the FSC service."]],
+     foot:["✓ From the server agents' heartbeats","syslog read through the Management Console"]},
+    {name:"Validate a change",src:[3],q:"Validate CN-000041 before it goes to Prod.",
+     lines:[["ok","✓ 18 configuration checks passed"],["ok","✓ Package: 6 import steps, in order"],["warn","⚠ Wdg_max_bom_lines differs between QA and Prod"],["bad","✗ ACL \"Wdg Supplier Data\" names group Wdg_Supplier,"],["bad","  which Prod does not have"],["",""],["","Blocked. Create Wdg_Supplier in Prod first,"],["","or remove that ACL row from the change."]],
+     foot:["1 blocker · 1 warning","the change overlaid on Prod release REL-000123"]},
+    {name:"Check an upgrade",src:[2,3],q:"What does moving Prod from 2312 to 2512 touch?",
+     lines:[["","Site changed       214   carry into 2512"],["ok","Siemens changed  1,380   review, usually accept"],["bad","Both changed        37   merge your edits"],["warn","Not in target        3   templates retired"],["",""],["dim","Researching 9 areas in Siemens release notes…"],["","Report and runbook ready: 41 steps."]],
+     foot:["✓ Three-way: OOTB 2312 · Prod · OOTB 2512","example figures"]},
+    {name:"Simulate access",src:[3],q:"Can a Designer modify a released Wdg4_Part?",
+     lines:[["bad","No."],["",""],["","Has Status( Released )          fired"],["","  ACL  Wdg Released Data"],["bad","    Designer      WRITE ✗     row 3 decided"],["dim","Has Class( Wdg4_Part )          not reached"],["",""],["","To allow it, grant WRITE in row 3,"],["","or release changes through a workflow."]],
+     foot:["✓ Access Manager simulator on the Prod ACL export","the rule that decided, and what to change"]}
+  ];
+  SCENES.forEach(function(s){var b=el("span");b.appendChild(el("i"));b.appendChild(document.createTextNode(s.name));cpSteps.appendChild(b);});
+  var sceneTimer=null, sceneRun=0;
+  function wait(ms,run){return new Promise(function(r){sceneTimer=setTimeout(function(){if(run===sceneRun)r();},ms);});}
+  function setFoot(f){cpFoot.children[0].textContent=f[0];cpFoot.children[1].textContent=f[1];}
+  function playScene(k,run){
+    var s=SCENES[k];
+    [].forEach.call(cpSrc,function(c,j){c.classList.toggle("on",s.src.indexOf(j)>-1);});
+    [].forEach.call(cpSteps.children,function(b,j){b.classList.toggle("cur",j===k);b.classList.toggle("seen",j<k);});
+    cpFoot.classList.add("wait");setFoot(s.foot);cp.textContent="";cpQ.textContent="";
+    var caret=el("span","caret"), q=s.q, qi=0, li=0, ci=0, spans=[];
+    function typeQ(){qi+=2;cpQ.textContent=q.slice(0,qi);return qi<q.length?wait(22,run).then(typeQ):wait(450,run);}
+    function typeBody(){
+      if(li>=s.lines.length){caret.remove();return Promise.resolve();}
+      var line=s.lines[li], span=spans[li];
+      if(!span){span=spans[li]=el("span",line[0]?"l-"+line[0]:"");cp.insertBefore(span,caret);if(li<s.lines.length-1)cp.insertBefore(document.createTextNode("\n"),caret);}
+      ci=Math.min(line[1].length,ci+4);span.textContent=line[1].slice(0,ci);
+      if(ci>=line[1].length){li++;ci=0;}
+      return wait(line[1].length?14:60,run).then(typeBody);
+    }
+    cp.appendChild(caret);
+    return typeQ().then(typeBody).then(function(){cpFoot.classList.remove("wait");return wait(3600,run);});
   }
-  if(!reduceMotion)setTimeout(typeCode,900);
+  function loop(k,run){playScene(k,run).then(function(){loop((k+1)%SCENES.length,run);});}
+  function startLoop(){clearTimeout(sceneTimer);sceneRun++;loop(0,sceneRun);}
+  if(reduceMotion){cpSteps.children[0].classList.add("cur");}
+  else setTimeout(startLoop,700);
+  function typeCode(){if(!reduceMotion)startLoop();}
+
+  // ---- Lifecycle: one change notice walks the seven steps; the consultant speaks at each ----
+  var STAGES=[
+    {lines:[["dim","Capturing PROD from tc-app01 …"],["ok","✓ admin_data_export     ACLs, revision rules, queries"],["ok","✓ BMIDE template        Wdg4 data model"],["ok","✓ preferences           10,412 site preferences"],["ok","✓ integration config    AIG mapping and conf"],["",""],["","Saved as release REL-000124."]],
+     ai:"Prod gained 3 preferences since REL-000123. None of them came through a change notice."},
+    {lines:[["dim","QA ⟶ PROD · 25 comparators"],["mod","~ AM Rules             2 modified"],["add","+ BMIDE                1 added   wdg4_material"],["mod","~ Preferences          4 modified"],["","= Workflows            same"],["","= Saved Queries        same"],["",""],["","7 differences in 3 areas."]],
+     ai:"One ACL change gives Designers WRITE on released Wdg4_Part. Review that one first."},
+    {lines:[["dim","CN-000041 · Add material to Wdg4_Part"],["","Problem    QA and Prod disagree on material"],["","Affected   Wdg4_Part, Wdg_ECO workflow"],["","Solution   BMIDE, 2 preferences, 1 ACL"],["",""],["mod","Draft → In review"]],
+     ai:"Two workflows read Wdg_max_bom_lines, so the preference change affects Wdg_ECO too. Add it to the affected items."},
+    {lines:[["dim","Merging CN-000041 into PROD"],["ok","✓ include   BMIDE  wdg4_material"],["ok","✓ include   Wdg_max_bom_lines = 20000"],["bad","✗ exclude   ACL row 3  Designer WRITE"],["ok","✓ include   Wdg_change_auto_assign"],["",""],["","Merged version built."]],
+     ai:"AM Rules specialist: exclude ACL row 3. It widens access to released data, and the notice does not ask for that."},
+    {lines:[["dim","Packaging CN-000041"],["ok","✓ 00-BMIDE            template install"],["ok","✓ 03-Preferences      preferences_manager import"],["ok","✓ 09-AccessManager    am_install_tree backup, then import"],["ok","✓ rollback package    the problem items"],["",""],["mod","Validation: 0 blockers · 1 warning"]],
+     ai:"The warning: Wdg_max_bom_lines is also set at group level in Prod, so the site value will not apply to that group."},
+    {lines:[["dim","deploy_20261014_0210.log"],["ok","[OK] 00-BMIDE"],["ok","[OK] 03-Preferences"],["ok","[OK] 09-AccessManager"],["",""],["","Log uploaded to CN-000041."]],
+     ai:"Every step reported OK in the notice's own package, so CN-000041 is marked deployed."},
+    {lines:[["dim","Re-capturing PROD …"],["","Saved as release REL-000125."],["ok","✓ matches the promoted release"],["ok","✓ smoke tests 12 / 12 on the live site"],["",""],["ok","CN-000041 verified and closed."]],
+     ai:"Prod now matches the release. Nothing drifted during the deployment."}
+  ];
+  var flow=document.getElementById("flow"), stCode=document.getElementById("stCode"), stAi=document.getElementById("stAi"), stAiText=document.getElementById("stAiText"), stTitle=document.getElementById("stTitle");
+  var stRun=0, stTimer=null;
+  function stWait(ms,run){return new Promise(function(r){stTimer=setTimeout(function(){if(run===stRun)r();},ms);});}
+  function stage(k,run){
+    var s=STAGES[k], names=[].map.call(flow.children,function(li){return li.querySelector("strong").textContent;});
+    [].forEach.call(flow.children,function(li,j){li.classList.toggle("on",j===k);li.classList.toggle("done",j<k);});
+    flow.style.setProperty("--p",k/(STAGES.length-1));
+    stTitle.textContent="Step "+(k+1)+" of "+STAGES.length+" · "+names[k];
+    stCode.textContent="";stAi.classList.add("wait");stAiText.textContent="";
+    var spans=[], li=0, ci=0, caret=el("span","caret");stCode.appendChild(caret);
+    function body(){
+      if(li>=s.lines.length){caret.remove();return Promise.resolve();}
+      var line=s.lines[li], sp=spans[li];
+      if(!sp){sp=spans[li]=el("span",line[0]?"l-"+line[0]:"");stCode.insertBefore(sp,caret);if(li<s.lines.length-1)stCode.insertBefore(document.createTextNode("\n"),caret);}
+      ci=Math.min(line[1].length,ci+3);sp.textContent=line[1].slice(0,ci);
+      if(ci>=line[1].length){li++;ci=0;return stWait(line[1].length?160:80,run).then(body);}
+      return stWait(14,run).then(body);
+    }
+    var ai=s.ai, ai_i=0;
+    function say(){ai_i+=2;stAiText.textContent=ai.slice(0,ai_i);return ai_i<ai.length?stWait(18,run).then(say):stWait(3200,run);}
+    return body().then(function(){return stWait(300,run);}).then(function(){stAi.classList.remove("wait");return say();});
+  }
+  function stLoop(k,run){stage(k,run).then(function(){stLoop((k+1)%STAGES.length,run);});}
+  function stStart(k){clearTimeout(stTimer);stRun++;stLoop(k,stRun);}
+  [].forEach.call(flow.children,function(li,j){li.onclick=function(){stStart(j);};});
+  // start when the section first comes into view, so the story begins at Capture
+  if(!reduceMotion){
+    if("IntersectionObserver" in window){var stIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){stIo.disconnect();stStart(0);}},{threshold:.3});stIo.observe(flow);}
+    else stStart(0);
+  }
 
   // ---- Product walkthrough (steps follow the app's own Architecture tab) ----
   var PRODUCTS=[
@@ -774,6 +899,7 @@ body.present .progress{display:block}
     cur.querySelectorAll("[data-count]").forEach(countUp);
     draw();setTimeout(draw,480);
     if(cur.id==="top"&&!reduceMotion)typeCode();
+    if(cur.id==="lifecycle"&&!reduceMotion)stStart(0);
     pc.textContent=(idx+1)+" / "+slides.length;
     bar.style.width=((idx+1)/slides.length*100)+"%";
   }
