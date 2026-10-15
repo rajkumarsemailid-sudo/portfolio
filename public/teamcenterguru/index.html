@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="TeamcenterGuru, the copilot for Teamcenter administration: live server monitoring, environment capture, configuration validation, an AI consultant and upgrade checks.">
-<title>TeamcenterGuru Executive Brief</title>
+<title>TeamcenterGuru Product Overview</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -232,6 +232,8 @@ section.sheet .wrap{display:grid;gap:28px}
   .af-link i{animation:none;display:none}
 }
 
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
 /* hero copilot window */
 .copilot{background:var(--code-bg);color:var(--code-fg);border-radius:14px;overflow:hidden;min-width:0;box-shadow:0 24px 60px -30px rgba(8,30,44,.55);font:400 .8rem/1.6 var(--mono)}
 .cp-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.08);color:var(--code-dim);font-size:.74rem}
@@ -242,7 +244,7 @@ section.sheet .wrap{display:grid;gap:28px}
 .cp-src span{font-size:.68rem;padding:3px 8px;border-radius:4px;border:1px solid rgba(255,255,255,.14);color:var(--code-fg)}
 @keyframes srcon{from{opacity:.3;border-color:transparent}to{opacity:1}}
 .cp-q{margin:12px 16px 0;padding:10px 12px;border-radius:8px;background:rgba(76,195,214,.14);color:#e4f6fa;font:500 .84rem/1.45 var(--body)}
-.cp-code{margin:0;padding:12px 16px;white-space:pre;overflow-x:auto;color:var(--code-fg);font:400 .74rem/1.6 var(--mono);min-height:19.5em}
+.cp-code{margin:0;padding:12px 16px;white-space:pre;overflow-x:auto;color:var(--code-fg);font:400 .72rem/1.55 var(--mono);min-height:27em}
 .cp-code .caret{display:inline-block;width:7px;height:1.05em;vertical-align:-2px;background:#4cc3d6;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
 .cp-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 16px;border-top:1px solid rgba(255,255,255,.08);font-size:.7rem;color:var(--code-dim);transition:opacity .4s}
@@ -421,27 +423,36 @@ body.present .progress{display:block}
       </div>
     </div>
     <div class="copilot" aria-label="Example admin copilot session, cycling through five jobs">
-      <div class="cp-head"><span>Admin copilot · PROD · Tc 2412</span><span class="cp-live"><i></i>4 sources connected</span></div>
+      <div class="cp-head"><span>Admin copilot · PROD · Tc 2412<span class="sr-only">.</span></span><span class="cp-live"><i></i>4 sources connected</span></div>
       <div class="cp-src" id="cpSrc"><span class="on">Live Teamcenter</span><span>Active Integration</span><span>Siemens Support</span><span class="on">Configuration</span></div>
       <div class="cp-q" id="cpQ">Block release of a Wdg4_Part revision that has no material.</div>
 <pre class="cp-code" id="cpCode">EPM_decision_t Wdg_check_material(EPM_rule_message_t msg)
 {
-    int n = 0;
+    int ifail = ITK_ok, n = 0;
     tag_t root = NULLTAG, *targets = NULL;
     EPM_decision_t decision = EPM_go;
 
-    EPM_ask_root_task(msg.task, &amp;root);
-    EPM_ask_attachments(root, EPM_target_attachment, &amp;n, &amp;targets);
-    for (int i = 0; i &lt; n; i++) {
+    if ((ifail = EPM_ask_root_task(msg.task, &amp;root)) != ITK_ok ||
+        (ifail = EPM_ask_attachments(root, EPM_target_attachment,
+                                     &amp;n, &amp;targets)) != ITK_ok) {
+        EMH_store_error_s1(EMH_severity_error, ifail, "Wdg_check_material");
+        return EPM_nogo;
+    }
+    for (int i = 0; i &lt; n &amp;&amp; decision == EPM_go; i++) {
         char *material = NULL;
-        AOM_ask_value_string(targets[i], "wdg4_material", &amp;material);
-        if (material == NULL || *material == '\0') decision = EPM_nogo;
+        ifail = AOM_ask_value_string(targets[i], "wdg4_material", &amp;material);
+        if (ifail != ITK_ok || material == NULL || *material == '\0') {
+            /* site error text: "A Wdg4 Part revision needs a material" */
+            EMH_store_error_s1(EMH_severity_error, WDG_ERR_NO_MATERIAL,
+                               "wdg4_material");
+            decision = EPM_nogo;
+        }
         MEM_free(material);
     }
     MEM_free(targets);
     return decision;
 }</pre>
-      <div class="cp-foot" id="cpFoot"><span class="ok">✓ Compiles against the Tc 2412 ITK reference</span><span>wdg4_material found in the Prod BMIDE export</span></div>
+      <div class="cp-foot" id="cpFoot"><span class="ok">✓ Compiles against the Tc 2412 ITK reference</span><span>wdg4_material found in the Prod BMIDE export; error text added to the site's text server file</span></div>
       <div class="cp-steps" id="cpSteps" aria-hidden="true"></div>
     </div>
   </div>
@@ -493,7 +504,7 @@ body.present .progress{display:block}
     <h2>Six administration jobs, one copilot.</h2>
     <div class="pillars six">
       <article class="pillar rv"><div class="k"><span class="live-dot"></span>Live servers</div><h3>Servers and services, watched live</h3>
-        <ul><li>An agent on every Teamcenter box</li><li>Services, processes and dispatcher load each cycle</li><li>A down service alerts Google Chat and email</li><li>Syslog through the Management Console</li></ul></article>
+        <ul><li>An agent on every Teamcenter box</li><li>Services, processes and dispatcher load each cycle</li><li>A down service raises a chat and email alert</li><li>Syslog through the Management Console</li></ul></article>
       <article class="pillar rv"><div class="k">Environments</div><h3>Every configuration, captured automatically</h3>
         <ul><li>One-button capture from the server</li><li>Admin data, BMIDE, integration config and source</li><li>Each capture kept as a release with history</li><li>Compare any two, or the whole Dev → Prod chain</li></ul></article>
       <article class="pillar rv"><div class="k">Validation</div><h3>Configuration validated before it ships</h3>
@@ -517,12 +528,12 @@ body.present .progress{display:block}
     <div class="prod rv" id="prod" aria-live="polite">
       <div class="prod-head">
         <div style="display:grid;gap:8px;min-width:0">
-          <h3 id="prodTitle"></h3>
-          <p class="muted" id="prodPitch"></p>
+          <h3 id="prodTitle">Live servers</h3>
+          <p class="muted" id="prodPitch">Servers and services watched live, from an agent on each Teamcenter box.</p>
         </div>
         <button class="play" type="button" id="prodPlay" aria-label="Pause walkthrough">❚❚</button>
       </div>
-      <ol class="steps" id="prodSteps"></ol>
+      <ol class="steps" id="prodSteps"><li class="step in"><div class="kind">Input</div><strong>Install the agent</strong><span>One installer kit per Teamcenter box.</span></li><li class="step run"><div class="kind">Runs</div><strong>Heartbeat and health</strong><span>Services, processes, changed preferences and dispatcher load, every cycle.</span></li><li class="step run"><div class="kind">Runs</div><strong>Detect a failure</strong><span>A service is down after two non-running reports.</span></li><li class="step out"><div class="kind">Output</div><strong>Alert</strong><span>Chat and email, with the server and the service named.</span></li><li class="step out"><div class="kind">Output</div><strong>Server detail</strong><span>Claim a box, watched services, syslog through the Management Console.</span></li></ol>
       <div class="prod-foot">
         <div class="facts" id="prodFacts"></div>
         <p class="limit" id="prodLimit"></p>
@@ -534,7 +545,7 @@ body.present .progress{display:block}
 <!-- 5. System map -->
 <section class="sheet" id="architecture">
   <div class="wrap">
-    <div class="eyebrow">How it works</div>
+    <div class="eyebrow">Architecture</div>
     <h2>What it reads, what it does, what it gives back.</h2>
     <div class="map-chips" id="mapChips" role="group" aria-label="Highlight a product"></div>
     <div class="map rv" id="map">
@@ -553,12 +564,12 @@ body.present .progress{display:block}
     <div class="eyebrow">See it working</div>
     <h2>The real screens, playing on their own.</h2>
     <div class="prod-tabs" role="tablist" aria-label="Demo" id="demoTabs">
-      <button type="button" role="tab" aria-selected="true" data-v="walkthrough">How it works</button>
+      <button type="button" role="tab" aria-selected="true" data-v="walkthrough">Walkthrough</button>
       <button type="button" role="tab" aria-selected="false" data-v="samples">Sample reports</button>
       <button type="button" role="tab" aria-selected="false" data-v="film">The film</button>
     </div>
     <div class="screen" id="demoScreen">
-      <div class="screen-bar" aria-hidden="true"><i></i><i></i><i></i><span id="demoUrl">teamcenterguru · how it works</span></div>
+      <div class="screen-bar" aria-hidden="true"><i></i><i></i><i></i><span id="demoUrl">teamcenterguru · walkthrough</span></div>
       <iframe id="demoFrame" title="TeamcenterGuru walkthrough" loading="lazy" src="demo/#walkthrough"></iframe>
       <video id="demoFilm" controls preload="none" playsinline poster="promo-poster.jpg" hidden>
         <source src="promo.mp4" type="video/mp4">
@@ -604,7 +615,7 @@ Saved as release REL-000124.</pre>
   <div class="wrap">
     <div class="eyebrow">Coverage</div>
     <h2>25 comparators across the Teamcenter stack.</h2>
-    <div class="tools rv" id="tools"></div>
+    <div class="tools rv" id="tools"><span class="tool hot">AM Rules</span><span class="tool hot">BMIDE Data Model</span><span class="tool hot">Workflow Templates</span><span class="tool hot">Preferences</span><span class="tool">Saved Queries</span><span class="tool">Batch LOVs</span><span class="tool">Organization</span><span class="tool">Revision Rules</span><span class="tool">Admin Data Package</span><span class="tool">Closure Rules</span><span class="tool">Property Sets</span><span class="tool">Filter Rules</span><span class="tool">Transfer Modes</span><span class="tool">Transfer Option Sets</span><span class="tool">Report Builder</span><span class="tool">Stylesheets</span><span class="tool">AWC Column Config</span><span class="tool">Workspace Config</span><span class="tool">CAD Attribute Mapping</span><span class="tool">Templates</span><span class="tool">Active Integration (AIG)</span><span class="tool">Active Workspace (aws2)</span><span class="tool">Server-side ITK</span><span class="tool">Installed Features</span><span class="tool">Deployed Data Model</span></div>
     <div class="legend"><span class="l-add">ADDED</span><span class="l-rem">REMOVED</span><span class="l-mod">MODIFIED</span><span class="l-same">SAME</span><span class="l-mod">REORDERED</span></div>
   </div>
 </section>
@@ -684,8 +695,8 @@ Saved as release REL-000124.</pre>
       <div class="rv"><h3>Fixed, predefined scripts</h3><p class="muted">The agent runs only the scripts shipped in its own installer, checked against their manifest before every run. A changed script stops the capture.</p></div>
       <div class="rv"><h3>No commands from outside</h3><p class="muted">The hub can only name a step, such as a capture; it never sends a command line. The agent connects outward and collects its work in the reply to its own check-in.</p></div>
       <div class="rv"><h3>Live reads as the signed-in user</h3><p class="muted">Each person signs in to Teamcenter as themselves, by password or SSO, so Teamcenter's own access rules apply. The consultant's live tools only read.</p></div>
-      <div class="rv"><h3>Credentials encrypted</h3><p class="muted">Capture and Management Console accounts are stored encrypted, and a capture password reaches the agent only for the job that needs it.</p></div>
-      <div class="rv"><h3>Organizations and roles</h3><p class="muted">Owner, Admin and Contributor roles, assigned per environment. Each organization's workspace is isolated from every other.</p></div>
+      <div class="rv"><h3>Your choice of AI provider</h3><p class="muted">The consultant works with the AI provider your company approves. Questions and the configuration they need go only to that provider.</p></div>
+      <div class="rv"><h3>Encrypted, isolated, role-based</h3><p class="muted">Saved accounts are stored encrypted. Owner, Admin and Contributor roles are set per environment, and each organization's workspace is isolated.</p></div>
     </div>
   </div>
 </section>
@@ -693,7 +704,7 @@ Saved as release REL-000124.</pre>
 </main>
 
 <footer>
-  <div class="wrap"><span>TeamcenterGuru · executive brief</span><span>Not affiliated with Siemens. Teamcenter is a trademark of Siemens Digital Industries Software.</span></div>
+  <div class="wrap"><span>TeamcenterGuru · product overview · <a href="executive/">executive brief</a></span><span>Not affiliated with Siemens. Teamcenter is a trademark of Siemens Digital Industries Software.</span></div>
 </footer>
 
 <div class="pctl" role="group" aria-label="Presentation controls">
@@ -708,7 +719,7 @@ Saved as release REL-000124.</pre>
   var TOOLS=["AM Rules","BMIDE Data Model","Workflow Templates","Preferences","Saved Queries","Batch LOVs","Organization","Revision Rules","Admin Data Package","Closure Rules","Property Sets","Filter Rules","Transfer Modes","Transfer Option Sets","Report Builder","Stylesheets","AWC Column Config","Workspace Config","CAD Attribute Mapping","Templates","Active Integration (AIG)","Active Workspace (aws2)","Server-side ITK","Installed Features","Deployed Data Model"];
   var HOT={"AM Rules":1,"BMIDE Data Model":1,"Workflow Templates":1,"Preferences":1};
   var box=document.getElementById("tools");
-  TOOLS.forEach(function(t){var s=document.createElement("span");s.className="tool"+(HOT[t]?" hot":"");s.textContent=t;box.appendChild(s);});
+  
 
   function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
   var reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -720,9 +731,9 @@ Saved as release REL-000124.</pre>
   var SCENES=[
     {name:"Write ITK",src:[0,3],q:"Block release of a Wdg4_Part revision that has no material.",
      lines:ITK.split("\n").map(function(t){return ["",t];}),
-     foot:["✓ Compiles against the Tc 2412 ITK reference","wdg4_material found in the Prod BMIDE export"]},
+     foot:["✓ Compiles against the Tc 2412 ITK reference","wdg4_material found in the Prod BMIDE export; error text added to the site's text server file"]},
     {name:"Watch servers",src:[0],q:"Is anything down on PROD right now?",
-     lines:[["ok","tc-web01   Active Workspace   ● running"],["ok","tc-app01   Pool Manager       ● running"],["ok","tc-app02   Dispatcher         ● running · queue 12"],["bad","tc-fsc01   FSC                ● stopped · 2 reports"],["",""],["warn","Alert sent 02:14 to Google Chat and email."],["","Syslog: the FSC cache volume on tc-fsc01 is full."],["","Next step: clear the cache, then restart the FSC service."]],
+     lines:[["ok","tc-web01   Active Workspace   ● running"],["ok","tc-app01   Pool Manager       ● running"],["ok","tc-app02   Dispatcher         ● running · queue 12"],["bad","tc-fsc01   FSC                ● stopped · 2 reports"],["",""],["warn","Alert sent 02:14 by chat and email."],["","Syslog: the FSC cache volume on tc-fsc01 is full."],["","Next step: clear the cache, then restart the FSC service."]],
      foot:["✓ From the server agents' heartbeats","syslog read through the Management Console"]},
     {name:"Validate a change",src:[3],q:"Validate CN-000041 before it goes to Prod.",
      lines:[["ok","✓ 18 configuration checks passed"],["ok","✓ Package: 6 import steps, in order"],["warn","⚠ Wdg_max_bom_lines differs between QA and Prod"],["bad","✗ ACL \"Wdg Supplier Data\" names group Wdg_Supplier,"],["bad","  which Prod does not have"],["",""],["","Blocked. Create Wdg_Supplier in Prod first,"],["","or remove that ACL row from the change."]],
@@ -882,11 +893,11 @@ Saved as release REL-000124.</pre>
   // ---- Product walkthrough (steps follow the app's own Architecture tab) ----
   var PRODUCTS=[
     {key:"servers",t:"Live servers",p:"Servers and services watched live, from an agent on each Teamcenter box.",
-     f:["agent per server","Google Chat + email alerts"],
+     f:["agent per server","chat + email alerts"],
      s:[["in","Install the agent","One installer kit per Teamcenter box."],
         ["run","Heartbeat and health","Services, processes, changed preferences and dispatcher load, every cycle."],
         ["run","Detect a failure","A service is down after two non-running reports; log patterns land in the event feed."],
-        ["out","Alert","Google Chat and email, with the server and the service named."],
+        ["out","Alert","Chat and email, with the server and the service named."],
         ["out","Server detail","Claim or waitlist a box, watched services, syslog through the Management Console."]],l:""},
     {key:"env",t:"Environments & capture",p:"Every environment's configuration captured, kept as releases and compared across the chain.",
      f:["upload · git · capture","25 comparators","pairs in promotion order"],
@@ -959,7 +970,7 @@ Saved as release REL-000124.</pre>
 
   // ---- See it working: one frame, three views; the iframe grows to fit its page ----
   var dFrame=document.getElementById("demoFrame"), dFilm=document.getElementById("demoFilm"), dUrl=document.getElementById("demoUrl"), dTabs=document.getElementById("demoTabs");
-  var DURL={walkthrough:"teamcenterguru · how it works",samples:"teamcenterguru · sample reports",film:"teamcenterguru · the film"};
+  var DURL={walkthrough:"teamcenterguru · walkthrough",samples:"teamcenterguru · sample reports",film:"teamcenterguru · the film"};
   function fit(){try{var b=dFrame.contentDocument&&dFrame.contentDocument.body;if(b&&b.scrollHeight)dFrame.style.height=(b.scrollHeight+8)+"px";}catch(e){}}
   dFrame.addEventListener("load",function(){fit();try{var b=dFrame.contentDocument.body;if("ResizeObserver" in window)new ResizeObserver(fit).observe(b);}catch(e){}});
   [].forEach.call(dTabs.children,function(b){b.onclick=function(){
@@ -973,7 +984,7 @@ Saved as release REL-000124.</pre>
   var NODES={
     src:[["src.exports","Config exports","Teamcenter exports · packages · git"],["src.servers","Teamcenter servers","monitoring agent on each box"],["src.deploy","Deploy logs","one log per deployment run"],["src.live","Live Teamcenter","the user's own session"],["src.console","Management Console","syslog · server summary"],["src.gateway","Gateway (T4x / AIG)","transactions · jobs · logs"],["src.siemens","Siemens Support Center","KB · docs · release fixes"]],
     eng:[["eng.config","Comparator engine","25 comparators · worker pool"],["eng.env","Environment matrix","every area, every pair"],["eng.change","Change & release","CN → merge → REL → verify"],["eng.hub","Server hub","heartbeats · health · claims"],["eng.consult","Consultant agent","one agent, every allowed tool"],["eng.advanced","Simulators & IDE","Access Manager · workflow · BMIDE"]],
-    out:[["out.reports","Reports","HTML · JSON · CSV · matrix"],["out.packages","Packages","delta · rollback · release"],["out.alerts","Alerts & events","Google Chat · email · feed"],["out.answers","Verified answers","invented names flagged"],["out.mcp","External AI clients","MCP endpoints"],["out.verdicts","Verdicts","the rule or task that decided"]]
+    out:[["out.reports","Reports","HTML · JSON · CSV · matrix"],["out.packages","Packages","delta · rollback · release"],["out.alerts","Alerts & events","chat · email · feed"],["out.answers","Verified answers","invented names flagged"],["out.mcp","External AI clients","MCP endpoints"],["out.verdicts","Verdicts","the rule or task that decided"]]
   };
   var LINKS=[["src.exports","eng.config","config"],["src.exports","eng.env","env"],["src.exports","eng.consult","consult"],["src.exports","eng.advanced","advanced"],["src.servers","eng.hub","servers"],["src.servers","eng.env","servers env"],["src.deploy","eng.change","change"],["src.live","eng.consult","consult servers"],["src.console","eng.consult","consult servers"],["src.gateway","eng.consult","consult"],["src.siemens","eng.consult","consult"],["eng.config","eng.env","env"],["eng.env","eng.change","env change"],["eng.config","out.reports","config"],["eng.env","out.reports","env"],["eng.change","out.packages","change"],["eng.hub","out.alerts","servers"],["eng.consult","out.answers","consult"],["eng.consult","out.mcp","consult"],["eng.advanced","out.verdicts","advanced"]];
   var map=document.getElementById("map"), svg=document.getElementById("mapLines"), nodeEl={};

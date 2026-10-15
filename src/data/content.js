@@ -179,12 +179,15 @@ export const projects = [
   {
     title: 'TeamcenterGuru',
     description:
-      "A copilot for Teamcenter administrators, not end users. It watches every Teamcenter server and its services live, with an agent on each box and Google Chat and email alerts; captures each environment's configuration automatically and keeps it as releases; validates configuration before and after it ships; and simulates Access Manager and workflows to show why a rule decides what it does. Its AI consultant reads live Teamcenter, Active Integration, Siemens Support Center and the site's own configuration at once: it writes ITK and SOA code (ITK compile-checked against the release's documented functions), drafts configuration changes from plain English, and validates upgrade projects with a three-way comparison of the site against the source and target releases and a clear report. The executive brief opens as a scrolling page or a full-screen presentation.",
+      "A copilot for Teamcenter administrators, not end users. It watches every Teamcenter server and its services live, with an agent on each box and chat and email alerts; captures each environment's configuration automatically and keeps it as releases; validates configuration before and after it ships; and simulates Access Manager and workflows to show why a rule decides what it does. Its AI consultant reads live Teamcenter, Active Integration, Siemens Support Center and the site's own configuration at once: it writes ITK and SOA code (ITK compile-checked against the release's documented functions), drafts configuration changes from plain English, and validates upgrade projects with a three-way comparison of the site against the source and target releases and a clear report. A product overview for administrators and a short executive brief, each of which also runs as a full-screen presentation.",
     tags: ['Teamcenter Administration', 'AI Copilot', 'Server Monitoring', 'Configuration Management', 'ITK'],
     videoId: null,
     embed: `${import.meta.env.BASE_URL}teamcenterguru/`,
     images: [],
-    links: { live: `${import.meta.env.BASE_URL}teamcenterguru/` },
+    links: {
+      live: `${import.meta.env.BASE_URL}teamcenterguru/`,
+      more: [{ label: 'Executive brief', href: `${import.meta.env.BASE_URL}teamcenterguru/executive/` }],
+    },
   },
   {
     title: 'AI Work-Instruction Generator',

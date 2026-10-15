@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="TeamcenterGuru executive brief: Teamcenter administration under control, with live server monitoring, environment capture, change validation, an AI assistant for admins and upgrade checks.">
+<title>TeamcenterGuru Executive Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: six short sheets, one idea each, for a two-minute read; Present mode makes each a slide.
+   Same palette and type as the product overview, so the two read as one family. */
+:root{
+  --paper:#f5f7f8; --sheet:#ffffff; --ink:#0f2433; --muted:#566b78; --line:#d9e1e6;
+  --accent:#0b7a8f; --accent-soft:#dff1f4;
+  --add:#1c7c45; --add-bg:#e2f4e8; --rem:#b4342c; --rem-bg:#fbe6e4; --mod:#9a6400; --mod-bg:#fbf0d9;
+  --code-bg:#0f2433; --code-fg:#d7e6ee; --code-dim:#7d97a6;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0b1820; --sheet:#11222c; --ink:#e4eef3; --muted:#93a9b5; --line:#22394a;
+  --accent:#4cc3d6; --accent-soft:#123844;
+  --add:#5fd18d; --add-bg:#11331f; --rem:#ff8a80; --rem-bg:#3a1714; --mod:#f0bf5a; --mod-bg:#382a0d;
+  --code-bg:#06121a; --code-fg:#d7e6ee; --code-dim:#6f8998; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1820; --sheet:#11222c; --ink:#e4eef3; --muted:#93a9b5; --line:#22394a;
+  --accent:#4cc3d6; --accent-soft:#123844;
+  --add:#5fd18d; --add-bg:#11331f; --rem:#ff8a80; --rem-bg:#3a1714; --mod:#f0bf5a; --mod-bg:#382a0d;
+  --code-bg:#06121a; --code-fg:#d7e6ee; --code-dim:#6f8998; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.6 var(--body);padding-inline:16px;padding-block:0}
+.wrap{max-width:68rem;margin-inline:auto}
+h1,h2,h3{font-family:var(--display);line-height:1.08;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.4rem,6vw,4.6rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.8rem,3.6vw,2.8rem);font-weight:700;letter-spacing:-.015em}
+h3{font-size:1.15rem;font-weight:700}
+p{margin:0;max-width:62ch}
+.eyebrow{font:500 .75rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.lede{font-size:1.18rem;color:var(--muted)}
+.muted{color:var(--muted)}
+a{color:var(--accent)}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-inline:-16px;padding:10px 16px}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font:800 1.1rem/1 var(--display);display:flex;align-items:center;gap:8px}
+.brand i{width:22px;height:22px;border-radius:6px;background:var(--accent);display:inline-grid;place-items:center;color:var(--sheet);font:600 .8rem/1 var(--mono);font-style:normal}
+.bar-right{display:flex;align-items:center;gap:16px;font-size:.9rem}
+.bar-right a{color:var(--muted);text-decoration:none}
+.bar-right a:hover{color:var(--ink)}
+@media (max-width:620px){.bar-right a{display:none}}
+.btn{font:600 .9rem/1 var(--body);border:1px solid var(--accent);background:var(--accent);color:var(--sheet);padding:11px 16px;border-radius:8px;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+section.sheet{padding-block:clamp(56px,9vw,104px);border-bottom:1px solid var(--line)}
+section.sheet .wrap{display:grid;gap:28px}
+
+/* 1. hero with the ten-second run */
+.hero .wrap{grid-template-columns:1.1fr 1fr;align-items:center;gap:48px}
+.hero-copy{display:grid;gap:20px;min-width:0}
+.hero h1 span{color:var(--accent)}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+.run{background:var(--code-bg);color:var(--code-fg);border-radius:16px;padding:22px;display:grid;gap:16px;min-width:0;box-shadow:0 24px 60px -30px rgba(8,30,44,.55)}
+.run-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font:400 .76rem/1.3 var(--mono);color:var(--code-dim)}
+.clock{font:800 clamp(3.6rem,8vw,5.4rem)/1 var(--display);font-variant-numeric:tabular-nums;color:#ffffff;letter-spacing:-.02em}
+.clock small{font:500 1rem var(--mono);color:var(--code-dim);margin-left:6px;letter-spacing:0}
+.pairs{display:grid;gap:10px}
+.pair{display:grid;grid-template-columns:8.5rem 1fr 3.2rem;align-items:center;gap:10px;font:400 .74rem/1.2 var(--mono)}
+.pair span:first-child{color:var(--code-fg);white-space:nowrap}
+.pair span:last-child{text-align:right;color:var(--code-dim);font-variant-numeric:tabular-nums}
+.track{height:8px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden}
+.track i{display:block;height:100%;width:100%;border-radius:4px;background:#4cc3d6;transform-origin:left;transition:transform .25s linear}
+.pair.drift .track i{background:#f3c86e}
+.run-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font:400 .74rem/1.3 var(--mono);color:#7fe0a5;border-top:1px solid rgba(255,255,255,.08);padding-top:12px}
+.run-foot span:last-child{color:var(--code-dim)}
+
+/* 2. risk */
+.risks{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;list-style:none;padding:0;margin:0}
+@media (max-width:860px){.risks{grid-template-columns:1fr}}
+.risks li{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:22px;display:grid;gap:10px;align-content:start}
+.risks em{font:500 .7rem/1 var(--mono);font-style:normal;letter-spacing:.12em;color:var(--rem);background:var(--rem-bg);padding:5px 8px;border-radius:4px;justify-self:start}
+.versus{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.versus div{padding:20px 22px;display:grid;gap:6px;background:var(--sheet)}
+.versus div+div{border-left:1px solid var(--line);background:var(--accent-soft)}
+.versus b{font:500 .7rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.versus strong{font:800 clamp(1.6rem,3vw,2.2rem)/1.1 var(--display)}
+.versus div+div strong{color:var(--accent)}
+@media (max-width:560px){.versus{grid-template-columns:1fr}.versus div+div{border-left:0;border-top:1px solid var(--line)}}
+
+/* 3. six jobs */
+.jobs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+@media (max-width:900px){.jobs{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.jobs{grid-template-columns:1fr}}
+.jobs div{background:var(--sheet);padding:22px;display:grid;gap:8px;align-content:start}
+.jobs b{font:500 .7rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.jobs p{color:var(--muted);font-size:.95rem}
+
+/* 4. outcomes */
+.outcomes{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media (max-width:760px){.outcomes{grid-template-columns:1fr}}
+.outcome{border-top:3px solid var(--accent);padding-top:16px;display:grid;gap:8px}
+.outcome strong{font:700 1.35rem/1.2 var(--display)}
+.outcome p{color:var(--muted)}
+
+/* 5. control */
+.control{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.control > *{min-width:0}
+@media (max-width:860px){.control{grid-template-columns:1fr}}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.checks li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.checks li::before{content:"✓";width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--add-bg);color:var(--add);font:600 .8rem/1 var(--body)}
+.checks strong{display:block;font-weight:600}
+.checks span{color:var(--muted);font-size:.92rem}
+.flowbox{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:14px}
+.fb-node{border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:2px}
+.fb-node b{font:500 .66rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.fb-node strong{font:700 1rem/1.25 var(--display)}
+.fb-node span{font-size:.82rem;color:var(--muted)}
+.fb-node.it{border-style:dashed}
+.fb-node.hub{border-color:var(--accent)}
+.fb-arrow{justify-self:center;display:grid;justify-items:center;gap:4px;font:500 .7rem/1 var(--mono);color:var(--accent)}
+.fb-arrow i{width:2px;height:26px;background:linear-gradient(var(--accent),var(--accent)) no-repeat;background-size:2px 40%;animation:up 1.6s linear infinite;background-color:var(--line)}
+@keyframes up{from{background-position:0 100%}to{background-position:0 -40%}}
+
+/* 6. next */
+.next{display:grid;grid-template-columns:1.3fr 1fr;gap:32px;align-items:center}
+@media (max-width:760px){.next{grid-template-columns:1fr}}
+.next ul{margin:0;padding-left:18px;color:var(--muted);display:grid;gap:6px}
+
+footer{padding-block:32px;color:var(--muted);font-size:.8rem}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+.rv.in{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{transform:translateY(18px);opacity:.35}to{transform:none;opacity:1}}
+
+/* Present mode */
+body.present{overflow:hidden}
+body.present .bar, body.present footer{display:none}
+body.present section.sheet{position:fixed;inset:0;display:grid;align-items:center;padding:clamp(24px,5vw,64px);background:var(--paper);border:0;overflow:auto;visibility:hidden;opacity:0;transform:translateX(40px);transition:opacity .45s,transform .45s,visibility 0s .45s}
+body.present section.sheet.on{visibility:visible;opacity:1;transform:none;transition:opacity .45s,transform .45s}
+body.present section.sheet.left{transform:translateX(-40px)}
+.pctl{display:none}
+body.present .pctl{display:flex;position:fixed;z-index:20;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));gap:8px;align-items:center;background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:6px 6px 6px 12px;font:500 .8rem/1 var(--mono);color:var(--muted)}
+.pctl button{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:7px;padding:8px 11px;cursor:pointer;font:600 .85rem/1 var(--body)}
+.progress{position:fixed;left:0;top:0;height:3px;background:var(--accent);z-index:21;transition:width .4s;display:none}
+body.present .progress{display:block}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="brand"><i>Tc</i>TeamcenterGuru</div>
+    <div class="bar-right">
+      <a href="../">Product overview</a>
+      <a href="../../#projects">← Portfolio</a>
+      <button class="btn" id="presentBtn" type="button">Present ▸</button>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- 1 -->
+<section class="sheet hero" id="top">
+  <div class="wrap">
+    <div class="hero-copy">
+      <div class="eyebrow">Executive brief</div>
+      <h1>Teamcenter administration, <span>under control.</span></h1>
+      <p class="lede">TeamcenterGuru gives the Teamcenter admin team one place to watch the servers, keep every environment's configuration on record, check each change before it reaches Production, and plan upgrades. An AI assistant that knows your site does the reading.</p>
+      <div class="ctas">
+        <button class="btn" type="button" id="presentBtn2">Start presentation</button>
+        <a class="btn ghost" href="../">Product overview</a>
+      </div>
+    </div>
+    <div class="run" aria-label="A full Dev to Prod configuration comparison finishing in about ten seconds">
+      <div class="run-top"><span>Full Dev → Prod configuration comparison</span><span>8 areas · 4 pairs</span></div>
+      <div class="clock" id="clock">10<small>seconds</small></div>
+      <div class="pairs" id="pairs">
+        <div class="pair"><span>DEV 01 → DEV 02</span><div class="track"><i></i></div><span>8 / 8</span></div>
+        <div class="pair"><span>DEV 02 → QA</span><div class="track"><i></i></div><span>8 / 8</span></div>
+        <div class="pair"><span>QA → PRE-PROD</span><div class="track"><i></i></div><span>8 / 8</span></div>
+        <div class="pair drift"><span>PRE-PROD → PROD</span><div class="track"><i></i></div><span>8 / 8</span></div>
+      </div>
+      <div class="run-foot"><span id="runFoot">✓ 32 comparisons done · drift found in PROD</span><span>example run</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="sheet" id="risk">
+  <div class="wrap">
+    <div class="eyebrow">Why it matters</div>
+    <h2>Configuration drift is a production risk.</h2>
+    <ul class="risks rv">
+      <li><em>RISK</em><h3>Unchecked changes reach Production</h3><p class="muted">One access rule or workflow step out of place can stop engineering work across the site.</p></li>
+      <li><em>EFFORT</em><h3>Release checks take admin days</h3><p class="muted">Admins compare exports by hand before each release, across a dozen configuration formats.</p></li>
+      <li><em>DELAY</em><h3>Upgrades start blind</h3><p class="muted">Every upgrade begins by finding out what the site has customized and what the new release changes.</p></li>
+    </ul>
+    <div class="versus rv">
+      <div><b>By hand</b><strong>Days per release</strong><span class="muted">exports compared one by one</span></div>
+      <div><b>With TeamcenterGuru</b><strong>About 10 seconds</strong><span class="muted">every area of every environment pair</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="sheet" id="jobs">
+  <div class="wrap">
+    <div class="eyebrow">What it does</div>
+    <h2>Six jobs of the admin team, in one place.</h2>
+    <div class="jobs rv">
+      <div><b>Servers</b><h3>Watched live</h3><p>An agent on each Teamcenter server reports services and health, and raises an alert when something stops.</p></div>
+      <div><b>Environments</b><h3>On record</h3><p>Each environment's configuration is captured automatically and kept with its full history.</p></div>
+      <div><b>Validation</b><h3>Checked before it ships</h3><p>Every change is validated before deployment and verified on the live site after it.</p></div>
+      <div><b>AI assistant</b><h3>Answers with sources</h3><p>Reads the live site, integrations, configuration and Siemens support, and writes the code an admin needs.</p></div>
+      <div><b>Upgrades</b><h3>Scoped up front</h3><p>Shows what the site changed, what the new release changes, and where they collide, with a report and a runbook.</p></div>
+      <div><b>Simulation</b><h3>Decisions explained</h3><p>Shows why access is granted or denied, and how a workflow will run, before anyone is affected.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="sheet" id="outcomes">
+  <div class="wrap">
+    <div class="eyebrow">What changes</div>
+    <h2>What the business gets.</h2>
+    <div class="outcomes">
+      <div class="outcome rv"><strong>Drift visible in seconds</strong><p>A full Dev → Prod comparison takes about 10 seconds, so every release can be checked, not just the large ones.</p></div>
+      <div class="outcome rv"><strong>Every change traced</strong><p>From the request to the verified deployment, each change has a record of what moved, who approved it and when.</p></div>
+      <div class="outcome rv"><strong>Failures raised as they happen</strong><p>Stopped services and server problems reach the admin team by chat and email when they occur.</p></div>
+      <div class="outcome rv"><strong>Upgrades scoped before they start</strong><p>The customizations to carry forward and the conflicts to resolve are known before the project is planned.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="sheet" id="control">
+  <div class="wrap control">
+    <div style="display:grid;gap:20px">
+      <div class="eyebrow">Risk and control</div>
+      <h2>Your IT team stays in control.</h2>
+      <ul class="checks rv">
+        <li><div><strong>Installed and owned by your IT</strong><span>The agent on each server is installed by your IT team, runs under the account they choose, and can be removed at any time.</span></div></li>
+        <li><div><strong>Fixed, predefined scripts</strong><span>The agent runs only its own scripts, checked before every run. It never runs a command sent from outside.</span></div></li>
+        <li><div><strong>The agent connects outward</strong><span>It opens no listening port on the server; it collects its jobs when it checks in.</span></div></li>
+        <li><div><strong>People sign in as themselves</strong><span>Teamcenter's own access rules apply, and the assistant's live access is read-only.</span></div></li>
+        <li><div><strong>Your choice of AI provider</strong><span>The assistant works with the AI provider your company approves.</span></div></li>
+      </ul>
+    </div>
+    <div class="flowbox rv" aria-label="Control model: IT installs the agent; the agent connects outward to TeamcenterGuru">
+      <div class="fb-node it"><b>Your IT security</b><strong>Installs, configures, removes</strong><span>chooses the service account</span></div>
+      <div class="fb-arrow"><i></i></div>
+      <div class="fb-node"><b>Each Teamcenter server</b><strong>TeamcenterGuru agent</strong><span>fixed scripts, checked before every run</span></div>
+      <div class="fb-arrow"><i></i><span>outbound only</span></div>
+      <div class="fb-node hub"><b>TeamcenterGuru</b><strong>Admin workspace</strong><span>names a job, never sends a command</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="sheet" id="next">
+  <div class="wrap next">
+    <div style="display:grid;gap:18px">
+      <div class="eyebrow">Next</div>
+      <h2>See how it works in detail.</h2>
+      <p class="lede">The product overview walks through each job with the real screens: the environment comparison, the change lifecycle, the AI assistant writing and checking code, and the upgrade report.</p>
+    </div>
+    <div style="display:grid;gap:14px;justify-items:start">
+      <a class="btn" href="../">Open the product overview</a>
+      <ul>
+        <li>Animated walkthrough of the app</li>
+        <li>Architecture and security detail</li>
+        <li>Runs as a presentation too</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap"><span>TeamcenterGuru · executive brief · <a href="../">product overview</a></span><span>Not affiliated with Siemens. Teamcenter is a trademark of Siemens Digital Industries Software.</span></div>
+</footer>
+
+<div class="pctl" role="group" aria-label="Presentation controls">
+  <span id="pcount">1 / 6</span>
+  <button type="button" id="prev" aria-label="Previous slide">‹</button>
+  <button type="button" id="next" aria-label="Next slide">›</button>
+  <button type="button" id="exit">Exit</button>
+</div>
+
+<script>
+(function(){
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Hero: the ten-second run. The finished state is in the HTML, so the page reads at rest.
+  var clock=document.getElementById("clock"), bars=[].slice.call(document.querySelectorAll("#pairs .track i")),
+      counts=[].slice.call(document.querySelectorAll("#pairs .pair span:last-child")), foot=document.getElementById("runFoot");
+  var RUN_MS=10000, runTimer=null;
+  function runOnce(){
+    clearInterval(runTimer);var t0=Date.now();
+    foot.textContent="Comparing…";
+    runTimer=setInterval(function(){
+      var t=Math.min(1,(Date.now()-t0)/RUN_MS);
+      clock.firstChild.nodeValue=(t*10).toFixed(1);
+      bars.forEach(function(b,i){var p=Math.max(0,Math.min(1,t*4-i*0.75));b.style.transform="scaleX("+p+")";counts[i].textContent=Math.floor(p*8)+" / 8";});
+      if(t>=1){clearInterval(runTimer);clock.firstChild.nodeValue="10";foot.textContent="✓ 32 comparisons done · drift found in PROD";setTimeout(runOnce,5000);}
+    },100);
+  }
+  if(!reduce)setTimeout(runOnce,800);
+
+  if("IntersectionObserver" in window && !reduce){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.2});
+    document.querySelectorAll(".rv").forEach(function(el){io.observe(el);});
+  }
+
+  // Present mode
+  var slides=[].slice.call(document.querySelectorAll("section.sheet")), idx=0, on=false;
+  var pc=document.getElementById("pcount"), bar=document.getElementById("progress");
+  function show(i){
+    idx=Math.max(0,Math.min(slides.length-1,i));
+    slides.forEach(function(s,k){s.classList.toggle("on",k===idx);s.classList.toggle("left",k<idx);});
+    slides[idx].querySelectorAll(".rv").forEach(function(el){el.classList.remove("in");void el.offsetWidth;el.classList.add("in");});
+    if(slides[idx].id==="top"&&!reduce)runOnce();
+    pc.textContent=(idx+1)+" / "+slides.length;bar.style.width=((idx+1)/slides.length*100)+"%";
+  }
+  function start(){on=true;document.body.classList.add("present");show(0);var de=document.documentElement;if(de.requestFullscreen)de.requestFullscreen().catch(function(){});}
+  function stop(){on=false;document.body.classList.remove("present");slides.forEach(function(s){s.classList.remove("on","left");});
+    if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(function(){});slides[idx].scrollIntoView();}
+  document.getElementById("presentBtn").onclick=start;
+  document.getElementById("presentBtn2").onclick=start;
+  document.getElementById("prev").onclick=function(){show(idx-1);};
+  document.getElementById("next").onclick=function(){show(idx+1);};
+  document.getElementById("exit").onclick=stop;
+  document.addEventListener("fullscreenchange",function(){if(!document.fullscreenElement&&on)stop();});
+  document.addEventListener("keydown",function(e){
+    if(!on){if(e.key==="p"||e.key==="P")start();return;}
+    if(["ArrowRight","PageDown"," ","Enter"].indexOf(e.key)>-1){e.preventDefault();show(idx+1);}
+    else if(["ArrowLeft","PageUp","Backspace"].indexOf(e.key)>-1){e.preventDefault();show(idx-1);}
+    else if(e.key==="Home")show(0);else if(e.key==="End")show(slides.length-1);else if(e.key==="Escape")stop();
+  });
+  var tx=null;
+  document.addEventListener("touchstart",function(e){if(on)tx=e.touches[0].clientX;},{passive:true});
+  document.addEventListener("touchend",function(e){if(!on||tx===null)return;var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)show(idx+(d<0?1:-1));tx=null;});
+})();
+</script>
+</body>
+</html>

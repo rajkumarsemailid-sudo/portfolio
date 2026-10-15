@@ -183,9 +183,20 @@ export default function ProjectCard({ project }) {
                 rel="noreferrer"
                 className="text-accent hover:underline"
               >
-                {project.embed ? 'Open the brief' : 'Live'}
+                {project.embed ? 'Product overview' : 'Live'}
               </a>
             )}
+            {project.links.more?.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+                className="text-accent hover:underline"
+              >
+                {link.label}
+              </a>
+            ))}
           </div>
         )}
       </div>
