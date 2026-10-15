@@ -287,6 +287,10 @@ section.sheet .wrap{display:grid;gap:28px}
 .sanswer.wait{opacity:0}
 .tt-row{display:grid;gap:6px}
 .tt-row span{font-size:.78rem;color:var(--code-dim)}
+.tt-who{display:flex;align-items:center;gap:8px}
+.who-ic{width:18px;height:22px;flex:none}
+.who-ic circle,.who-ic path{fill:#d9675c}
+.ai-ic{flex:none;width:22px;height:22px;border-radius:7px;display:grid;place-items:center;background:linear-gradient(135deg,#8b5cf6,#4cc3d6);color:#ffffff;font:700 .6rem/1 var(--mono)}
 .tt-row strong{font:800 1.5rem/1 var(--display);color:#ffffff;font-variant-numeric:tabular-nums}
 .tt-track{height:10px;border-radius:5px;background:rgba(255,255,255,.07);overflow:hidden}
 .tt-track i{display:block;height:100%;border-radius:5px;transition:width .6s ease-out}
@@ -518,8 +522,8 @@ body.present .progress{display:block}
         </div>
         <div class="ttime">
           <div class="w-h">Time to the answer</div>
-          <div class="tt-row"><span>By hand</span><div class="tt-track"><i class="m" id="ttM"></i></div><strong id="ttMv">3 h 40 min</strong></div>
-          <div class="tt-row"><span>With the consultant</span><div class="tt-track"><i class="a" id="ttA"></i></div><strong id="ttAv">about 1 min</strong></div>
+          <div class="tt-row"><span class="tt-who"><svg class="who-ic" viewBox="0 0 18 22" aria-hidden="true"><circle cx="9" cy="5" r="4"/><path d="M1 21c0-5 3.6-8 8-8s8 3 8 8z"/></svg>By hand</span><div class="tt-track"><i class="m" id="ttM"></i></div><strong id="ttMv">3 h 40 min</strong></div>
+          <div class="tt-row"><span class="tt-who"><b class="ai-ic" aria-hidden="true">AI</b>With the consultant</span><div class="tt-track"><i class="a" id="ttA"></i></div><strong id="ttAv">about 1 min</strong></div>
           <p>Five sources read and cross-checked, each one cited in the answer.</p>
         </div>
       </div>
