@@ -179,8 +179,8 @@ export const projects = [
   {
     title: 'TeamcenterGuru',
     description:
-      "A web platform for managing Teamcenter configuration across environments, built by a Teamcenter admin for Teamcenter admins. 26 file-based comparators diff two exports -- AM rules, the BMIDE data model, workflow templates, preferences, revision and closure rules, transfer modes, Active Integration and more -- and lay the result out the way Teamcenter's own editors show it, with no live Teamcenter connection. Around the comparators sit Access Manager and workflow simulators, environments with immutable release history, change notices created from a comparison, difference-by-difference merge, ordered deployment and rollback packages, live smoke tests, and an AI consultant that answers from the site's own configuration and cites Siemens documentation for the release the site runs. The executive brief opens as a scrolling page or as a full-screen presentation.",
-    tags: ['Teamcenter', 'Configuration Management', 'AI', 'FastAPI', 'React'],
+      "The Teamcenter admin copilot. It watches every Teamcenter server and its services live, with an agent on each box and Google Chat and email alerts; captures each environment's configuration automatically and keeps it as releases; validates configuration before and after it ships; and simulates Access Manager and workflows to show why a rule decides what it does. Its AI consultant reads live Teamcenter, Active Integration, Siemens Support Center and the site's own configuration at once: it writes ITK and SOA code (ITK compile-checked against the release's documented functions), drafts configuration changes from plain English, and validates upgrade projects with a three-way comparison of the site against the source and target releases and a clear report. The executive brief opens as a scrolling page or a full-screen presentation.",
+    tags: ['Teamcenter', 'AI Copilot', 'Server Monitoring', 'Configuration Management', 'ITK'],
     videoId: null,
     embed: `${import.meta.env.BASE_URL}teamcenterguru/`,
     images: [],
