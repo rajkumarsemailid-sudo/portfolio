@@ -162,6 +162,52 @@ section.sheet .wrap{display:grid;gap:28px}
 .screen iframe{display:block;width:100%;height:640px;border:0;background:#ffffff}
 .screen video{display:block;width:100%;aspect-ratio:16/9;max-width:100%;background:#000000}
 
+/* environment comparison matrix, drawn like the app's (the app is light-only, so the board stays light) */
+.sweep{background:#ffffff;color:#0f2433;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 24px 60px -34px rgba(8,30,44,.5)}
+.sweep-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid #e3e8ec;font:400 .78rem/1.3 var(--body);color:#5b6b76}
+.sweep-head b{color:#0f2433;font-weight:600}
+.sweep-state{font:500 .74rem/1.3 var(--mono);color:#0b7a8f}
+.sweep-state.run::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#0b7a8f;animation:beat 1.2s infinite}
+.sweep-scroll{overflow-x:auto}
+.matrix{display:grid;grid-template-columns:118px repeat(8,minmax(118px,1fr));min-width:1080px;font:400 .68rem/1.2 var(--body)}
+.mx-h{padding:10px 8px;font:600 .62rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:#5b6b76;border-bottom:1px solid #e3e8ec;background:#f7f9fa}
+.mx-pair{padding:10px 8px;border-bottom:1px solid #eef1f3;display:grid;gap:4px;align-content:start}
+.mx-pair strong{font:700 .72rem/1.2 var(--body);color:#0f2433}
+.mx-pair em{font:600 .55rem/1 var(--body);font-style:normal;letter-spacing:.06em;color:#1c7c45;background:#e2f4e8;border-radius:3px;padding:3px 5px;justify-self:start}
+.mx-cell{padding:8px 6px;border-bottom:1px solid #eef1f3;cursor:pointer;display:grid;gap:3px;align-content:start;transition:background .2s}
+.mx-cell:hover{background:#f3f8fa}
+.mx-cell.sel{background:#e6f4f7;box-shadow:inset 0 0 0 2px #0b7a8f}
+.mx-cell:focus-visible{outline:2px solid #0b7a8f;outline-offset:-2px}
+.mx-sum{display:flex;gap:3px;padding:4px 5px;border-radius:5px;font:500 .6rem/1 var(--mono)}
+.mx-sum.t-same,.mx-sum.t-add{background:#e7f6ec}.mx-sum.t-mod{background:#fdf3dc}.mx-sum.t-rem{background:#fbe6e4}
+.mx-sum i{font-style:normal;padding:2px 4px;border-radius:3px;background:#ffffff}
+.mx-sum .a{color:#1c7c45}.mx-sum .r{color:#b4342c}.mx-sum .m{color:#9a6400}
+.mx-row{display:flex;justify-content:space-between;padding:3px 5px;border-radius:3px;font:600 .55rem/1.2 var(--body);letter-spacing:.04em}
+.mx-row span:last-child{font-variant-numeric:tabular-nums}
+.mx-row.a{background:#e2f4e8;color:#1c7c45}.mx-row.r{background:#fbe6e4;color:#b4342c}.mx-row.m{background:#fbf0d9;color:#9a6400}.mx-row.s{background:#f1f4f6;color:#5b6b76}
+.mx-cell.wait{cursor:progress;background:linear-gradient(90deg,#f1f4f6 25%,#e6ebef 50%,#f1f4f6 75%);background-size:200% 100%;animation:shimmer 1.1s linear infinite}
+.mx-cell.wait>*{visibility:hidden}
+@keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
+.mx-cell.pop{animation:pop .35s ease-out}
+@keyframes pop{from{transform:scale(.94);opacity:.4}to{transform:none;opacity:1}}
+.sweep-detail{border-top:1px solid #e3e8ec;padding:14px 16px;display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:start}
+@media (max-width:760px){.sweep-detail{grid-template-columns:1fr}}
+.sd-title{font:700 .95rem/1.3 var(--display);color:#0f2433;margin-bottom:8px}
+.sd-title small{font:500 .7rem var(--mono);color:#5b6b76;margin-left:6px}
+.sd-list{display:grid;gap:4px;font:400 .76rem/1.3 var(--body);min-width:0}
+.sd-item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 8px;border-radius:5px;background:#f7f9fa;min-width:0}
+.sd-item>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--mono);font-size:.72rem}
+.sd-chips{display:flex;gap:3px;flex:none;font:500 .62rem/1 var(--mono)}
+.sd-chips i{font-style:normal;padding:3px 5px;border-radius:3px}
+.sd-chips .a,.sd-badge.a{background:#e2f4e8;color:#1c7c45}.sd-chips .r,.sd-badge.r{background:#fbe6e4;color:#b4342c}.sd-chips .m,.sd-badge.m{background:#fbf0d9;color:#9a6400}
+.sd-badge{font:600 .6rem/1 var(--mono);padding:4px 6px;border-radius:3px;flex:none}
+.sd-ai{background:#0f2433;color:#e4eef3;border-radius:10px;padding:12px 14px;display:grid;gap:8px}
+.sd-ai b{font:500 .64rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#c4b5fd}
+.sd-ai p{margin:0;font-size:.85rem;line-height:1.5}
+.pains.four{grid-template-columns:repeat(4,1fr)}
+@media (max-width:1000px){.pains.four{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.pains.four{grid-template-columns:1fr}}
+
 /* hero copilot window */
 .copilot{background:var(--code-bg);color:var(--code-fg);border-radius:14px;overflow:hidden;min-width:0;box-shadow:0 24px 60px -30px rgba(8,30,44,.55);font:400 .8rem/1.6 var(--mono)}
 .cp-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.08);color:var(--code-dim);font-size:.74rem}
@@ -394,18 +440,20 @@ body.present .progress{display:block}
 
 <!-- 3. Problem -->
 <section class="sheet" id="problem">
-  <div class="wrap two">
-    <div style="display:grid;gap:20px">
-      <div class="eyebrow">The problem</div>
-      <h2>Dev, QA and Production drift apart, and nobody can say exactly how.</h2>
-      <p class="lede">A Teamcenter site holds thousands of configuration objects spread over a dozen export formats. Promoting a change still means eyeballing XML, keeping spreadsheets and hoping nothing was missed.</p>
-      <div class="drift rv" aria-label="Three environments with differing configuration">
-        <div class="env"><h4>Dev</h4><span class="chip">Wdg4_Part</span><span class="chip x">Wdg_ECO v3</span><span class="chip x">max_bom = 20000</span></div>
-        <div class="env"><h4>QA</h4><span class="chip">Wdg4_Part</span><span class="chip x">Wdg_ECO v2</span><span class="chip">max_bom = 5000</span></div>
-        <div class="env"><h4>Prod</h4><span class="chip">Wdg4_Part</span><span class="chip">Wdg_ECO v2</span><span class="chip r">legacy_path</span></div>
+  <div class="wrap">
+    <div class="eyebrow">The problem</div>
+    <h2>Dev, QA and Production drift apart, and nobody can say exactly how.</h2>
+    <p class="lede">A Teamcenter site holds thousands of configuration objects spread over a dozen export formats. TeamcenterGuru compares every area of every environment pair in one run, so the drift is visible at a glance.</p>
+    <div class="sweep rv" aria-label="Example environment comparison: four environment pairs across eight configuration areas">
+      <div class="sweep-head">
+        <span><b>Environment comparison</b> · 4 pairs × 8 areas</span>
+        <span class="sweep-state" id="sweepState">32 / 32 comparisons done</span>
       </div>
+      <div class="sweep-scroll"><div class="matrix" id="matrix"></div></div>
+      <div class="sweep-detail" id="sweepDetail" aria-live="polite"></div>
     </div>
-    <ul class="pains rv">
+    <p class="muted">Example figures. Click any cell to open its breakdown.</p>
+    <ul class="pains four rv">
       <li><em>DAYS</em><div><strong>Manual comparison.</strong> <span class="muted">Admins diff ACL trees, BMIDE templates and preference exports by hand before every release.</span></div></li>
       <li><em>RISK</em><div><strong>Missed changes reach Production.</strong> <span class="muted">One access rule or workflow handler out of place can stop engineering work.</span></div></li>
       <li><em>OPAQUE</em><div><strong>No audit trail.</strong> <span class="muted">Who changed what, why, and which environment has it now is tribal knowledge.</span></div></li>
@@ -720,6 +768,75 @@ Saved as release REL-000124.</pre>
     else stStart(0);
   }
 
+  // ---- Environment comparison matrix (example figures), laid out like the app's ----
+  var AREAS=["AM Rules","BMIDE Data Model","Workflow Templates","Saved Queries","Batch LOVs","Preferences","Report Builder","Organization"];
+  // the categories each area breaks down into, as the app's report sections name them
+  var CATS=[["Named ACLs","Rule Tree"],["Business Objects","Lists of Values","Naming Rules","GRM Rules","Conditions","Property Constants Attach"],["Process templates","Tasks","Handlers"],["Queries","Clauses"],["Batch LOVs","Localizations"],null,["Reports","Stylesheets (XSL)"],["Groups","Roles","Users"]];
+  var PAIRS=[
+    ["DEV 01 → DEV 02",[[3,0,2,30],[81,15,2,412],[8,2,14,160],[5,0,1,324],[10,8,2,27],[60,4,37,8974],[25,0,0,88],[4,0,6,212]]],
+    ["DEV 02 → QA",[[0,0,0,35],[12,0,1,480],[2,0,3,180],[1,0,0,330],[0,0,0,29],[6,1,9,9060],[2,0,0,113],[0,0,0,226]]],
+    ["QA → PRE-PROD",[[0,0,0,35],[0,0,1,492],[0,0,0,185],[0,0,0,331],[0,0,0,29],[0,0,4,9070],[0,0,0,115],[0,0,2,226]]],
+    ["PRE-PROD → PROD",[[0,0,1,34],[0,0,0,493],[0,2,7,176],[0,101,0,230],[0,0,2,27],[0,0,2,9072],[0,0,0,115],[1,0,0,227]]]
+  ];
+  var PREFS=["AWC_DefaultCreateTypes","AWC_show_audit_logs","Wdg_max_bom_lines","Wdg_change_auto_assign","TC_session_timeout","AWS_FullTextSearch_Facets","Wdg_release_status_list","QRY_dataset_display_limit","WsoInsertNoSelectionsPref","TC_Default_Revision_Rule"];
+  var NOTES={
+    "3,3":"PROD is missing 101 saved queries that PRE-PROD has. They arrived on PRE-PROD in one import and were never promoted. Add them to the next release.",
+    "3,2":"Two workflow templates exist in PRE-PROD but not in PROD, and 7 differ. One of them changes the review quorum of Wdg_ECO from 2 to 3.",
+    "0,1":"81 business objects are new in DEV 02, mostly Wdg4 types under development. 15 were removed; check that no workflow or query still names them.",
+    "0,5":"37 preferences differ. Wdg_max_bom_lines went from 5000 to 20000, which also changes the BOM limit for the Wdg_ECO workflow."
+  };
+  var matrix=document.getElementById("matrix"), sweepState=document.getElementById("sweepState"), detail=document.getElementById("sweepDetail"), cells=[], selCell=null;
+  function tone(c){return c[1]?"t-rem":c[2]?"t-mod":c[0]?"t-add":"t-same";}
+  matrix.appendChild(el("div","mx-h","Pair"));
+  AREAS.forEach(function(a){matrix.appendChild(el("div","mx-h",a));});
+  PAIRS.forEach(function(p,pi){
+    var h=el("div","mx-pair");h.appendChild(el("strong",null,p[0]));h.appendChild(el("em",null,"SUCCEEDED"));matrix.appendChild(h);
+    p[1].forEach(function(c,ai){
+      var d=el("div","mx-cell");d.tabIndex=0;d.setAttribute("role","button");
+      d.setAttribute("aria-label",p[0]+", "+AREAS[ai]+": "+c[0]+" added, "+c[1]+" removed, "+c[2]+" modified, "+c[3]+" same");
+      var sum=el("div","mx-sum "+tone(c));
+      sum.appendChild(el("i","a","+"+c[0]));sum.appendChild(el("i","r","−"+c[1]));sum.appendChild(el("i","m","~"+c[2]));d.appendChild(sum);
+      [["a","ADDED",0],["r","REMOVED",1],["m","MODIFIED",2]].forEach(function(r){if(c[r[2]]){var row=el("div","mx-row "+r[0]);row.appendChild(el("span",null,r[1]));row.appendChild(el("span",null,c[r[2]].toLocaleString()));d.appendChild(row);}});
+      var s=el("div","mx-row s");s.appendChild(el("span",null,"SAME"));s.appendChild(el("span",null,c[3].toLocaleString()));d.appendChild(s);
+      d.onclick=function(){openCell(pi,ai,d);};
+      d.onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();openCell(pi,ai,d);}};
+      matrix.appendChild(d);cells.push(d);
+    });
+  });
+  // split a count over n categories, deterministically, larger shares first
+  function split(n,k,seed){var out=[],left=n;for(var i=0;i<k;i++){var share=i===k-1?left:Math.round(left*(0.55-0.05*((seed+i)%3)));out.push(share);left-=share;}return out;}
+  function chips(a,r,m){var c=el("span","sd-chips");c.appendChild(el("i","a","+"+a));c.appendChild(el("i","r","−"+r));c.appendChild(el("i","m","~"+m));return c;}
+  function openCell(pi,ai,cellEl){
+    if(selCell)selCell.classList.remove("sel");selCell=cellEl;cellEl.classList.add("sel");
+    var c=PAIRS[pi][1][ai];detail.innerHTML="";
+    var left=el("div");var t=el("div","sd-title",PAIRS[pi][0]+" · "+AREAS[ai]);t.appendChild(el("small",null,(c[0]+c[1]+c[2])+" differ · "+c[3].toLocaleString()+" same"));left.appendChild(t);
+    var list=el("div","sd-list");
+    if(CATS[ai]===null){ // preferences: name by name, as the report lists them
+      var names=[],kinds=[];for(var i=0;i<c[2];i++)kinds.push("m");for(i=0;i<c[0];i++)kinds.push("a");for(i=0;i<c[1];i++)kinds.push("r");
+      kinds.slice(0,7).forEach(function(k,j){var it=el("div","sd-item");it.appendChild(el("span",null,PREFS[(j+pi*3)%PREFS.length]));it.appendChild(el("span","sd-badge "+k,{a:"ADDED",r:"REMOVED",m:"MODIFIED"}[k]));list.appendChild(it);});
+      if(!kinds.length){var it0=el("div","sd-item");it0.appendChild(el("span",null,"Every preference matches"));list.appendChild(it0);}
+      else if(kinds.length>7)list.appendChild(el("div","sd-item",(kinds.length-7)+" more in the report"));
+    }else{
+      var k=CATS[ai].length, A=split(c[0],k,pi), R=split(c[1],k,pi+1), M=split(c[2],k,pi+2);
+      CATS[ai].forEach(function(name,j){var it=el("div","sd-item");it.appendChild(el("span",null,name));it.appendChild(chips(A[j],R[j],M[j]));list.appendChild(it);});
+    }
+    left.appendChild(list);detail.appendChild(left);
+    var ai2=el("div","sd-ai");ai2.appendChild(el("b",null,"AI consultant"));
+    var note=NOTES[pi+","+ai]||((c[0]+c[1]+c[2])?"Open the full report to see each difference with both definitions side by side, or create a change notice straight from this pair.":"Nothing differs here. These two environments agree on every "+AREAS[ai]+" item.");
+    ai2.appendChild(el("p",null,note));detail.appendChild(ai2);
+  }
+  openCell(3,3,cells[3*8+3]);
+  // the sweep runs when the section comes into view: cells shimmer, then fill in pair by pair
+  var sweepRun=0;
+  function runSweep(){
+    var run=++sweepRun, done=0;sweepState.classList.add("run");
+    cells.forEach(function(c){c.classList.add("wait");c.classList.remove("pop");});
+    sweepState.textContent="0 / 32 comparisons done";
+    cells.forEach(function(c,i){setTimeout(function(){if(run!==sweepRun)return;c.classList.remove("wait");c.classList.add("pop");done++;
+      sweepState.textContent=done+" / 32 comparisons done";if(done===32)sweepState.classList.remove("run");},500+Math.floor(i/8)*700+(i%8)*90+Math.random()*120);});
+  }
+  if(!reduceMotion&&"IntersectionObserver" in window){var swIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){swIo.disconnect();runSweep();}},{threshold:.35});swIo.observe(matrix);}
+
   // ---- Product walkthrough (steps follow the app's own Architecture tab) ----
   var PRODUCTS=[
     {key:"servers",t:"Live servers",p:"Servers and services watched live, from an agent on each Teamcenter box.",
@@ -874,6 +991,7 @@ Saved as release REL-000124.</pre>
     draw();setTimeout(draw,480);
     if(cur.id==="top"&&!reduceMotion)typeCode();
     if(cur.id==="lifecycle"&&!reduceMotion)stStart(0);
+    if(cur.id==="problem"&&!reduceMotion)runSweep();
     pc.textContent=(idx+1)+" / "+slides.length;
     bar.style.width=((idx+1)/slides.length*100)+"%";
   }
