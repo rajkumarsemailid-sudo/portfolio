@@ -234,6 +234,10 @@ section.sheet .wrap{display:grid;gap:28px}
 
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
+@media (max-width:760px){.ai p{min-height:7.8em}.cp-q{min-height:4.9em}}
+.copilot{position:relative}
+.playbtn{position:absolute;top:10px;right:10px;z-index:4;font:600 .78rem/1 var(--body);padding:8px 12px;border-radius:999px;border:1px solid #4cc3d6;background:#0f2433;color:#4cc3d6;cursor:pointer;box-shadow:0 4px 14px -6px rgba(0,0,0,.4)}
+
 /* hero copilot window */
 .copilot{background:var(--code-bg);color:var(--code-fg);border-radius:14px;overflow:hidden;min-width:0;box-shadow:0 24px 60px -30px rgba(8,30,44,.55);font:400 .8rem/1.6 var(--mono)}
 .cp-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.08);color:var(--code-dim);font-size:.74rem}
@@ -243,7 +247,7 @@ section.sheet .wrap{display:grid;gap:28px}
 .cp-src{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px 0}
 .cp-src span{font-size:.68rem;padding:3px 8px;border-radius:4px;border:1px solid rgba(255,255,255,.14);color:var(--code-fg)}
 @keyframes srcon{from{opacity:.3;border-color:transparent}to{opacity:1}}
-.cp-q{margin:12px 16px 0;padding:10px 12px;border-radius:8px;background:rgba(76,195,214,.14);color:#e4f6fa;font:500 .84rem/1.45 var(--body)}
+.cp-q{min-height:3.4em;margin:12px 16px 0;padding:10px 12px;border-radius:8px;background:rgba(76,195,214,.14);color:#e4f6fa;font:500 .84rem/1.45 var(--body)}
 .cp-code{margin:0;padding:12px 16px;white-space:pre;overflow-x:auto;color:var(--code-fg);font:400 .72rem/1.55 var(--mono);min-height:27em}
 .cp-code .caret{display:inline-block;width:7px;height:1.05em;vertical-align:-2px;background:#4cc3d6;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
@@ -318,7 +322,7 @@ section.sheet .wrap{display:grid;gap:28px}
 .ai{border-left:1px solid rgba(255,255,255,.08);padding:16px;display:grid;gap:10px;align-content:start;transition:opacity .4s}
 .ai b{font:500 .68rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#c4b5fd;display:flex;align-items:center;gap:8px}
 .ai b::before{content:"";width:18px;height:18px;border-radius:6px;background:linear-gradient(135deg,#8b5cf6,#4cc3d6)}
-.ai p{margin:0;font:400 .9rem/1.55 var(--body);color:#e4eef3}
+.ai p{min-height:4.7em;margin:0;font:400 .9rem/1.55 var(--body);color:#e4eef3}
 .ai.wait{opacity:.15}
 @media (max-width:760px){.stage-body{grid-template-columns:1fr}.ai{border-left:0;border-top:1px solid rgba(255,255,255,.08)}}
 .flow li{position:relative;z-index:1;display:grid;gap:8px;justify-items:center;text-align:center;counter-increment:s;min-width:0}
@@ -723,6 +727,15 @@ Saved as release REL-000124.</pre>
 
   function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
   var reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // On a phone nothing moves until it is asked to: each animation rests finished, with a Play button.
+  var autoplay=!reduceMotion&&!matchMedia("(max-width: 760px)").matches;
+  function playButton(host,start){
+    if(reduceMotion||autoplay)return;
+    var b=document.createElement("button");b.type="button";b.className="playbtn";b.textContent="▶ Play";
+    b.setAttribute("aria-label","Play this animation");
+    b.onclick=function(){b.remove();start();};
+    host.appendChild(b);
+  }
 
   // ---- Hero: the admin copilot loops through five jobs like a GIF. Scene 1 is in the HTML, so the page reads at rest. ----
   var cp=document.getElementById("cpCode"), cpQ=document.getElementById("cpQ"), cpFoot=document.getElementById("cpFoot"),
@@ -769,8 +782,9 @@ Saved as release REL-000124.</pre>
   }
   function loop(k,run){playScene(k,run).then(function(){loop((k+1)%SCENES.length,run);});}
   function startLoop(){clearTimeout(sceneTimer);sceneRun++;loop(0,sceneRun);}
-  if(reduceMotion){cpSteps.children[0].classList.add("cur");}
-  else setTimeout(startLoop,700);
+  cpSteps.children[0].classList.add("cur");
+  if(autoplay)setTimeout(startLoop,700);
+  playButton(document.querySelector(".copilot"),startLoop);
   function typeCode(){if(!reduceMotion)startLoop();}
 
   // ---- Lifecycle: one change notice walks the seven steps; the consultant speaks at each ----
@@ -816,7 +830,8 @@ Saved as release REL-000124.</pre>
   function stStart(k){clearTimeout(stTimer);stRun++;stLoop(k,stRun);}
   [].forEach.call(flow.children,function(li,j){li.onclick=function(){stStart(j);};});
   // start when the section first comes into view, so the story begins at Capture
-  if(!reduceMotion){
+  playButton(document.querySelector(".copilot.stage"),function(){stStart(0);});
+  if(autoplay){
     if("IntersectionObserver" in window){var stIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){stIo.disconnect();stStart(0);}},{threshold:.3});stIo.observe(flow);}
     else stStart(0);
   }
@@ -888,7 +903,7 @@ Saved as release REL-000124.</pre>
     cells.forEach(function(c,i){setTimeout(function(){if(run!==sweepRun)return;c.classList.remove("wait");c.classList.add("pop");done++;
       sweepState.textContent=done+" / 32 comparisons done";if(done===32)sweepState.classList.remove("run");},500+Math.floor(i/8)*700+(i%8)*90+Math.random()*120);});
   }
-  if(!reduceMotion&&"IntersectionObserver" in window){var swIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){swIo.disconnect();runSweep();}},{threshold:.35});swIo.observe(matrix);}
+  if(autoplay&&"IntersectionObserver" in window){var swIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){swIo.disconnect();runSweep();}},{threshold:.35});swIo.observe(matrix);}
 
   // ---- Product walkthrough (steps follow the app's own Architecture tab) ----
   var PRODUCTS=[
@@ -948,7 +963,7 @@ Saved as release REL-000124.</pre>
   ];
   var KIND={in:"Input",run:"Runs",out:"Output"};
   var tabs=document.getElementById("prodTabs"), stepsEl=document.getElementById("prodSteps"), playBtn=document.getElementById("prodPlay");
-  var pi=0, si=0, playing=!reduceMotion, timer=null;
+  var pi=0, si=0, playing=autoplay, timer=null;
   PRODUCTS.forEach(function(p,i){var b=el("button",null,p.t);b.type="button";b.setAttribute("role","tab");b.onclick=function(){pick(i);};tabs.appendChild(b);});
   function pick(i){
     pi=i;si=0;var p=PRODUCTS[i];
@@ -1006,7 +1021,7 @@ Saved as release REL-000124.</pre>
     });
   }
   var CHIPS=[["config","Comparators"],["env","Environments"],["servers","Servers"],["change","Change & release"],["consult","Consultant"],["advanced","Simulators"]];
-  var chipBox=document.getElementById("mapChips"), ci=-1, chipTimer=null, chipAuto=!reduceMotion;
+  var chipBox=document.getElementById("mapChips"), ci=-1, chipTimer=null, chipAuto=autoplay;
   CHIPS.forEach(function(c,i){var b=el("button",null,c[1]);b.type="button";b.setAttribute("aria-pressed","false");b.onclick=function(){chipAuto=false;clearInterval(chipTimer);focusP(ci===i?-1:i);};chipBox.appendChild(b);});
   function focusP(i){
     ci=i;var key=i<0?null:CHIPS[i][0];

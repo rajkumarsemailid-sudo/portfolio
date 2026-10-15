@@ -34,6 +34,12 @@
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+.wstage{display:grid}
+.wstage > *{grid-area:1 / 1}
+.wstage > .off{visibility:hidden;animation:none}
+.run,.twoways,.crew,.watch{position:relative}
+.playbtn{position:absolute;top:10px;right:10px;z-index:4;font:600 .78rem/1 var(--body);padding:8px 12px;border-radius:999px;border:1px solid var(--accent);background:var(--sheet);color:var(--accent);cursor:pointer;box-shadow:0 4px 14px -6px rgba(0,0,0,.4)}
+.watch .playbtn,.run .playbtn{background:#0f2433;border-color:#4cc3d6;color:#4cc3d6}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.6 var(--body);padding-inline:16px;padding-block:0}
 .wrap{max-width:68rem;margin-inline:auto}
@@ -199,7 +205,10 @@ section.sheet .wrap{display:grid;gap:28px}
 .cell-a .ok{margin-left:auto;flex:none;color:var(--add);font-weight:700}
 .cell-a.manual .agent,.cell-a.manual .ok{display:none}
 .cell-a:not(.manual) .who{display:none}
-.cell-a.manual .txt{color:var(--muted);font-style:italic;opacity:.7}
+.cell-a .txt{display:grid}
+.cell-a .txt > span{grid-area:1 / 1}
+.cell-a .t-m{color:var(--muted);font-style:italic;opacity:.7}
+.cell-a.manual .t-a,.cell-a:not(.manual) .t-m{visibility:hidden}
 .cell-a.manual .who{opacity:.6}
 .cell-a.flip{animation:flip .5s ease-out}
 @keyframes flip{from{background:var(--accent-soft)}to{background:transparent}}
@@ -252,7 +261,7 @@ section.sheet .wrap{display:grid;gap:28px}
 .cm.me{border-left-color:#4cc3d6;background:rgba(76,195,214,.1);margin-left:24px}
 .acts{display:flex;gap:8px}
 .acts u{text-decoration:none;font:600 .7rem/1 var(--body);padding:5px 8px;border-radius:5px;border:1px solid rgba(255,255,255,.18);color:#e4eef3}
-.cm.hide{opacity:0;transform:translateY(8px);height:0;padding-top:0;padding-bottom:0;margin-top:-8px;overflow:hidden}
+.cm.hide{opacity:0;transform:translateY(8px);visibility:hidden}
 .w-title > span{display:flex;align-items:center;gap:12px}
 .scene-dots{display:flex;gap:5px}
 .scene-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2);transition:background .3s}
@@ -487,7 +496,8 @@ body.present .progress{display:block}
     </div>
     <div class="watch rv" id="watch" aria-label="Illustrative, two scenes: a PROD service stops and the admin chat is alerted at once; then the AI consultant finds the cause of a failing SAP transfer by reading live Teamcenter, server logs, integration logs, configuration and Siemens Support Center, in about a minute instead of hours">
       <div class="w-title"><b id="wTitle">Support, solved with the AI consultant</b><span><span id="wSub">live Teamcenter · server and integration logs · configuration · Siemens support</span><span class="scene-dots" aria-hidden="true"><i class="on" id="dot2"></i><i id="dot1"></i></span></span></div>
-      <div class="w-body" id="scene1" hidden>
+      <div class="wstage">
+      <div class="w-body off" id="scene1">
         <div class="servers">
           <div class="w-h">PROD servers</div>
           <div class="srv" data-s="web"><i class="hb"></i><div><strong>tc-web01</strong><span>Active Workspace</span></div><em>running</em></div>
@@ -526,6 +536,7 @@ body.present .progress{display:block}
           <div class="tt-row"><span class="tt-who"><b class="ai-ic" aria-hidden="true">AI</b>With the consultant</span><div class="tt-track"><i class="a" id="ttA"></i></div><strong id="ttAv">about 1 min</strong></div>
           <p>Five sources read and cross-checked, each one cited in the answer.</p>
         </div>
+      </div>
       </div>
     </div>
     <p class="muted">Illustrative. Before anyone opens a ticket, the admin team knows which server and why, and the consultant has the root cause of an integration failure in about a minute.</p>
@@ -640,6 +651,15 @@ body.present .progress{display:block}
 <script>
 (function(){
   var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // On a phone nothing moves until it is asked to: each animation rests finished, with a Play button.
+  var autoplay=!reduce&&!matchMedia("(max-width: 760px)").matches;
+  function playButton(host,start){
+    if(reduce||autoplay)return;
+    var b=document.createElement("button");b.type="button";b.className="playbtn";b.textContent="▶ Play";
+    b.setAttribute("aria-label","Play this animation");
+    b.onclick=function(){b.remove();start();};
+    host.appendChild(b);
+  }
 
   // Hero: the team takeover. The finished state is in the HTML, so the page reads at rest.
   var HERO_PERSON='<svg viewBox="0 0 18 22" aria-hidden="true"><circle cx="9" cy="5" r="4"/><path d="M1 21c0-5 3.6-8 8-8s8 3 8 8z"/></svg>';
@@ -664,7 +684,8 @@ body.present .progress{display:block}
     });
     setTimeout(function(){if(run===heroRun)runOnce();},900+9*650+6000);
   }
-  if(!reduce)setTimeout(runOnce,600);
+  if(autoplay)setTimeout(runOnce,600);
+  playButton(document.querySelector(".run"),runOnce);
 
   // Impact chart: three panels, each on its own scale (never a shared or dual axis). Example figures.
   var IMPACT=[
@@ -704,7 +725,7 @@ body.present .progress{display:block}
       pctEls.forEach(function(o){var t0=null;(function step(ts){if(!t0)t0=ts;var q=Math.min(1,(ts-t0)/900);o.el.textContent="−"+Math.round(o.pct*q)+"%";if(q<1)requestAnimationFrame(step);})(performance.now());});
     },120);
   }
-  if(!reduce&&"IntersectionObserver" in window){
+  if(autoplay&&"IntersectionObserver" in window){
     var imIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){imIo.disconnect();growImpact();}},{threshold:.35});
     imIo.observe(impact);
   }
@@ -722,7 +743,7 @@ body.present .progress{display:block}
       sanswer=document.getElementById("sanswer"), ttM=document.getElementById("ttM"), ttA=document.getElementById("ttA"), ttMv=document.getElementById("ttMv"), ttAv=document.getElementById("ttAv");
   var MANUAL=[20,45,60,45,50], AUTO=[4,6,5,3,8], MAN_TOTAL=220;
   function scene(n){
-    scene1.hidden=n!==1;scene2.hidden=n!==2;dot1.classList.toggle("on",n===1);dot2.classList.toggle("on",n===2);
+    scene1.classList.toggle("off",n!==1);scene2.classList.toggle("off",n!==2);dot1.classList.toggle("on",n===1);dot2.classList.toggle("on",n===2);
     wTitle.textContent=n===1?"Servers, watched live":"Support, solved with the AI consultant";
     wSub.textContent=n===1?"agent on every box · alerts by chat and email":"live Teamcenter · server and integration logs · configuration · Siemens support";
   }
@@ -762,10 +783,11 @@ body.present .progress{display:block}
     at(10700,function(){cms[3].classList.remove("hide");});
     at(14500,function(){solveScene(run);});
   }
-  if(!reduce&&"IntersectionObserver" in window){
+  if(autoplay&&"IntersectionObserver" in window){
     var wIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){wIo.disconnect();watchLoop();}},{threshold:.3});
     wIo.observe(document.getElementById("watch"));
   }
+  playButton(document.getElementById("watch"),watchLoop);
 
   // One change, two ways: the silo misses what the whole configuration shows.
   var NS="http://www.w3.org/2000/svg";
@@ -827,10 +849,11 @@ body.present .progress{display:block}
     at(900+6*550+2700,function(){tlCtx[2].className="ok";});
     at(13500,twLoop);
   }
-  if(!reduce&&"IntersectionObserver" in window){
+  if(autoplay&&"IntersectionObserver" in window){
     var twIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){twIo.disconnect();twLoop();}},{threshold:.3});
     twIo.observe(document.getElementById("twoways"));
   }
+  playButton(document.getElementById("twoways"),twLoop);
 
   // Same team, more done: agents take the tasks over one by one; the people counter falls from 9 to 2.
   var PERSON='<svg viewBox="0 0 18 22" aria-hidden="true"><circle class="p-head" cx="9" cy="5" r="4"/><path class="p-body" d="M1 21c0-5 3.6-8 8-8s8 3 8 8z"/></svg>';
@@ -853,9 +876,9 @@ body.present .progress{display:block}
     g[1].forEach(function(t){
       var r=document.createElement("div");r.className="crow";
       r.innerHTML='<div class="task"></div><div class="cell-m"><span class="busy" aria-hidden="true"></span><span class="m"></span></div>'+
-        '<div class="cell-a"><span class="who">'+PERSON+'</span><span class="agent" aria-hidden="true">AI</span><span class="txt"></span><span class="ok" aria-hidden="true">✓</span></div>';
+        '<div class="cell-a"><span class="who">'+PERSON+'</span><span class="agent" aria-hidden="true">AI</span><span class="txt"><span class="t-m">By hand, waiting for an agent</span><span class="t-a"></span></span><span class="ok" aria-hidden="true">✓</span></div>';
       r.querySelector(".task").textContent=t[0];r.querySelector(".m").textContent=t[1];
-      var a=r.querySelector(".cell-a");a.querySelector(".txt").textContent=t[2];a.dataset.manual=t[1];a.dataset.agent=t[2];
+      var a=r.querySelector(".cell-a");a.querySelector(".t-a").textContent=t[2];a.dataset.manual=t[1];a.dataset.agent=t[2];
       rowsEl.appendChild(r);appCells.push(a);
     });
   });
@@ -873,20 +896,21 @@ body.present .progress{display:block}
   var crewRun=0;
   function crewLoop(){
     var run=++crewRun;
-    appCells.forEach(function(a){a.classList.add("manual");a.querySelector(".txt").textContent="By hand, waiting for an agent";});
+    appCells.forEach(function(a){a.classList.add("manual");});
     appPeople.forEach(function(p){p.classList.remove("gone");});setApp(0);
     appCells.forEach(function(a,j){
       setTimeout(function(){if(run!==crewRun)return;
-        a.classList.remove("manual");a.querySelector(".txt").textContent=a.dataset.agent;
+        a.classList.remove("manual");
         a.classList.remove("flip");void a.offsetWidth;a.classList.add("flip");setApp(j+1);
       },700+j*800);
     });
     setTimeout(function(){if(run===crewRun)crewLoop();},700+9*800+6500);
   }
-  if(!reduce&&"IntersectionObserver" in window){
+  if(autoplay&&"IntersectionObserver" in window){
     var crIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){crIo.disconnect();crewLoop();}},{threshold:.3});
     crIo.observe(document.getElementById("crew"));
   }
+  playButton(document.getElementById("crew"),crewLoop);
 
   if("IntersectionObserver" in window && !reduce){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.2});
