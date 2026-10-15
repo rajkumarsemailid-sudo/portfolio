@@ -709,8 +709,8 @@ Saved as release REL-000124.</pre>
 
 <div class="pctl" role="group" aria-label="Presentation controls">
   <span id="pcount">1 / 10</span>
-  <button type="button" id="prev" aria-label="Previous slide">‹</button>
-  <button type="button" id="next" aria-label="Next slide">›</button>
+  <button type="button" id="pPrev" aria-label="Previous slide">‹</button>
+  <button type="button" id="pNext" aria-label="Next slide">›</button>
   <button type="button" id="exit">Exit</button>
 </div>
 
@@ -1055,8 +1055,8 @@ Saved as release REL-000124.</pre>
     slides[idx].scrollIntoView();}
   document.getElementById("presentBtn").onclick=start;
   document.getElementById("presentBtn2").onclick=start;
-  document.getElementById("prev").onclick=function(){show(idx-1);};
-  document.getElementById("next").onclick=function(){show(idx+1);};
+  document.getElementById("pPrev").onclick=function(){show(idx-1);};
+  document.getElementById("pNext").onclick=function(){show(idx+1);};
   document.getElementById("exit").onclick=stop;
   document.addEventListener("fullscreenchange",function(){if(!document.fullscreenElement&&on)stop();});
   document.addEventListener("keydown",function(e){
