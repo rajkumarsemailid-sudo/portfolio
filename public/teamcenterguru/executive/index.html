@@ -135,7 +135,8 @@ section.sheet .wrap{display:grid;gap:28px}
 .cell-a .ok{margin-left:auto;flex:none;color:var(--add);font-weight:700}
 .cell-a.manual .agent,.cell-a.manual .ok{display:none}
 .cell-a:not(.manual) .who{display:none}
-.cell-a.manual .txt{color:var(--muted)}
+.cell-a.manual .txt{color:var(--muted);font-style:italic;opacity:.7}
+.cell-a.manual .who{opacity:.6}
 .cell-a.flip{animation:flip .5s ease-out}
 @keyframes flip{from{background:var(--accent-soft)}to{background:transparent}}
 @media (max-width:760px){
@@ -282,7 +283,7 @@ body.present .progress{display:block}
       <div class="crew-head">
         <div></div>
         <div class="ch manual"><b>Today, by hand</b><span class="ppl" id="pplManual"></span><strong><span>9</span> people busy</strong></div>
-        <div class="ch app"><b>With TeamcenterGuru</b><span class="ppl" id="pplApp"></span><strong><span id="appCount">2</span> people reviewing · <span id="agentCount">9</span> tasks on AI agents</strong></div>
+        <div class="ch app"><b>With TeamcenterGuru</b><span class="ppl" id="pplApp"></span><strong><span id="appCount">2</span> <span id="appVerb">people reviewing</span> · <span id="agentCount">9</span> of 9 tasks on AI agents</strong></div>
       </div>
       <div id="crewRows"></div>
     </div>
@@ -406,28 +407,29 @@ body.present .progress{display:block}
       rowsEl.appendChild(r);appCells.push(a);
     });
   });
-  var pplManual=document.getElementById("pplManual"), pplApp=document.getElementById("pplApp"), appCount=document.getElementById("appCount"), agentCount=document.getElementById("agentCount");
+  var pplManual=document.getElementById("pplManual"), pplApp=document.getElementById("pplApp"), appCount=document.getElementById("appCount"), agentCount=document.getElementById("agentCount"), appVerb=document.getElementById("appVerb");
   for(var i=0;i<9;i++){pplManual.insertAdjacentHTML("beforeend",PERSON);pplApp.insertAdjacentHTML("beforeend",PERSON);}
   var appPeople=[].slice.call(pplApp.querySelectorAll("svg"));
   function setApp(k){ // k = tasks taken over by agents (0..9); people = 9 - k, never below 2
     var people=Math.max(2,9-k);
     appPeople.forEach(function(p,j){p.classList.toggle("gone",j>=people);});
     appCount.textContent=people;agentCount.textContent=k;
+    appVerb.textContent=k>=7?"people reviewing":(k?"people busy, agents taking over":"people busy");
   }
   // at rest the page shows the finished state: agents on all nine, two people
   appCells.forEach(function(a){a.classList.remove("manual");});setApp(9);
   var crewRun=0;
   function crewLoop(){
     var run=++crewRun;
-    appCells.forEach(function(a){a.classList.add("manual");a.querySelector(".txt").textContent=a.dataset.manual;});
-    appPeople.forEach(function(p){p.classList.remove("gone");});appCount.textContent=9;agentCount.textContent=0;
+    appCells.forEach(function(a){a.classList.add("manual");a.querySelector(".txt").textContent="By hand, waiting for an agent";});
+    appPeople.forEach(function(p){p.classList.remove("gone");});setApp(0);
     appCells.forEach(function(a,j){
       setTimeout(function(){if(run!==crewRun)return;
         a.classList.remove("manual");a.querySelector(".txt").textContent=a.dataset.agent;
         a.classList.remove("flip");void a.offsetWidth;a.classList.add("flip");setApp(j+1);
-      },1600+j*900);
+      },700+j*800);
     });
-    setTimeout(function(){if(run===crewRun)crewLoop();},1600+9*900+5000);
+    setTimeout(function(){if(run===crewRun)crewLoop();},700+9*800+6500);
   }
   if(!reduce&&"IntersectionObserver" in window){
     var crIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){crIo.disconnect();crewLoop();}},{threshold:.3});
