@@ -112,6 +112,61 @@ section.sheet .wrap{display:grid;gap:28px}
 .pillar .k{font:500 .72rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
 .pillar ul{margin:0;padding-left:18px;color:var(--muted);font-size:.92rem;display:grid;gap:4px}
 
+/* product walkthrough */
+.prod-tabs{display:flex;flex-wrap:wrap;gap:8px}
+.prod-tabs button,.map-chips button{font:600 .85rem/1 var(--body);padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--sheet);color:var(--muted);cursor:pointer;transition:all .2s}
+.prod-tabs button[aria-selected="true"],.map-chips button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.prod{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,3vw,28px);display:grid;gap:22px}
+.prod-head{display:flex;justify-content:space-between;gap:16px;align-items:start}
+.play{flex:none;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;font-size:.8rem}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:10px}
+.step{border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:6px;align-content:start;background:var(--paper);transition:border-color .35s,background .35s,transform .35s;min-width:0}
+.step .kind{font:500 .66rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px}
+.step .kind::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.step.in .kind::before{background:var(--accent)} .step.run .kind::before{background:var(--mod)} .step.out .kind::before{background:var(--add)}
+.step strong{font:700 .98rem/1.25 var(--display)}
+.step span{font-size:.82rem;color:var(--muted)}
+.step.lit{border-color:var(--accent);background:var(--accent-soft);transform:translateY(-3px)}
+.step.done{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+@media (max-width:900px){.steps{grid-auto-flow:row}}
+.prod-foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+.facts{display:flex;gap:8px;flex-wrap:wrap}
+.facts span{font:500 .75rem/1 var(--mono);padding:6px 9px;border-radius:5px;background:var(--accent-soft);color:var(--ink)}
+.limit{font-size:.82rem;color:var(--muted);max-width:52ch}
+.limit:not(:empty)::before{content:"Limit: ";font-weight:600;color:var(--ink)}
+
+/* system map */
+.map-chips{display:flex;flex-wrap:wrap;gap:8px}
+.map{position:relative;display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:clamp(28px,7vw,110px)}
+.map-col{display:grid;gap:10px;align-content:start;position:relative;z-index:1;min-width:0}
+.map-h{font:500 .72rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-bottom:4px}
+.map-nodes{display:grid;gap:10px}
+.node{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:2px;transition:opacity .3s,border-color .3s,box-shadow .3s}
+.node strong{font:600 .9rem/1.2 var(--body)}
+.node span{font-size:.76rem;color:var(--muted)}
+.node.eng{border-left:3px solid var(--accent)}
+.map.focus .node{opacity:.32}
+.map.focus .node.on{opacity:1;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.map-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.map-lines path{fill:none;stroke:var(--line);stroke-width:1.5;transition:stroke .3s,opacity .3s}
+.map.focus .map-lines path{opacity:.25}
+.map.focus .map-lines path.on{opacity:1;stroke:var(--accent);stroke-width:2;stroke-dasharray:6 6;animation:flowdash 1s linear infinite}
+@keyframes flowdash{to{stroke-dashoffset:-12}}
+@media (max-width:860px){.map{grid-template-columns:1fr;gap:22px}.map-lines{display:none}}
+
+/* demo screen: the app's own carousels in a browser frame (the app is light-only, so the frame stays white) */
+.screen{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#ffffff;box-shadow:0 24px 60px -34px rgba(8,30,44,.5)}
+.screen-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;background:#f1f4f6;border-bottom:1px solid #dde3e8;font:400 .72rem/1 var(--mono);color:#5b6b76}
+.screen-bar i{width:9px;height:9px;border-radius:50%;background:#cfd8de}
+.screen-bar span{margin-left:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.screen iframe{display:block;width:100%;height:640px;border:0;background:#ffffff}
+.screen video{display:block;width:100%;aspect-ratio:16/9;max-width:100%;background:#000000}
+
+/* consultant build */
+.agents{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.agents li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;font-size:.92rem}
+.agents b{font:500 .7rem/1.9 var(--mono);color:var(--accent);background:var(--accent-soft);padding:0 7px;border-radius:4px;white-space:nowrap}
+
 /* lifecycle */
 .flow{position:relative;display:grid;grid-template-columns:repeat(7,1fr);gap:10px;list-style:none;padding:0;margin:0;counter-reset:s}
 .flow::before{content:"";position:absolute;left:4%;right:4%;top:22px;height:2px;background:var(--line)}
@@ -199,7 +254,7 @@ body.present .progress{display:block}
   <div class="wrap">
     <div class="brand"><i>Tc</i>TeamcenterGuru</div>
     <nav class="nav">
-      <a href="#problem">Problem</a><a href="#platform">Platform</a><a href="#lifecycle">Lifecycle</a><a href="#consultant">Consultant</a><a href="#pricing">Plans</a><a href="#roadmap">Roadmap</a><a href="../#projects">← Portfolio</a>
+      <a href="#problem">Problem</a><a href="#platform">Platform</a><a href="#demo">Demo</a><a href="#lifecycle">Lifecycle</a><a href="#consultant">Consultant</a><a href="#pricing">Plans</a><a href="#roadmap">Roadmap</a><a href="../#projects">← Portfolio</a>
     </nav>
     <button class="btn" id="presentBtn" type="button">Present ▸</button>
   </div>
@@ -240,7 +295,7 @@ body.present .progress{display:block}
     <div class="eyebrow">At a glance</div>
     <h2>One workspace for the whole configuration lifecycle.</h2>
     <div class="stats rv">
-      <div class="stat"><strong data-count="26">26</strong><span>configuration comparators</span></div>
+      <div class="stat"><strong data-count="25">25</strong><span>configuration comparators</span></div>
       <div class="stat"><strong data-count="0">0</strong><span>live connections needed to compare</span></div>
       <div class="stat"><strong data-count="7">7</strong><span>lifecycle stages, capture to verify</span></div>
       <div class="stat"><strong>&lt;1 s</strong><span>to diff a full BMIDE data model</span></div>
@@ -271,29 +326,63 @@ body.present .progress{display:block}
   </div>
 </section>
 
-<!-- 4. Platform -->
+<!-- 4. Products walkthrough -->
 <section class="sheet" id="platform">
   <div class="wrap">
     <div class="eyebrow">The platform</div>
-    <h2>Four capabilities, one product.</h2>
-    <div class="pillars">
-      <article class="pillar rv">
-        <div class="k">Compare</div><h3>Readable diffs of every config type</h3>
-        <ul><li>26 file-based comparators</li><li>Laid out the way Teamcenter's own editors show them</li><li>Whole-environment sweeps</li><li>JSON and CSV exports for tickets</li></ul>
-      </article>
-      <article class="pillar rv">
-        <div class="k">Simulate</div><h3>Why a rule decides what it does</h3>
-        <ul><li>Access Manager simulator</li><li>Workflow template simulator</li><li>Environment converter for admin data</li></ul>
-      </article>
-      <article class="pillar rv">
-        <div class="k">Change &amp; release</div><h3>Controlled promotion</h3>
-        <ul><li>Environments with release history</li><li>Change notices from a comparison</li><li>Merge, package, deploy, roll back</li><li>Smoke tests on the live site</li></ul>
-      </article>
-      <article class="pillar rv">
-        <div class="k">Consultant</div><h3>An AI that knows your site</h3>
-        <ul><li>Answers from your configuration</li><li>Cites Siemens documentation and KBs</li><li>Impact analysis before you change</li><li>Generates ITK and BMIDE work</li></ul>
-      </article>
+    <h2>Six products, one workspace.</h2>
+    <div class="prod-tabs" role="tablist" aria-label="Products" id="prodTabs"></div>
+    <div class="prod rv" id="prod" aria-live="polite">
+      <div class="prod-head">
+        <div style="display:grid;gap:8px;min-width:0">
+          <h3 id="prodTitle"></h3>
+          <p class="muted" id="prodPitch"></p>
+        </div>
+        <button class="play" type="button" id="prodPlay" aria-label="Pause walkthrough">❚❚</button>
+      </div>
+      <ol class="steps" id="prodSteps"></ol>
+      <div class="prod-foot">
+        <div class="facts" id="prodFacts"></div>
+        <p class="limit" id="prodLimit"></p>
+      </div>
     </div>
+  </div>
+</section>
+
+<!-- 5. System map -->
+<section class="sheet" id="architecture">
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2>What it reads, what it does, what it gives back.</h2>
+    <div class="map-chips" id="mapChips" role="group" aria-label="Highlight a product"></div>
+    <div class="map rv" id="map">
+      <svg class="map-lines" id="mapLines" aria-hidden="true"></svg>
+      <div class="map-col"><div class="map-h">What it reads</div><div id="colSrc" class="map-nodes"></div></div>
+      <div class="map-col"><div class="map-h">The platform</div><div id="colEng" class="map-nodes"></div></div>
+      <div class="map-col"><div class="map-h">What it gives back</div><div id="colOut" class="map-nodes"></div></div>
+    </div>
+    <p class="muted">Comparators read files only. Live reads use each user's own Teamcenter, Management Console, Gateway or Siemens session, and are read-only.</p>
+  </div>
+</section>
+
+<!-- See it working: the app's own guide carousels and promo film -->
+<section class="sheet" id="demo">
+  <div class="wrap">
+    <div class="eyebrow">See it working</div>
+    <h2>The real screens, playing on their own.</h2>
+    <div class="prod-tabs" role="tablist" aria-label="Demo" id="demoTabs">
+      <button type="button" role="tab" aria-selected="true" data-v="walkthrough">How it works</button>
+      <button type="button" role="tab" aria-selected="false" data-v="samples">Sample reports</button>
+      <button type="button" role="tab" aria-selected="false" data-v="film">The film</button>
+    </div>
+    <div class="screen" id="demoScreen">
+      <div class="screen-bar" aria-hidden="true"><i></i><i></i><i></i><span id="demoUrl">teamcenterguru · how it works</span></div>
+      <iframe id="demoFrame" title="TeamcenterGuru walkthrough" loading="lazy" src="demo/#walkthrough"></iframe>
+      <video id="demoFilm" controls preload="none" playsinline poster="promo-poster.jpg" hidden>
+        <source src="promo.mp4" type="video/mp4">
+      </video>
+    </div>
+    <p class="muted">The walkthrough plays by itself: hover a numbered marker, or use the arrows. Every name in it is a placeholder, not a real site.</p>
   </div>
 </section>
 
@@ -319,7 +408,7 @@ body.present .progress{display:block}
 <section class="sheet" id="comparators">
   <div class="wrap">
     <div class="eyebrow">Coverage</div>
-    <h2>26 comparators across the Teamcenter stack.</h2>
+    <h2>25 comparators across the Teamcenter stack.</h2>
     <div class="tools rv" id="tools"></div>
     <div class="legend"><span class="l-add">ADDED</span><span class="l-rem">REMOVED</span><span class="l-mod">MODIFIED</span><span class="l-same">SAME</span><span class="l-mod">REORDERED</span></div>
   </div>
@@ -332,7 +421,13 @@ body.present .progress{display:block}
       <div class="eyebrow">Consultant</div>
       <h2>Ask before you change. Get an answer with sources.</h2>
       <p class="lede">The consultant reads the organization's own environments, comparisons and change notices, and checks Siemens Support Center and documentation for the release the site runs. Each claim cites its source.</p>
-      <p class="muted">Access is read-only, and answers name the release they apply to.</p>
+      <ul class="agents">
+        <li><b>1 AGENT</b><span>One consultant, offered only the tool families a question needs: configuration, live Teamcenter, servers, console logs, the integration gateway, Siemens Support Center.</span></li>
+        <li><b>SUB-AGENT</b><span>Read-heavy lookups go to a read-only investigator turn that hands back findings.</span></li>
+        <li><b>FAN-OUT</b><span>On a merge, one specialist per comparator reviews each batch of differences, deterministic checks run, then an orchestrator writes one brief.</span></li>
+        <li><b>VERIFIED</b><span>Utility names, identifiers and types the model invented are flagged in the answer.</span></li>
+        <li><b>MCP</b><span>142 live Teamcenter read tools, also open to external AI clients on the user's own session.</span></li>
+      </ul>
     </div>
     <div class="chat rv" aria-label="Example consultant conversation">
       <div class="msg q">If we give Designers WRITE on Wdg4_Part in Prod, what else changes?</div>
@@ -376,7 +471,7 @@ body.present .progress{display:block}
     <div class="eyebrow">Status, October 2026</div>
     <h2>Where the product is today.</h2>
     <div class="road">
-      <div class="rv"><h3><span class="dot"></span>Built</h3><ul><li>26 comparators and environment sweeps</li><li>Releases, change notices, merge and deployment packages</li><li>Consultant with Siemens sources</li><li>Organizations, roles and plans</li><li>Staging environment running</li></ul></div>
+      <div class="rv"><h3><span class="dot"></span>Built</h3><ul><li>25 comparators and environment sweeps</li><li>Releases, change notices, merge and deployment packages</li><li>Consultant with Siemens sources</li><li>Organizations, roles and plans</li><li>Staging environment running</li></ul></div>
       <div class="rv"><h3><span class="dot next"></span>Next</h3><ul><li>First external testers</li><li>Billing go-live</li><li>Shareable read-only report links</li><li>Scheduled drift captures</li></ul></div>
       <div class="rv"><h3><span class="dot later"></span>Later</h3><ul><li>Multi-signer approvals before promotion</li><li>Slack and Teams notifications</li><li>On-premise installation</li></ul></div>
     </div>
@@ -397,10 +492,136 @@ body.present .progress{display:block}
 
 <script>
 (function(){
-  var TOOLS=["AM Rules","BMIDE Data Model","Workflow Templates","Preferences","Saved Queries","Batch LOVs","Organization","Revision Rules","Admin Data Package","Closure Rules","Property Sets","Filter Rules","Transfer Modes","Transfer Option Sets","Report Builder","Stylesheets","AWC Column Config","Workspace Config","CAD Attribute Mapping","Templates","Active Integration (AIG)","Active Workspace (aws2)","Server-side ITK","Installed Features","Deployed Data Model","BMIDE Project vs Deployed"];
+  var TOOLS=["AM Rules","BMIDE Data Model","Workflow Templates","Preferences","Saved Queries","Batch LOVs","Organization","Revision Rules","Admin Data Package","Closure Rules","Property Sets","Filter Rules","Transfer Modes","Transfer Option Sets","Report Builder","Stylesheets","AWC Column Config","Workspace Config","CAD Attribute Mapping","Templates","Active Integration (AIG)","Active Workspace (aws2)","Server-side ITK","Installed Features","Deployed Data Model"];
   var HOT={"AM Rules":1,"BMIDE Data Model":1,"Workflow Templates":1,"Preferences":1};
   var box=document.getElementById("tools");
   TOOLS.forEach(function(t){var s=document.createElement("span");s.className="tool"+(HOT[t]?" hot":"");s.textContent=t;box.appendChild(s);});
+
+  function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
+  var reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---- Product walkthrough (steps follow the app's own Architecture tab) ----
+  var PRODUCTS=[
+    {key:"config",t:"Config comparators",p:"Two exports of one configuration area in, a readable change report out.",
+     f:["25 comparators","native Teamcenter exports","no conversion"],
+     s:[["in","Baseline + compared export","ACL.xml, a BMIDE project, workflow PLMXML, admin_data_export, templates."],
+        ["run","Pick the comparator","AM Rules, BMIDE, Workflows, Preferences, Transfer Modes, AIG and more."],
+        ["run","Engine on the worker pool","Each run produces a summary and a full report."],
+        ["out","Change report","Download the report, a JSON or CSV summary, or a plain-text change log."],
+        ["out","Run vs run","Two runs bucketed into pending, drift, aligned and conflicts."]],l:""},
+    {key:"env",t:"Environment comparators",p:"Every configuration area of Dev, Test and Prod compared in one matrix.",
+     f:["upload · git · capture","pairs in promotion order"],
+     s:[["in","Fill each environment","Upload per category, fetch from git, or capture from one of its servers."],
+        ["run","Detect what matches","Every area present on both sides becomes a comparison cell."],
+        ["run","Pair the environments","Hand-picked pairs, or neighbours along the promotion order."],
+        ["out","Comparison matrix","Filter differences, same or problems; open any cell's full report."],
+        ["out","Difference to change","Create a change notice straight from a pair."]],l:""},
+    {key:"servers",t:"Environment management",p:"Live servers: health, claims, log events and one-button capture, from an agent on each box.",
+     f:["agent per server","Google Chat + email alerts"],
+     s:[["in","Install the agent","One installer kit per Teamcenter box."],
+        ["in","Connect the live site","Each user signs in as themselves, by password or SSO."],
+        ["run","Heartbeat and health","Services, processes, changed preferences, dispatcher load."],
+        ["out","Server detail","Claim or waitlist a box, watched services, event feed."],
+        ["out","Capture the environment","Admin data, BMIDE and integration config land as a release."]],l:""},
+    {key:"change",t:"Changes & releases",p:"From a difference to a deployed, verified change: packaged, validated and traced.",
+     f:["CN: draft → approved → deployed → closed","REL: packaged → deployed → verified"],
+     s:[["in","Change notice","From a comparison or by hand: problem, affected and solution items."],
+        ["run","Pick what merges","Include or exclude each difference; apply builds the merged version."],
+        ["out","Delta + rollback","Ordered import packages, each with its change log."],
+        ["run","Release","Notices from several dev environments merged, conflicts resolved."],
+        ["out","Deploy and verify","A clean deploy log marks the notice deployed on its own."]],
+     l:"Package validation is advisory and file-only; it does not touch a live site."},
+    {key:"consult",t:"Consultant",p:"One agent that reads config, the live site, servers, console logs, the integration gateway and Siemens Support Center to explain an issue end to end.",
+     f:["read-only investigator","answers verified"],
+     s:[["in","Ask","In the chat, or from any report with the Consultant button."],
+        ["run","Offer the right tools","Heavy families are offered only when the question needs them."],
+        ["run","Investigate","Read-heavy lookups run in a nested read-only turn."],
+        ["run","Diagnose the transaction","Gateway logs matched against known integration failures."],
+        ["out","Verified answer","Invented utility names and identifiers are flagged."]],
+     l:"Gateway tools are read-only."},
+    {key:"advanced",t:"Simulators & IDE",p:"Read one export and explain it: why access is granted, how a workflow runs, what the data model holds.",
+     f:["file-only, nothing stored","undecided is reported, never guessed"],
+     s:[["in","One export","ACL.xml or admin_data_export; workflow PLMXML."],
+        ["in","Describe the case","A user, an object and privileges, or how a workflow's reviews go."],
+        ["run","Access Manager","Rules trimmed by condition, ACLs stacked, rows read by precedence."],
+        ["run","Workflow","Tasks start, rule quorums decide, handlers set status."],
+        ["out","Verdict with the working","The rule or task that decided, and what to change."]],
+     l:"The simulators read an export, not the live site."}
+  ];
+  var KIND={in:"Input",run:"Runs",out:"Output"};
+  var tabs=document.getElementById("prodTabs"), stepsEl=document.getElementById("prodSteps"), playBtn=document.getElementById("prodPlay");
+  var pi=0, si=0, playing=!reduceMotion, timer=null;
+  PRODUCTS.forEach(function(p,i){var b=el("button",null,p.t);b.type="button";b.setAttribute("role","tab");b.onclick=function(){pick(i);};tabs.appendChild(b);});
+  function pick(i){
+    pi=i;si=0;var p=PRODUCTS[i];
+    [].forEach.call(tabs.children,function(b,k){b.setAttribute("aria-selected",k===i?"true":"false");});
+    document.getElementById("prodTitle").textContent=p.t;
+    document.getElementById("prodPitch").textContent=p.p;
+    stepsEl.innerHTML="";
+    p.s.forEach(function(s){var li=el("li","step "+s[0]);li.appendChild(el("div","kind",KIND[s[0]]));li.appendChild(el("strong",null,s[1]));li.appendChild(el("span",null,s[2]));stepsEl.appendChild(li);});
+    var f=document.getElementById("prodFacts");f.innerHTML="";p.f.forEach(function(x){f.appendChild(el("span",null,x));});
+    document.getElementById("prodLimit").textContent=p.l;
+    light();restart();
+  }
+  function light(){[].forEach.call(stepsEl.children,function(li,k){li.classList.toggle("lit",k===si);li.classList.toggle("done",k<si);});}
+  function tick(){var n=PRODUCTS[pi].s.length;if(si<n-1){si++;light();}else{pick((pi+1)%PRODUCTS.length);}}
+  function restart(){clearInterval(timer);if(playing)timer=setInterval(tick,1700);}
+  playBtn.onclick=function(){playing=!playing;playBtn.textContent=playing?"❚❚":"▶";playBtn.setAttribute("aria-label",playing?"Pause walkthrough":"Play walkthrough");restart();};
+  if(!playing){playBtn.textContent="▶";playBtn.setAttribute("aria-label","Play walkthrough");}
+  pick(0);
+
+  // ---- See it working: one frame, three views; the iframe grows to fit its page ----
+  var dFrame=document.getElementById("demoFrame"), dFilm=document.getElementById("demoFilm"), dUrl=document.getElementById("demoUrl"), dTabs=document.getElementById("demoTabs");
+  var DURL={walkthrough:"teamcenterguru · how it works",samples:"teamcenterguru · sample reports",film:"teamcenterguru · the film"};
+  function fit(){try{var b=dFrame.contentDocument&&dFrame.contentDocument.body;if(b&&b.scrollHeight)dFrame.style.height=(b.scrollHeight+8)+"px";}catch(e){}}
+  dFrame.addEventListener("load",function(){fit();try{var b=dFrame.contentDocument.body;if("ResizeObserver" in window)new ResizeObserver(fit).observe(b);}catch(e){}});
+  [].forEach.call(dTabs.children,function(b){b.onclick=function(){
+    var v=b.dataset.v;[].forEach.call(dTabs.children,function(x){x.setAttribute("aria-selected",x===b?"true":"false");});
+    dUrl.textContent=DURL[v];
+    var film=v==="film";dFilm.hidden=!film;dFrame.hidden=film;
+    if(film){dFilm.preload="metadata";}else{dFilm.pause();dFrame.src="demo/#"+v;}
+  };});
+
+  // ---- System map ----
+  var NODES={
+    src:[["src.exports","Config exports","Teamcenter exports · packages · git"],["src.servers","Teamcenter servers","monitoring agent on each box"],["src.deploy","Deploy logs","one log per deployment run"],["src.live","Live Teamcenter","the user's own session"],["src.console","Management Console","syslog · server summary"],["src.gateway","Gateway (T4x / AIG)","transactions · jobs · logs"],["src.siemens","Siemens Support Center","KB · docs · release fixes"]],
+    eng:[["eng.config","Comparator engine","25 comparators · worker pool"],["eng.env","Environment matrix","every area, every pair"],["eng.change","Change & release","CN → merge → REL → verify"],["eng.hub","Server hub","heartbeats · health · claims"],["eng.consult","Consultant agent","one agent, every allowed tool"],["eng.advanced","Simulators & IDE","Access Manager · workflow · BMIDE"]],
+    out:[["out.reports","Reports","HTML · JSON · CSV · matrix"],["out.packages","Packages","delta · rollback · release"],["out.alerts","Alerts & events","Google Chat · email · feed"],["out.answers","Verified answers","invented names flagged"],["out.mcp","External AI clients","MCP endpoints"],["out.verdicts","Verdicts","the rule or task that decided"]]
+  };
+  var LINKS=[["src.exports","eng.config","config"],["src.exports","eng.env","env"],["src.exports","eng.consult","consult"],["src.exports","eng.advanced","advanced"],["src.servers","eng.hub","servers"],["src.servers","eng.env","servers env"],["src.deploy","eng.change","change"],["src.live","eng.consult","consult servers"],["src.console","eng.consult","consult servers"],["src.gateway","eng.consult","consult"],["src.siemens","eng.consult","consult"],["eng.config","eng.env","env"],["eng.env","eng.change","env change"],["eng.config","out.reports","config"],["eng.env","out.reports","env"],["eng.change","out.packages","change"],["eng.hub","out.alerts","servers"],["eng.consult","out.answers","consult"],["eng.consult","out.mcp","consult"],["eng.advanced","out.verdicts","advanced"]];
+  var map=document.getElementById("map"), svg=document.getElementById("mapLines"), nodeEl={};
+  [["src","colSrc"],["eng","colEng"],["out","colOut"]].forEach(function(c){var col=document.getElementById(c[1]);NODES[c[0]].forEach(function(n){var d=el("div","node"+(c[0]==="eng"?" eng":""));d.appendChild(el("strong",null,n[1]));d.appendChild(el("span",null,n[2]));col.appendChild(d);nodeEl[n[0]]=d;});});
+  var NS="http://www.w3.org/2000/svg", paths=[];
+  LINKS.forEach(function(l){var p=document.createElementNS(NS,"path");p.dataset.p=l[2];svg.appendChild(p);paths.push({el:p,a:l[0],b:l[1]});});
+  function draw(){
+    var m=map.getBoundingClientRect();if(!m.width)return;
+    paths.forEach(function(o){
+      var a=nodeEl[o.a].getBoundingClientRect(), b=nodeEl[o.b].getBoundingClientRect(), d;
+      if(o.a.slice(0,3)===o.b.slice(0,3)){ // a hand-off inside the platform column, drawn down its left edge
+        var x=a.left-m.left, y1=a.top-m.top+a.height/2, y2=b.top-m.top+b.height/2;
+        d="M"+x+" "+y1+" C"+(x-26)+" "+y1+" "+(x-26)+" "+y2+" "+x+" "+y2;
+      }else{
+        var x1=a.right-m.left, y1b=a.top-m.top+a.height/2, x2=b.left-m.left, y2b=b.top-m.top+b.height/2, mx=(x1+x2)/2;
+        d="M"+x1+" "+y1b+" C"+mx+" "+y1b+" "+mx+" "+y2b+" "+x2+" "+y2b;
+      }
+      o.el.setAttribute("d",d);
+    });
+  }
+  var CHIPS=[["config","Comparators"],["env","Environments"],["servers","Servers"],["change","Change & release"],["consult","Consultant"],["advanced","Simulators"]];
+  var chipBox=document.getElementById("mapChips"), ci=-1, chipTimer=null, chipAuto=!reduceMotion;
+  CHIPS.forEach(function(c,i){var b=el("button",null,c[1]);b.type="button";b.setAttribute("aria-pressed","false");b.onclick=function(){chipAuto=false;clearInterval(chipTimer);focusP(ci===i?-1:i);};chipBox.appendChild(b);});
+  function focusP(i){
+    ci=i;var key=i<0?null:CHIPS[i][0];
+    [].forEach.call(chipBox.children,function(b,k){b.setAttribute("aria-pressed",k===i?"true":"false");});
+    map.classList.toggle("focus",!!key);
+    Object.keys(nodeEl).forEach(function(id){nodeEl[id].classList.remove("on");});
+    paths.forEach(function(o){var on=!!key&&o.el.dataset.p.split(" ").indexOf(key)>-1;o.el.classList.toggle("on",on);if(on){nodeEl[o.a].classList.add("on");nodeEl[o.b].classList.add("on");}});
+  }
+  if(chipAuto)chipTimer=setInterval(function(){focusP((ci+1)%CHIPS.length);},3200);
+  draw();
+  if("ResizeObserver" in window)new ResizeObserver(draw).observe(map);
+  window.addEventListener("resize",draw);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);
 
   // count-up, starting from the final value so the page reads correctly at rest
   function countUp(el){var n=+el.dataset.count;if(!n)return;var t0=null;function step(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/900,1);el.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);}
@@ -422,6 +643,7 @@ body.present .progress{display:block}
     cur.querySelectorAll(".rv").forEach(function(el){el.classList.remove("in");void el.offsetWidth;el.classList.add("in");});
     cur.querySelectorAll(".dl").forEach(function(el){el.style.animation="none";void el.offsetWidth;el.style.animation="";});
     cur.querySelectorAll("[data-count]").forEach(countUp);
+    draw();setTimeout(draw,480);
     pc.textContent=(idx+1)+" / "+slides.length;
     bar.style.width=((idx+1)/slides.length*100)+"%";
   }
