@@ -102,6 +102,49 @@ section.sheet .wrap{display:grid;gap:28px}
 .jobs b{font:500 .7rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
 .jobs p{color:var(--muted);font-size:.95rem}
 
+/* same team, more done */
+.crew{background:var(--sheet);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.crew-head,.crow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1.3fr)}
+.crew-head{border-bottom:1px solid var(--line);background:var(--paper)}
+.crew-head > div{padding:14px 16px;display:grid;gap:8px;align-content:start;min-width:0}
+.ch b{font:500 .7rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ch.app b{color:var(--accent)}
+.ch strong{font:700 1rem/1.25 var(--display)}
+.ch.manual strong{color:var(--rem)}
+.ch.app strong{color:var(--accent)}
+.ppl{display:flex;flex-wrap:wrap;gap:3px;min-height:22px}
+.ppl svg{width:18px;height:22px;transition:opacity .5s,transform .5s}
+.ppl svg.gone{opacity:0;transform:translateY(-8px) scale(.6);width:0;margin-right:-3px}
+.p-head,.p-body{fill:var(--muted)}
+.ch.manual .p-head,.ch.manual .p-body{fill:var(--rem)}
+.ch.app .p-head,.ch.app .p-body{fill:var(--accent)}
+.cgroup{padding:10px 16px;font:500 .7rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:var(--paper);border-bottom:1px solid var(--line)}
+.crow{border-bottom:1px solid var(--line)}
+.crow:last-child{border-bottom:0}
+.crow > div{padding:11px 16px;display:flex;align-items:center;gap:10px;min-width:0;font-size:.88rem}
+.crow .task{font-weight:600}
+.cell-m{color:var(--muted)}
+.cell-m .busy{flex:none;width:34px;height:6px;border-radius:3px;background:var(--rem-bg);overflow:hidden;position:relative}
+.cell-m .busy::after{content:"";position:absolute;inset:0;width:40%;background:var(--rem);border-radius:3px;animation:busy 1.6s ease-in-out infinite}
+@keyframes busy{0%{left:-40%}100%{left:100%}}
+.cell-a{position:relative}
+.cell-a .who{flex:none;width:22px;height:22px;display:grid;place-items:center}
+.cell-a .who svg{width:16px;height:20px}
+.cell-a .agent{flex:none;width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,#8b5cf6,#4cc3d6);display:grid;place-items:center;color:#ffffff;font:700 .62rem/1 var(--mono)}
+.cell-a .txt{min-width:0}
+.cell-a .ok{margin-left:auto;flex:none;color:var(--add);font-weight:700}
+.cell-a.manual .agent,.cell-a.manual .ok{display:none}
+.cell-a:not(.manual) .who{display:none}
+.cell-a.manual .txt{color:var(--muted)}
+.cell-a.flip{animation:flip .5s ease-out}
+@keyframes flip{from{background:var(--accent-soft)}to{background:transparent}}
+@media (max-width:760px){
+  .crew-head,.crow{grid-template-columns:1fr 1fr}
+  .crew-head > div:first-child{display:none}
+  .crow .task{grid-column:1 / -1;padding-bottom:0}
+  .crow > div{font-size:.82rem}
+}
+
 /* 4. outcomes */
 .outcomes{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 @media (max-width:760px){.outcomes{grid-template-columns:1fr}}
@@ -229,6 +272,24 @@ body.present .progress{display:block}
   </div>
 </section>
 
+<!-- Same team, more done -->
+<section class="sheet" id="team">
+  <div class="wrap">
+    <div class="eyebrow">The team</div>
+    <h2>Same team, far more done.</h2>
+    <p class="lede">Today every one of these tasks takes a person's time. With TeamcenterGuru, AI agents do the watching, reading, checking and drafting, and people review and decide.</p>
+    <div class="crew rv" id="crew" aria-label="Illustrative comparison: nine admin and support tasks done by hand by nine people, against the same tasks done by AI agents with two people reviewing">
+      <div class="crew-head">
+        <div></div>
+        <div class="ch manual"><b>Today, by hand</b><span class="ppl" id="pplManual"></span><strong><span>9</span> people busy</strong></div>
+        <div class="ch app"><b>With TeamcenterGuru</b><span class="ppl" id="pplApp"></span><strong><span id="appCount">2</span> people reviewing · <span id="agentCount">9</span> tasks on AI agents</strong></div>
+      </div>
+      <div id="crewRows"></div>
+    </div>
+    <p class="muted">Illustrative: one person per task today. With the agents, one admin lead and one support lead review the results.</p>
+  </div>
+</section>
+
 <!-- 4 -->
 <section class="sheet" id="outcomes">
   <div class="wrap">
@@ -292,7 +353,7 @@ body.present .progress{display:block}
 </footer>
 
 <div class="pctl" role="group" aria-label="Presentation controls">
-  <span id="pcount">1 / 6</span>
+  <span id="pcount">1 / 7</span>
   <button type="button" id="prev" aria-label="Previous slide">‹</button>
   <button type="button" id="next" aria-label="Next slide">›</button>
   <button type="button" id="exit">Exit</button>
@@ -318,6 +379,61 @@ body.present .progress{display:block}
   }
   if(!reduce)setTimeout(runOnce,800);
 
+  // Same team, more done: agents take the tasks over one by one; the people counter falls from 9 to 2.
+  var PERSON='<svg viewBox="0 0 18 22" aria-hidden="true"><circle class="p-head" cx="9" cy="5" r="4"/><path class="p-body" d="M1 21c0-5 3.6-8 8-8s8 3 8 8z"/></svg>';
+  var CREW=[
+    ["Admin team",[
+      ["Watch servers and services","Checks each box by hand","Agents report every cycle and alert when a service stops"],
+      ["Compare configurations","Exports diffed by hand","Every environment pair compared in about 10 seconds"],
+      ["Write ITK and SOA code","Written and debugged by hand","Drafted from plain English; ITK compile-checked"],
+      ["Change configuration","Edited by hand, one file at a time","Drafted from a request, ready for review"],
+      ["Deploy and smoke test","Scripts run and checked by hand","Ordered package, log read, smoke tests run"]]],
+    ["Support team",[
+      ["Analyse server logs","Searched line by line","Log patterns matched, syslog read for the cause"],
+      ["Check live Teamcenter","Clicked through screen by screen","Read directly, signed in as the user"],
+      ["Read Active Integration logs","Transaction logs read by hand","Matched against known integration failures"],
+      ["Find Support Center references","Searched and read by hand","Siemens KB and docs cited in a verified answer"]]]
+  ];
+  var rowsEl=document.getElementById("crewRows"), appCells=[];
+  CREW.forEach(function(g){
+    var gh=document.createElement("div");gh.className="cgroup";gh.textContent=g[0];rowsEl.appendChild(gh);
+    g[1].forEach(function(t){
+      var r=document.createElement("div");r.className="crow";
+      r.innerHTML='<div class="task"></div><div class="cell-m"><span class="busy" aria-hidden="true"></span><span class="m"></span></div>'+
+        '<div class="cell-a"><span class="who">'+PERSON+'</span><span class="agent" aria-hidden="true">AI</span><span class="txt"></span><span class="ok" aria-hidden="true">✓</span></div>';
+      r.querySelector(".task").textContent=t[0];r.querySelector(".m").textContent=t[1];
+      var a=r.querySelector(".cell-a");a.querySelector(".txt").textContent=t[2];a.dataset.manual=t[1];a.dataset.agent=t[2];
+      rowsEl.appendChild(r);appCells.push(a);
+    });
+  });
+  var pplManual=document.getElementById("pplManual"), pplApp=document.getElementById("pplApp"), appCount=document.getElementById("appCount"), agentCount=document.getElementById("agentCount");
+  for(var i=0;i<9;i++){pplManual.insertAdjacentHTML("beforeend",PERSON);pplApp.insertAdjacentHTML("beforeend",PERSON);}
+  var appPeople=[].slice.call(pplApp.querySelectorAll("svg"));
+  function setApp(k){ // k = tasks taken over by agents (0..9); people = 9 - k, never below 2
+    var people=Math.max(2,9-k);
+    appPeople.forEach(function(p,j){p.classList.toggle("gone",j>=people);});
+    appCount.textContent=people;agentCount.textContent=k;
+  }
+  // at rest the page shows the finished state: agents on all nine, two people
+  appCells.forEach(function(a){a.classList.remove("manual");});setApp(9);
+  var crewRun=0;
+  function crewLoop(){
+    var run=++crewRun;
+    appCells.forEach(function(a){a.classList.add("manual");a.querySelector(".txt").textContent=a.dataset.manual;});
+    appPeople.forEach(function(p){p.classList.remove("gone");});appCount.textContent=9;agentCount.textContent=0;
+    appCells.forEach(function(a,j){
+      setTimeout(function(){if(run!==crewRun)return;
+        a.classList.remove("manual");a.querySelector(".txt").textContent=a.dataset.agent;
+        a.classList.remove("flip");void a.offsetWidth;a.classList.add("flip");setApp(j+1);
+      },1600+j*900);
+    });
+    setTimeout(function(){if(run===crewRun)crewLoop();},1600+9*900+5000);
+  }
+  if(!reduce&&"IntersectionObserver" in window){
+    var crIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){crIo.disconnect();crewLoop();}},{threshold:.3});
+    crIo.observe(document.getElementById("crew"));
+  }
+
   if("IntersectionObserver" in window && !reduce){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.2});
     document.querySelectorAll(".rv").forEach(function(el){io.observe(el);});
@@ -331,6 +447,7 @@ body.present .progress{display:block}
     slides.forEach(function(s,k){s.classList.toggle("on",k===idx);s.classList.toggle("left",k<idx);});
     slides[idx].querySelectorAll(".rv").forEach(function(el){el.classList.remove("in");void el.offsetWidth;el.classList.add("in");});
     if(slides[idx].id==="top"&&!reduce)runOnce();
+    if(slides[idx].id==="team"&&!reduce)crewLoop();
     pc.textContent=(idx+1)+" / "+slides.length;bar.style.width=((idx+1)/slides.length*100)+"%";
   }
   function start(){on=true;document.body.classList.add("present");show(0);var de=document.documentElement;if(de.requestFullscreen)de.requestFullscreen().catch(function(){});}
