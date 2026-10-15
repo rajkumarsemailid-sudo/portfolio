@@ -80,9 +80,9 @@ section.sheet .wrap{display:grid;gap:28px}
 .hero-ppl svg.gone{opacity:0;transform:translateY(-8px) scale(.6);width:0;margin-right:-4px}
 .chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 @media (max-width:460px){.chips{grid-template-columns:repeat(2,1fr)}}
-.tchip{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font:500 .74rem/1.2 var(--body);color:var(--code-fg);min-width:0;transition:background .4s,border-color .4s}
+.tchip{display:flex;align-items:center;gap:8px;padding:8px 10px;min-height:46px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font:500 .74rem/1.2 var(--body);color:var(--code-fg);min-width:0;transition:background .4s,border-color .4s}
 .tchip b{flex:none;width:20px;height:20px;border-radius:6px;display:grid;place-items:center;font:700 .58rem/1 var(--mono);background:linear-gradient(135deg,#8b5cf6,#4cc3d6);color:#ffffff}
-.tchip span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tchip span{min-width:0;line-height:1.25;overflow-wrap:anywhere}
 .tchip em{margin-left:auto;flex:none;font-style:normal;color:#7fe0a5;font-weight:700}
 .tchip.hand{background:rgba(255,157,148,.07);border-color:rgba(255,157,148,.2);color:var(--code-dim)}
 .tchip.hand b{background:transparent;width:8px;height:8px;border-radius:50%;margin:0 6px;background-color:#ff9d94;animation:beat 1.4s infinite}
@@ -243,7 +243,7 @@ body.present .progress{display:block}
       <div class="run-top"><span>Your admin and support team</span><span>with TeamcenterGuru AI agents</span></div>
       <div class="headcount"><strong id="heroCount">2</strong><span id="heroVerb">people reviewing</span></div>
       <div class="hero-ppl" id="heroPpl" aria-hidden="true"></div>
-      <div class="chips" id="heroChips"><div class="tchip"><b>AI</b><span>Watch servers</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Compare configs</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Write ITK / SOA code</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Change config</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Deploy &amp; smoke test</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Analyse logs</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Check live Teamcenter</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Read AIG logs</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Find Siemens references</span><em>✓</em></div></div>
+      <div class="chips" id="heroChips"><div class="tchip"><b>AI</b><span>Watch servers</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Compare configs</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Write ITK / SOA</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Change config</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Deploy &amp; test</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Analyse logs</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Live Teamcenter</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Read AIG logs</span><em>✓</em></div><div class="tchip"><b>AI</b><span>Siemens support</span><em>✓</em></div></div>
       <div class="run-foot"><span id="runFoot">✓ 9 of 9 tasks on AI agents</span><span>illustrative</span></div>
     </div>
   </div>
