@@ -482,8 +482,8 @@ body.present .progress{display:block}
       <div><b>Simulation</b><h3>Decisions explained</h3><p>Shows why access is granted or denied, and how a workflow will run, before anyone is affected.</p></div>
     </div>
     <div class="watch rv" id="watch" aria-label="Illustrative, two scenes: a PROD service stops and the admin chat is alerted at once; then the AI consultant finds the cause of a failing SAP transfer by reading live Teamcenter, server logs, integration logs, configuration and Siemens Support Center, in about a minute instead of hours">
-      <div class="w-title"><b id="wTitle">Servers, watched live</b><span><span id="wSub">agent on every box · alerts by chat and email</span><span class="scene-dots" aria-hidden="true"><i class="on" id="dot1"></i><i id="dot2"></i></span></span></div>
-      <div class="w-body" id="scene1">
+      <div class="w-title"><b id="wTitle">Support, solved with the AI consultant</b><span><span id="wSub">live Teamcenter · server and integration logs · configuration · Siemens support</span><span class="scene-dots" aria-hidden="true"><i class="on" id="dot2"></i><i id="dot1"></i></span></span></div>
+      <div class="w-body" id="scene1" hidden>
         <div class="servers">
           <div class="w-h">PROD servers</div>
           <div class="srv" data-s="web"><i class="hb"></i><div><strong>tc-web01</strong><span>Active Workspace</span></div><em>running</em></div>
@@ -503,16 +503,16 @@ body.present .progress{display:block}
           </div>
         </div>
       </div>
-      <div class="w-body2" id="scene2" hidden>
+      <div class="w-body2" id="scene2">
         <div class="solve-chat">
           <div class="w-h">Support chat · AI consultant</div>
           <div class="sq">Users report SAP transfers failing since last night. What's wrong?</div>
           <ol class="ssteps" id="ssteps">
-            <li><i></i><div><strong>Live Teamcenter <small>signed in as you</small></strong><span>Wdg4_Part 000124/B is released; its transfer to SAP is pending</span></div><em><s>by hand ~20 min</s><b>4 s</b></em></li>
-            <li><i></i><div><strong>Server logs <small>tc-app01 syslog</small></strong><span>tcserver exited after a mapping exception at 02:16</span></div><em><s>by hand ~45 min</s><b>6 s</b></em></li>
-            <li><i></i><div><strong>Active Integration logs <small>gateway transactions</small></strong><span>Transfer failed: no mapping for wdg4_material</span></div><em><s>by hand ~60 min</s><b>5 s</b></em></li>
-            <li><i></i><div><strong>Configuration <small>AIG mapping, Prod vs QA</small></strong><span>QA maps wdg4_material; Prod does not. Added in REL-000123</span></div><em><s>by hand ~45 min</s><b>3 s</b></em></li>
-            <li><i></i><div><strong>Siemens Support Center <small>KB and docs</small></strong><span>Same symptom documented for an unmapped attribute</span></div><em><s>by hand ~50 min</s><b>8 s</b></em></li>
+            <li class="done"><i></i><div><strong>Live Teamcenter <small>signed in as you</small></strong><span>Wdg4_Part 000124/B is released; its transfer to SAP is pending</span></div><em><s>by hand ~20 min</s><b>4 s</b></em></li>
+            <li class="done"><i></i><div><strong>Server logs <small>tc-app01 syslog</small></strong><span>tcserver exited after a mapping exception at 02:16</span></div><em><s>by hand ~45 min</s><b>6 s</b></em></li>
+            <li class="done"><i></i><div><strong>Active Integration logs <small>gateway transactions</small></strong><span>Transfer failed: no mapping for wdg4_material</span></div><em><s>by hand ~60 min</s><b>5 s</b></em></li>
+            <li class="done"><i></i><div><strong>Configuration <small>AIG mapping, Prod vs QA</small></strong><span>QA maps wdg4_material; Prod does not. Added in REL-000123</span></div><em><s>by hand ~45 min</s><b>3 s</b></em></li>
+            <li class="done"><i></i><div><strong>Siemens Support Center <small>KB and docs</small></strong><span>Same symptom documented for an unmapped attribute</span></div><em><s>by hand ~50 min</s><b>8 s</b></em></li>
           </ol>
           <div class="sanswer" id="sanswer"><b>Root cause</b><p>Prod's integration mapping has no entry for wdg4_material, which the last release added to the data model. Fix: copy QA's mapping entry to Prod through a change notice. The change is drafted for review.</p></div>
         </div>
@@ -736,10 +736,11 @@ body.present .progress{display:block}
         ttA.style.width=Math.max(1.5,auto/60/MAN_TOTAL*100)+"%";ttAv.textContent=auto+" s";});
     });
     at(900+5*1500+400,function(){sanswer.classList.remove("wait");ttAv.textContent="about 1 min";ttA.style.width="1.5%";});
-    at(900+5*1500+8000,watchLoop);
+    at(900+5*1500+7000,function(){serversScene(run);});
   }
-  function watchLoop(){
-    var run=++wRun, at=function(ms,f){setTimeout(function(){if(run===wRun)f();},ms);};
+  function watchLoop(){var run=++wRun;solveScene(run);}
+  function serversScene(run){
+    var at=function(ms,f){setTimeout(function(){if(run===wRun)f();},ms);};
     scene(1);
     cms.forEach(function(c){c.classList.add("hide");});packet.className="";
     ["web","app1","app2","fsc"].forEach(function(k){setSrv(k,"","running");});
