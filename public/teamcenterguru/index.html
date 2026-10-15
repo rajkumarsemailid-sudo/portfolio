@@ -236,7 +236,6 @@ section.sheet .wrap{display:grid;gap:28px}
 
 @media (max-width:760px){.ai p{min-height:7.8em}.cp-q{min-height:4.9em}}
 .copilot{position:relative}
-.playbtn{position:absolute;top:10px;right:10px;z-index:4;font:600 .78rem/1 var(--body);padding:8px 12px;border-radius:999px;border:1px solid #4cc3d6;background:#0f2433;color:#4cc3d6;cursor:pointer;box-shadow:0 4px 14px -6px rgba(0,0,0,.4)}
 
 /* hero copilot window */
 .copilot{background:var(--code-bg);color:var(--code-fg);border-radius:14px;overflow:hidden;min-width:0;box-shadow:0 24px 60px -30px rgba(8,30,44,.55);font:400 .8rem/1.6 var(--mono)}
@@ -727,14 +726,14 @@ Saved as release REL-000124.</pre>
 
   function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
   var reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // On a phone nothing moves until it is asked to: each animation rests finished, with a Play button.
-  var autoplay=!reduceMotion&&!matchMedia("(max-width: 760px)").matches;
-  function playButton(host,start){
-    if(reduceMotion||autoplay)return;
-    var b=document.createElement("button");b.type="button";b.className="playbtn";b.textContent="▶ Play";
-    b.setAttribute("aria-label","Play this animation");
-    b.onclick=function(){b.remove();start();};
-    host.appendChild(b);
+  // Each animation plays while it is on screen and stops, back to its resting state, when scrolled away.
+  function inView(el,start,stop){
+    if(reduceMotion||!("IntersectionObserver" in window)||!el)return;
+    var on=false;
+    new IntersectionObserver(function(es){
+      var vis=es[0].isIntersecting;
+      if(vis&&!on){on=true;start();}else if(!vis&&on){on=false;stop();}
+    },{threshold:.3}).observe(el);
   }
 
   // ---- Hero: the admin copilot loops through five jobs like a GIF. Scene 1 is in the HTML, so the page reads at rest. ----
@@ -783,8 +782,13 @@ Saved as release REL-000124.</pre>
   function loop(k,run){playScene(k,run).then(function(){loop((k+1)%SCENES.length,run);});}
   function startLoop(){clearTimeout(sceneTimer);sceneRun++;loop(0,sceneRun);}
   cpSteps.children[0].classList.add("cur");
-  if(autoplay)setTimeout(startLoop,700);
-  playButton(document.querySelector(".copilot"),startLoop);
+  function heroRest(){
+    clearTimeout(sceneTimer);sceneRun++;
+    var s0=SCENES[0];cpQ.textContent=s0.q;cp.textContent=ITK;setFoot(s0.foot);cpFoot.classList.remove("wait");
+    [].forEach.call(cpSrc,function(c,j){c.classList.toggle("on",s0.src.indexOf(j)>-1);});
+    [].forEach.call(cpSteps.children,function(b,j){b.classList.toggle("cur",j===0);b.classList.remove("seen");});
+  }
+  inView(document.querySelector(".copilot"),startLoop,heroRest);
   function typeCode(){if(!reduceMotion)startLoop();}
 
   // ---- Lifecycle: one change notice walks the seven steps; the consultant speaks at each ----
@@ -829,12 +833,15 @@ Saved as release REL-000124.</pre>
   function stLoop(k,run){stage(k,run).then(function(){stLoop((k+1)%STAGES.length,run);});}
   function stStart(k){clearTimeout(stTimer);stRun++;stLoop(k,stRun);}
   [].forEach.call(flow.children,function(li,j){li.onclick=function(){stStart(j);};});
-  // start when the section first comes into view, so the story begins at Capture
-  playButton(document.querySelector(".copilot.stage"),function(){stStart(0);});
-  if(autoplay){
-    if("IntersectionObserver" in window){var stIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){stIo.disconnect();stStart(0);}},{threshold:.3});stIo.observe(flow);}
-    else stStart(0);
+  // the story starts at Capture each time it comes into view
+  var ST0={code:stCode.innerHTML,ai:stAiText.textContent,title:stTitle.textContent};
+  function stRest(){
+    clearTimeout(stTimer);stRun++;
+    stCode.innerHTML=ST0.code;stAiText.textContent=ST0.ai;stTitle.textContent=ST0.title;stAi.classList.remove("wait");
+    [].forEach.call(flow.children,function(li,j){li.classList.toggle("on",j===0);li.classList.remove("done");});
+    flow.style.setProperty("--p",0);
   }
+  inView(document.querySelector(".copilot.stage"),function(){stStart(0);},stRest);
 
   // ---- Environment comparison matrix (example figures), laid out like the app's ----
   var AREAS=["AM Rules","BMIDE Data Model","Workflow Templates","Saved Queries","Batch LOVs","Preferences","Report Builder","Organization"];
@@ -903,7 +910,7 @@ Saved as release REL-000124.</pre>
     cells.forEach(function(c,i){setTimeout(function(){if(run!==sweepRun)return;c.classList.remove("wait");c.classList.add("pop");done++;
       sweepState.textContent=done+" / 32 comparisons done";if(done===32)sweepState.classList.remove("run");},500+Math.floor(i/8)*700+(i%8)*90+Math.random()*120);});
   }
-  if(autoplay&&"IntersectionObserver" in window){var swIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){swIo.disconnect();runSweep();}},{threshold:.35});swIo.observe(matrix);}
+  inView(matrix,runSweep,function(){});
 
   // ---- Product walkthrough (steps follow the app's own Architecture tab) ----
   var PRODUCTS=[
@@ -963,7 +970,7 @@ Saved as release REL-000124.</pre>
   ];
   var KIND={in:"Input",run:"Runs",out:"Output"};
   var tabs=document.getElementById("prodTabs"), stepsEl=document.getElementById("prodSteps"), playBtn=document.getElementById("prodPlay");
-  var pi=0, si=0, playing=autoplay, timer=null;
+  var pi=0, si=0, playing=false, timer=null, userPaused=false;
   PRODUCTS.forEach(function(p,i){var b=el("button",null,p.t);b.type="button";b.setAttribute("role","tab");b.onclick=function(){pick(i);};tabs.appendChild(b);});
   function pick(i){
     pi=i;si=0;var p=PRODUCTS[i];
@@ -979,9 +986,11 @@ Saved as release REL-000124.</pre>
   function light(){[].forEach.call(stepsEl.children,function(li,k){li.classList.toggle("lit",k===si);li.classList.toggle("done",k<si);});}
   function tick(){var n=PRODUCTS[pi].s.length;if(si<n-1){si++;light();}else{pick((pi+1)%PRODUCTS.length);}}
   function restart(){clearInterval(timer);if(playing)timer=setInterval(tick,1700);}
-  playBtn.onclick=function(){playing=!playing;playBtn.textContent=playing?"❚❚":"▶";playBtn.setAttribute("aria-label",playing?"Pause walkthrough":"Play walkthrough");restart();};
+  function setPlaying(v){playing=v;playBtn.textContent=playing?"❚❚":"▶";playBtn.setAttribute("aria-label",playing?"Pause walkthrough":"Play walkthrough");restart();}
+  playBtn.onclick=function(){userPaused=playing;playing=!playing;playBtn.textContent=playing?"❚❚":"▶";playBtn.setAttribute("aria-label",playing?"Pause walkthrough":"Play walkthrough");restart();};
   if(!playing){playBtn.textContent="▶";playBtn.setAttribute("aria-label","Play walkthrough");}
   pick(0);
+  inView(document.getElementById("prod"),function(){if(!userPaused)setPlaying(true);},function(){setPlaying(false);});
 
   // ---- See it working: one frame, three views; the iframe grows to fit its page ----
   var dFrame=document.getElementById("demoFrame"), dFilm=document.getElementById("demoFilm"), dUrl=document.getElementById("demoUrl"), dTabs=document.getElementById("demoTabs");
@@ -1021,7 +1030,7 @@ Saved as release REL-000124.</pre>
     });
   }
   var CHIPS=[["config","Comparators"],["env","Environments"],["servers","Servers"],["change","Change & release"],["consult","Consultant"],["advanced","Simulators"]];
-  var chipBox=document.getElementById("mapChips"), ci=-1, chipTimer=null, chipAuto=autoplay;
+  var chipBox=document.getElementById("mapChips"), ci=-1, chipTimer=null, chipAuto=true;
   CHIPS.forEach(function(c,i){var b=el("button",null,c[1]);b.type="button";b.setAttribute("aria-pressed","false");b.onclick=function(){chipAuto=false;clearInterval(chipTimer);focusP(ci===i?-1:i);};chipBox.appendChild(b);});
   function focusP(i){
     ci=i;var key=i<0?null:CHIPS[i][0];
@@ -1030,7 +1039,7 @@ Saved as release REL-000124.</pre>
     Object.keys(nodeEl).forEach(function(id){nodeEl[id].classList.remove("on");});
     paths.forEach(function(o){var on=!!key&&o.el.dataset.p.split(" ").indexOf(key)>-1;o.el.classList.toggle("on",on);if(on){nodeEl[o.a].classList.add("on");nodeEl[o.b].classList.add("on");}});
   }
-  if(chipAuto)chipTimer=setInterval(function(){focusP((ci+1)%CHIPS.length);},3200);
+  inView(map,function(){if(chipAuto){clearInterval(chipTimer);chipTimer=setInterval(function(){focusP((ci+1)%CHIPS.length);},3200);}},function(){clearInterval(chipTimer);if(chipAuto)focusP(-1);});
   draw();
   if("ResizeObserver" in window)new ResizeObserver(draw).observe(map);
   window.addEventListener("resize",draw);

@@ -38,8 +38,6 @@
 .wstage > *{grid-area:1 / 1}
 .wstage > .off{visibility:hidden;animation:none}
 .run,.twoways,.crew,.watch{position:relative}
-.playbtn{position:absolute;top:10px;right:10px;z-index:4;font:600 .78rem/1 var(--body);padding:8px 12px;border-radius:999px;border:1px solid var(--accent);background:var(--sheet);color:var(--accent);cursor:pointer;box-shadow:0 4px 14px -6px rgba(0,0,0,.4)}
-.watch .playbtn,.run .playbtn{background:#0f2433;border-color:#4cc3d6;color:#4cc3d6}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.6 var(--body);padding-inline:16px;padding-block:0}
 .wrap{max-width:68rem;margin-inline:auto}
@@ -651,14 +649,14 @@ body.present .progress{display:block}
 <script>
 (function(){
   var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // On a phone nothing moves until it is asked to: each animation rests finished, with a Play button.
-  var autoplay=!reduce&&!matchMedia("(max-width: 760px)").matches;
-  function playButton(host,start){
-    if(reduce||autoplay)return;
-    var b=document.createElement("button");b.type="button";b.className="playbtn";b.textContent="▶ Play";
-    b.setAttribute("aria-label","Play this animation");
-    b.onclick=function(){b.remove();start();};
-    host.appendChild(b);
+  // Each animation plays while it is on screen and stops, back to its finished state, when scrolled away.
+  function inView(el,start,stop){
+    if(reduce||!("IntersectionObserver" in window)||!el)return;
+    var on=false;
+    new IntersectionObserver(function(es){
+      var vis=es[0].isIntersecting;
+      if(vis&&!on){on=true;start();}else if(!vis&&on){on=false;stop();}
+    },{threshold:.3}).observe(el);
   }
 
   // Hero: the team takeover. The finished state is in the HTML, so the page reads at rest.
@@ -684,8 +682,7 @@ body.present .progress{display:block}
     });
     setTimeout(function(){if(run===heroRun)runOnce();},900+9*650+6000);
   }
-  if(autoplay)setTimeout(runOnce,600);
-  playButton(document.querySelector(".run"),runOnce);
+  inView(document.querySelector(".run"),runOnce,function(){heroRun++;heroChips.forEach(function(c){c.classList.remove("hand","flip");});heroSet(9);});
 
   // Impact chart: three panels, each on its own scale (never a shared or dual axis). Example figures.
   var IMPACT=[
@@ -725,10 +722,7 @@ body.present .progress{display:block}
       pctEls.forEach(function(o){var t0=null;(function step(ts){if(!t0)t0=ts;var q=Math.min(1,(ts-t0)/900);o.el.textContent="−"+Math.round(o.pct*q)+"%";if(q<1)requestAnimationFrame(step);})(performance.now());});
     },120);
   }
-  if(autoplay&&"IntersectionObserver" in window){
-    var imIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){imIo.disconnect();growImpact();}},{threshold:.35});
-    imIo.observe(impact);
-  }
+  inView(impact,growImpact,function(){});
 
   // Servers watched live: a stop and a log error reach the admin chat; the finished thread is in the HTML.
   var srv={}; [].forEach.call(document.querySelectorAll("#watch .srv"),function(r){srv[r.dataset.s]=r;});
@@ -783,11 +777,11 @@ body.present .progress{display:block}
     at(10700,function(){cms[3].classList.remove("hide");});
     at(14500,function(){solveScene(run);});
   }
-  if(autoplay&&"IntersectionObserver" in window){
-    var wIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){wIo.disconnect();watchLoop();}},{threshold:.3});
-    wIo.observe(document.getElementById("watch"));
+  function watchRest(){ // the consultant scene, finished
+    wRun++;scene(2);ssteps.forEach(function(li){li.className="done";});sanswer.classList.remove("wait");
+    ttM.style.width="100%";ttMv.textContent="3 h 40 min";ttA.style.width="1.5%";ttAv.textContent="about 1 min";
   }
-  playButton(document.getElementById("watch"),watchLoop);
+  inView(document.getElementById("watch"),watchLoop,watchRest);
 
   // One change, two ways: the silo misses what the whole configuration shows.
   var NS="http://www.w3.org/2000/svg";
@@ -849,11 +843,13 @@ body.present .progress{display:block}
     at(900+6*550+2700,function(){tlCtx[2].className="ok";});
     at(13500,twLoop);
   }
-  if(autoplay&&"IntersectionObserver" in window){
-    var twIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){twIo.disconnect();twLoop();}},{threshold:.3});
-    twIo.observe(document.getElementById("twoways"));
+  function twRest(){
+    twRun++;siloOrgTxt.textContent="Looks fine ✓";
+    ["ok","ok","bad"].forEach(function(c,i){tlSilo[i].className=c;});tlCtx.forEach(function(li){li.className="ok";});
+    vSilo.classList.remove("wait");vCtx.classList.remove("wait");
+    GNODES.slice(1).forEach(function(n){gEls[n.id].s.textContent=n.s;});finalState();
   }
-  playButton(document.getElementById("twoways"),twLoop);
+  inView(document.getElementById("twoways"),twLoop,twRest);
 
   // Same team, more done: agents take the tasks over one by one; the people counter falls from 9 to 2.
   var PERSON='<svg viewBox="0 0 18 22" aria-hidden="true"><circle class="p-head" cx="9" cy="5" r="4"/><path class="p-body" d="M1 21c0-5 3.6-8 8-8s8 3 8 8z"/></svg>';
@@ -906,11 +902,7 @@ body.present .progress{display:block}
     });
     setTimeout(function(){if(run===crewRun)crewLoop();},700+9*800+6500);
   }
-  if(autoplay&&"IntersectionObserver" in window){
-    var crIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){crIo.disconnect();crewLoop();}},{threshold:.3});
-    crIo.observe(document.getElementById("crew"));
-  }
-  playButton(document.getElementById("crew"),crewLoop);
+  inView(document.getElementById("crew"),crewLoop,function(){crewRun++;appCells.forEach(function(a){a.classList.remove("manual","flip");});setApp(9);});
 
   if("IntersectionObserver" in window && !reduce){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.2});
