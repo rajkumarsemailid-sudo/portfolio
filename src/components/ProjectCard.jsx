@@ -40,6 +40,27 @@ function MediaPreview({ project }) {
     )
   }
 
+  if (project.embed) {
+    // A live page, rendered at twice the card's size and scaled down so it shows its desktop layout.
+    return (
+      <a
+        href={project.embed}
+        target="_blank"
+        rel="noreferrer"
+        className="relative block h-full w-full overflow-hidden"
+        aria-label={`Open ${project.title}`}
+      >
+        <iframe
+          className="pointer-events-none absolute left-0 top-0 h-[200%] w-[200%] origin-top-left scale-50 border-0"
+          src={project.embed}
+          title={`${project.title} preview`}
+          loading="lazy"
+          tabIndex={-1}
+        />
+      </a>
+    )
+  }
+
   if (project.video) {
     return (
       <video
@@ -162,7 +183,7 @@ export default function ProjectCard({ project }) {
                 rel="noreferrer"
                 className="text-accent hover:underline"
               >
-                Live
+                {project.embed ? 'Open the brief' : 'Live'}
               </a>
             )}
           </div>

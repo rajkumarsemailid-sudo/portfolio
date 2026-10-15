@@ -177,6 +177,16 @@ export const experience = [
 // work-built tools -- several of these were built on the job.
 export const projects = [
   {
+    title: 'TeamcenterGuru',
+    description:
+      "A web platform for managing Teamcenter configuration across environments, built by a Teamcenter admin for Teamcenter admins. 26 file-based comparators diff two exports -- AM rules, the BMIDE data model, workflow templates, preferences, revision and closure rules, transfer modes, Active Integration and more -- and lay the result out the way Teamcenter's own editors show it, with no live Teamcenter connection. Around the comparators sit Access Manager and workflow simulators, environments with immutable release history, change notices created from a comparison, difference-by-difference merge, ordered deployment and rollback packages, live smoke tests, and an AI consultant that answers from the site's own configuration and cites Siemens documentation for the release the site runs. The executive brief opens as a scrolling page or as a full-screen presentation.",
+    tags: ['Teamcenter', 'Configuration Management', 'AI', 'FastAPI', 'React'],
+    videoId: null,
+    embed: `${import.meta.env.BASE_URL}teamcenterguru/`,
+    images: [],
+    links: { live: `${import.meta.env.BASE_URL}teamcenterguru/` },
+  },
+  {
     title: 'AI Work-Instruction Generator',
     description:
       "A multimodal AI tool that turns an engineering drawing (PDF) and a Fibersim ply table (HTML) into operation-by-operation composite work instructions, instead of an author transcribing ply counts, orientations and drawing callouts by hand. It reads both documents together and builds the whole fabrication route as a process diagram: raw-material kitting and cut, core cutting, milling, cleaning and dry, layup against projected laser targets, bagging, cure, de-bag and de-flash, trim, drill and deburr, NDI and CMM dimensional inspection, and the quality steps that close a part out -- recorded part mass, part marking, visual and cure-profile inspection, trim authorization, and shop-lead and final QA sign-offs. Each branch is generated as its own operation chain with its own header and hold points, so the routing mirrors how the shop actually runs the part rather than collapsing into one flat list, and the result can be panned, zoomed and reviewed in the browser before it goes downstream. It runs on real production parts at Wisk Aero.",
