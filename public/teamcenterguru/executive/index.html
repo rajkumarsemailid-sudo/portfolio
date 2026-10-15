@@ -33,6 +33,7 @@
   --code-bg:#06121a; --code-fg:#d7e6ee; --code-dim:#6f8998; color-scheme:dark}
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.6 var(--body);padding-inline:16px;padding-block:0}
 .wrap{max-width:68rem;margin-inline:auto}
@@ -252,6 +253,46 @@ section.sheet .wrap{display:grid;gap:28px}
 .acts{display:flex;gap:8px}
 .acts u{text-decoration:none;font:600 .7rem/1 var(--body);padding:5px 8px;border-radius:5px;border:1px solid rgba(255,255,255,.18);color:#e4eef3}
 .cm.hide{opacity:0;transform:translateY(8px);height:0;padding-top:0;padding-bottom:0;margin-top:-8px;overflow:hidden}
+.w-title > span{display:flex;align-items:center;gap:12px}
+.scene-dots{display:flex;gap:5px}
+.scene-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2);transition:background .3s}
+.scene-dots i.on{background:#4cc3d6}
+.w-body,.w-body2{animation:scenein .5s ease-out}
+@keyframes scenein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* scene 2: the consultant solves it */
+.w-body2{display:grid;grid-template-columns:1.5fr 1fr}
+@media (max-width:860px){.w-body2{grid-template-columns:1fr}}
+.solve-chat,.ttime{padding:16px 18px;display:grid;gap:10px;align-content:start;min-width:0}
+.ttime{border-left:1px solid rgba(255,255,255,.08)}
+@media (max-width:860px){.ttime{border-left:0;border-top:1px solid rgba(255,255,255,.08)}}
+.sq{justify-self:end;max-width:88%;background:rgba(76,195,214,.14);border-radius:10px;padding:9px 12px;font-size:.86rem;color:#e4f6fa}
+.ssteps{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.ssteps li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);transition:opacity .35s,background .35s}
+.ssteps li > i{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.18);flex:none}
+.ssteps li.run > i{border-color:#4cc3d6;border-right-color:transparent;animation:spin .7s linear infinite}
+.ssteps li.done > i{border:0;background:#3fcf7f;position:relative}
+.ssteps li.done > i::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;font:700 .6rem/1 var(--body);color:#06121a}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ssteps strong{display:block;font:600 .82rem/1.25 var(--body);color:#ffffff}
+.ssteps small{font:400 .68rem var(--mono);color:var(--code-dim);margin-left:4px}
+.ssteps span{display:block;font-size:.76rem;color:var(--code-dim);line-height:1.35}
+.ssteps em{font-style:normal;display:grid;justify-items:end;gap:2px;font:500 .68rem/1.2 var(--mono)}
+.ssteps em s{text-decoration:line-through;color:#ff9d94;opacity:.8}
+.ssteps em b{color:#7fe0a5;font-weight:600}
+.ssteps li.wait{opacity:.35}
+.ssteps li.wait span,.ssteps li.wait em,.ssteps li.run em{visibility:hidden}
+.sanswer{border-left:3px solid #3fcf7f;background:rgba(63,207,127,.08);border-radius:8px;padding:10px 12px;display:grid;gap:4px;transition:opacity .4s}
+.sanswer b{font:500 .66rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#7fe0a5}
+.sanswer p{margin:0;font-size:.84rem;line-height:1.5;color:#e4eef3}
+.sanswer.wait{opacity:0}
+.tt-row{display:grid;gap:6px}
+.tt-row span{font-size:.78rem;color:var(--code-dim)}
+.tt-row strong{font:800 1.5rem/1 var(--display);color:#ffffff;font-variant-numeric:tabular-nums}
+.tt-track{height:10px;border-radius:5px;background:rgba(255,255,255,.07);overflow:hidden}
+.tt-track i{display:block;height:100%;border-radius:5px;transition:width .6s ease-out}
+.tt-track i.m{background:#d9675c;width:100%}
+.tt-track i.a{background:#1f98ad;width:1.5%}
+.ttime p{margin:6px 0 0;font-size:.8rem;color:var(--code-dim)}
 
 /* 4. outcomes */
 .outcomes{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
@@ -440,9 +481,9 @@ body.present .progress{display:block}
       <div><b>Upgrades</b><h3>Scoped up front</h3><p>Shows what the site changed, what the new release changes, and where they collide, with a report and a runbook.</p></div>
       <div><b>Simulation</b><h3>Decisions explained</h3><p>Shows why access is granted or denied, and how a workflow will run, before anyone is affected.</p></div>
     </div>
-    <div class="watch rv" id="watch" aria-label="Illustrative: a service stops on a PROD server and a log error appears; the agent alerts the admin chat at once, an admin claims the server, and the alert is resolved">
-      <div class="w-title"><b>Servers, watched live</b><span>agent on every box · alerts by chat and email</span></div>
-      <div class="w-body">
+    <div class="watch rv" id="watch" aria-label="Illustrative, two scenes: a PROD service stops and the admin chat is alerted at once; then the AI consultant finds the cause of a failing SAP transfer by reading live Teamcenter, server logs, integration logs, configuration and Siemens Support Center, in about a minute instead of hours">
+      <div class="w-title"><b id="wTitle">Servers, watched live</b><span><span id="wSub">agent on every box · alerts by chat and email</span><span class="scene-dots" aria-hidden="true"><i class="on" id="dot1"></i><i id="dot2"></i></span></span></div>
+      <div class="w-body" id="scene1">
         <div class="servers">
           <div class="w-h">PROD servers</div>
           <div class="srv" data-s="web"><i class="hb"></i><div><strong>tc-web01</strong><span>Active Workspace</span></div><em>running</em></div>
@@ -462,8 +503,28 @@ body.present .progress{display:block}
           </div>
         </div>
       </div>
+      <div class="w-body2" id="scene2" hidden>
+        <div class="solve-chat">
+          <div class="w-h">Support chat · AI consultant</div>
+          <div class="sq">Users report SAP transfers failing since last night. What's wrong?</div>
+          <ol class="ssteps" id="ssteps">
+            <li><i></i><div><strong>Live Teamcenter <small>signed in as you</small></strong><span>Wdg4_Part 000124/B is released; its transfer to SAP is pending</span></div><em><s>by hand ~20 min</s><b>4 s</b></em></li>
+            <li><i></i><div><strong>Server logs <small>tc-app01 syslog</small></strong><span>tcserver exited after a mapping exception at 02:16</span></div><em><s>by hand ~45 min</s><b>6 s</b></em></li>
+            <li><i></i><div><strong>Active Integration logs <small>gateway transactions</small></strong><span>Transfer failed: no mapping for wdg4_material</span></div><em><s>by hand ~60 min</s><b>5 s</b></em></li>
+            <li><i></i><div><strong>Configuration <small>AIG mapping, Prod vs QA</small></strong><span>QA maps wdg4_material; Prod does not. Added in REL-000123</span></div><em><s>by hand ~45 min</s><b>3 s</b></em></li>
+            <li><i></i><div><strong>Siemens Support Center <small>KB and docs</small></strong><span>Same symptom documented for an unmapped attribute</span></div><em><s>by hand ~50 min</s><b>8 s</b></em></li>
+          </ol>
+          <div class="sanswer" id="sanswer"><b>Root cause</b><p>Prod's integration mapping has no entry for wdg4_material, which the last release added to the data model. Fix: copy QA's mapping entry to Prod through a change notice. The change is drafted for review.</p></div>
+        </div>
+        <div class="ttime">
+          <div class="w-h">Time to the answer</div>
+          <div class="tt-row"><span>By hand</span><div class="tt-track"><i class="m" id="ttM"></i></div><strong id="ttMv">3 h 40 min</strong></div>
+          <div class="tt-row"><span>With the consultant</span><div class="tt-track"><i class="a" id="ttA"></i></div><strong id="ttAv">about 1 min</strong></div>
+          <p>Five sources read and cross-checked, each one cited in the answer.</p>
+        </div>
+      </div>
     </div>
-    <p class="muted">Illustrative. Before anyone opens a ticket, the admin team already knows which server, which service, and why.</p>
+    <p class="muted">Illustrative. Before anyone opens a ticket, the admin team knows which server and why, and the consultant has the root cause of an integration failure in about a minute.</p>
   </div>
 </section>
 
@@ -652,8 +713,34 @@ body.present .progress{display:block}
   function fly(cls){packet.className="";void packet.offsetWidth;packet.className="fly "+cls;}
   setSrv("fsc","","running");
   var wRun=0;
+  var scene1=document.getElementById("scene1"), scene2=document.getElementById("scene2"), wTitle=document.getElementById("wTitle"), wSub=document.getElementById("wSub"),
+      dot1=document.getElementById("dot1"), dot2=document.getElementById("dot2"), ssteps=[].slice.call(document.querySelectorAll("#ssteps li")),
+      sanswer=document.getElementById("sanswer"), ttM=document.getElementById("ttM"), ttA=document.getElementById("ttA"), ttMv=document.getElementById("ttMv"), ttAv=document.getElementById("ttAv");
+  var MANUAL=[20,45,60,45,50], AUTO=[4,6,5,3,8], MAN_TOTAL=220;
+  function scene(n){
+    scene1.hidden=n!==1;scene2.hidden=n!==2;dot1.classList.toggle("on",n===1);dot2.classList.toggle("on",n===2);
+    wTitle.textContent=n===1?"Servers, watched live":"Support, solved with the AI consultant";
+    wSub.textContent=n===1?"agent on every box · alerts by chat and email":"live Teamcenter · server and integration logs · configuration · Siemens support";
+  }
+  function fmtMin(m){var h=Math.floor(m/60),r=m%60;return (h?h+" h ":"")+(r||!h?r+" min":"");}
+  function solveScene(run){
+    var at=function(ms,f){setTimeout(function(){if(run===wRun)f();},ms);};
+    scene(2);
+    ssteps.forEach(function(li){li.className="wait";});sanswer.classList.add("wait");
+    ttM.style.width="0%";ttA.style.width="0%";ttMv.textContent="0 min";ttAv.textContent="0 s";
+    var man=0, auto=0;
+    ssteps.forEach(function(li,i){
+      at(900+i*1500,function(){li.className="run";});
+      at(900+i*1500+1100,function(){li.className="done";man+=MANUAL[i];auto+=AUTO[i];
+        ttM.style.width=(man/MAN_TOTAL*100)+"%";ttMv.textContent=fmtMin(man);
+        ttA.style.width=Math.max(1.5,auto/60/MAN_TOTAL*100)+"%";ttAv.textContent=auto+" s";});
+    });
+    at(900+5*1500+400,function(){sanswer.classList.remove("wait");ttAv.textContent="about 1 min";ttA.style.width="1.5%";});
+    at(900+5*1500+8000,watchLoop);
+  }
   function watchLoop(){
     var run=++wRun, at=function(ms,f){setTimeout(function(){if(run===wRun)f();},ms);};
+    scene(1);
     cms.forEach(function(c){c.classList.add("hide");});packet.className="";
     ["web","app1","app2","fsc"].forEach(function(k){setSrv(k,"","running");});
     log([["","02:13:58  heartbeat ok · 4 servers"]]);
@@ -668,7 +755,7 @@ body.present .progress{display:block}
     at(9600,function(){setSrv("fsc","","running");setSrv("app1","","running");log([["","02:21:03  tc-fsc01 FSC running"],["","02:21:03  heartbeat ok · 4 servers"]]);});
     at(10000,function(){fly("g");});
     at(10700,function(){cms[3].classList.remove("hide");});
-    at(16000,watchLoop);
+    at(14500,function(){solveScene(run);});
   }
   if(!reduce&&"IntersectionObserver" in window){
     var wIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){wIo.disconnect();watchLoop();}},{threshold:.3});
