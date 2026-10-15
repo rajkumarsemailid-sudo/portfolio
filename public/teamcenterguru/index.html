@@ -208,6 +208,30 @@ section.sheet .wrap{display:grid;gap:28px}
 @media (max-width:1000px){.pains.four{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.pains.four{grid-template-columns:1fr}}
 
+/* security: agent flow */
+.trust.six{grid-template-columns:repeat(3,1fr);row-gap:28px}
+@media (max-width:1000px){.trust.six{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.trust.six{grid-template-columns:1fr}}
+.agentflow{display:grid;grid-template-columns:1fr 1.1fr 1fr;align-items:center;gap:0}
+.af-node{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:4px}
+.af-node b{font:500 .68rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.af-node strong{font:700 1.05rem/1.25 var(--display)}
+.af-node span{font-size:.82rem;color:var(--muted)}
+.af-node .af-check{font:500 .74rem/1.3 var(--mono);color:var(--add)}
+.af-node.hub{border-color:var(--accent)}
+.af-link{position:relative;height:2px;background:var(--line);margin:0 10px}
+.af-link span{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);white-space:nowrap;font:500 .7rem/1 var(--mono);color:var(--accent)}
+.af-link::after{content:"";position:absolute;right:-2px;top:-5px;border:6px solid transparent;border-left-color:var(--accent);border-right:0}
+.af-link i{position:absolute;top:-4px;left:0;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--accent-soft);animation:outbound 2.4s ease-in-out infinite}
+@keyframes outbound{from{left:0}to{left:calc(100% - 10px)}}
+@media (max-width:760px){
+  .agentflow{grid-template-columns:1fr;gap:34px}
+  .af-link{height:30px;width:2px;margin:0 auto}
+  .af-link span{left:14px;bottom:auto;top:50%;transform:translateY(-50%)}
+  .af-link::after{right:auto;left:-5px;top:auto;bottom:-4px;border:6px solid transparent;border-top-color:var(--accent);border-bottom:0}
+  .af-link i{animation:none;display:none}
+}
+
 /* hero copilot window */
 .copilot{background:var(--code-bg);color:var(--code-fg);border-radius:14px;overflow:hidden;min-width:0;box-shadow:0 24px 60px -30px rgba(8,30,44,.55);font:400 .8rem/1.6 var(--mono)}
 .cp-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.08);color:var(--code-dim);font-size:.74rem}
@@ -519,7 +543,7 @@ body.present .progress{display:block}
       <div class="map-col"><div class="map-h">The platform</div><div id="colEng" class="map-nodes"></div></div>
       <div class="map-col"><div class="map-h">What it gives back</div><div id="colOut" class="map-nodes"></div></div>
     </div>
-    <p class="muted">Comparators read files only. Live reads use each user's own Teamcenter, Management Console, Gateway or Siemens session, and are read-only.</p>
+    <p class="muted">Server work goes through the agent on each box. Live reads use each user's own Teamcenter, Management Console, Gateway or Siemens session, and are read-only.</p>
   </div>
 </section>
 
@@ -639,11 +663,29 @@ Saved as release REL-000124.</pre>
 <section class="sheet" id="trust">
   <div class="wrap">
     <div class="eyebrow">Security</div>
-    <h2>Built for enterprise configuration data.</h2>
-    <div class="trust">
-      <div class="rv"><h3>No live connection to compare</h3><p class="muted">Comparators run on export files only. Nothing has to be installed on, or opened to, the Teamcenter server.</p></div>
-      <div class="rv"><h3>Uploads deleted on finish</h3><p class="muted">Uploaded files are removed as soon as a comparison ends. Reports stay until the user deletes them.</p></div>
-      <div class="rv"><h3>Organizations and roles</h3><p class="muted">Owner, Admin and Contributor roles, assigned per environment. Each workspace is isolated from every other.</p></div>
+    <h2>Connected to your servers, on your IT team's terms.</h2>
+    <p class="lede">TeamcenterGuru reaches Teamcenter through an agent on each server. The agent runs a fixed set of scripts, and your company's IT security installs it, chooses the account it runs as, and can remove it at any time.</p>
+    <div class="agentflow rv" aria-label="The agent connects outward to the hub and runs only its own checked scripts">
+      <div class="af-node">
+        <b>Teamcenter server</b>
+        <strong>TeamcenterGuru agent</strong>
+        <span>Windows service · your service account</span>
+        <span class="af-check">✓ kit scripts match manifest.json</span>
+      </div>
+      <div class="af-link"><span>outbound only · token per server</span><i></i></div>
+      <div class="af-node hub">
+        <b>TeamcenterGuru</b>
+        <strong>Hub</strong>
+        <span>names a step, never sends a command</span>
+      </div>
+    </div>
+    <div class="trust six">
+      <div class="rv"><h3>Installed and owned by your IT</h3><p class="muted">The agent is a Windows service on each Teamcenter box, running under the service account your IT team chooses. Uninstalling it revokes its token.</p></div>
+      <div class="rv"><h3>Fixed, predefined scripts</h3><p class="muted">The agent runs only the scripts shipped in its own installer, checked against their manifest before every run. A changed script stops the capture.</p></div>
+      <div class="rv"><h3>No commands from outside</h3><p class="muted">The hub can only name a step, such as a capture; it never sends a command line. The agent connects outward and collects its work in the reply to its own check-in.</p></div>
+      <div class="rv"><h3>Live reads as the signed-in user</h3><p class="muted">Each person signs in to Teamcenter as themselves, by password or SSO, so Teamcenter's own access rules apply. The consultant's live tools only read.</p></div>
+      <div class="rv"><h3>Credentials encrypted</h3><p class="muted">Capture and Management Console accounts are stored encrypted, and a capture password reaches the agent only for the job that needs it.</p></div>
+      <div class="rv"><h3>Organizations and roles</h3><p class="muted">Owner, Admin and Contributor roles, assigned per environment. Each organization's workspace is isolated from every other.</p></div>
     </div>
   </div>
 </section>
