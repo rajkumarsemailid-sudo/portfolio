@@ -209,6 +209,50 @@ section.sheet .wrap{display:grid;gap:28px}
   .crow > div{font-size:.82rem}
 }
 
+/* servers watched live: a stop and a log error reach the admin chat */
+.watch{background:var(--code-bg);color:var(--code-fg);border-radius:14px;overflow:hidden;box-shadow:0 24px 60px -34px rgba(8,30,44,.5)}
+.w-title{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.w-title b{font:700 1rem/1.3 var(--display);color:#ffffff}
+.w-title span{font:400 .74rem/1.4 var(--mono);color:var(--code-dim)}
+.w-body{display:grid;grid-template-columns:1fr 90px 1.15fr;align-items:stretch}
+@media (max-width:860px){.w-body{grid-template-columns:1fr}.wire{height:44px}}
+.w-h{font:500 .68rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--code-dim)}
+.servers,.chat2{padding:16px 18px;display:grid;gap:8px;align-content:start;min-width:0}
+.srv{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);transition:background .4s,border-color .4s}
+.srv strong{display:block;font:500 .8rem/1.2 var(--mono);color:#ffffff}
+.srv span{font-size:.74rem;color:var(--code-dim)}
+.srv em{font:500 .7rem/1 var(--mono);font-style:normal;color:#7fe0a5}
+.hb{width:9px;height:9px;border-radius:50%;background:#3fcf7f;animation:hb 1.6s ease-in-out infinite}
+@keyframes hb{0%,100%{box-shadow:0 0 0 0 rgba(63,207,127,.5)}50%{box-shadow:0 0 0 6px rgba(63,207,127,0)}}
+.srv.down{background:rgba(255,138,128,.1);border-color:rgba(255,138,128,.45)}
+.srv.down .hb{background:#ff8a80;animation:hbbad .9s ease-in-out infinite}
+.srv.down em{color:#ff9d94}
+.srv.warn{background:rgba(240,191,90,.09);border-color:rgba(240,191,90,.4)}
+.srv.warn .hb{background:#f0bf5a;animation:none}
+.srv.warn em{color:#f3c86e}
+@keyframes hbbad{0%,100%{box-shadow:0 0 0 0 rgba(255,138,128,.6)}50%{box-shadow:0 0 0 7px rgba(255,138,128,0)}}
+.wlog{margin:4px 0 0;padding:8px 10px;border-radius:6px;background:rgba(0,0,0,.25);font:400 .68rem/1.5 var(--mono);color:var(--code-dim);white-space:pre-wrap;min-height:4.6em}
+.wlog .e{color:#ff9d94}.wlog .w{color:#f3c86e}
+.wire{position:relative;display:grid;place-items:center}
+.wire::before{content:"";position:absolute;left:10px;right:10px;top:50%;height:2px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.18) 0 6px,transparent 6px 12px)}
+@media (max-width:860px){.wire::before{left:50%;right:auto;top:6px;bottom:6px;width:2px;height:auto;background:repeating-linear-gradient(180deg,rgba(255,255,255,.18) 0 6px,transparent 6px 12px)}}
+.wire i{position:absolute;top:calc(50% - 6px);left:10px;width:12px;height:12px;border-radius:50%;background:#ff8a80;opacity:0}
+.wire i.fly{animation:fly .7s ease-in forwards}
+.wire i.fly.w{background:#f0bf5a}
+.wire i.fly.g{background:#3fcf7f}
+@keyframes fly{0%{left:10px;opacity:1}100%{left:calc(100% - 22px);opacity:1}}
+@media (max-width:860px){.wire i{left:calc(50% - 6px);top:6px}@keyframes fly{0%{top:6px;opacity:1}100%{top:calc(100% - 18px);opacity:1}}}
+.msgs{display:grid;gap:8px}
+.cm{border-radius:10px;padding:9px 12px;background:rgba(255,255,255,.05);border-left:3px solid var(--code-dim);display:grid;gap:4px;transition:opacity .35s,transform .35s}
+.cm b{font:500 .66rem/1 var(--mono);color:var(--code-dim)}
+.cm p{margin:0;font-size:.82rem;line-height:1.45;color:#e4eef3}
+.cm strong{color:#ffffff}
+.cm.bad{border-left-color:#ff8a80}.cm.warn{border-left-color:#f0bf5a}.cm.good{border-left-color:#3fcf7f}
+.cm.me{border-left-color:#4cc3d6;background:rgba(76,195,214,.1);margin-left:24px}
+.acts{display:flex;gap:8px}
+.acts u{text-decoration:none;font:600 .7rem/1 var(--body);padding:5px 8px;border-radius:5px;border:1px solid rgba(255,255,255,.18);color:#e4eef3}
+.cm.hide{opacity:0;transform:translateY(8px);height:0;padding-top:0;padding-bottom:0;margin-top:-8px;overflow:hidden}
+
 /* 4. outcomes */
 .outcomes{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 @media (max-width:760px){.outcomes{grid-template-columns:1fr}}
@@ -356,6 +400,30 @@ body.present .progress{display:block}
       <div><b>Upgrades</b><h3>Scoped up front</h3><p>Shows what the site changed, what the new release changes, and where they collide, with a report and a runbook.</p></div>
       <div><b>Simulation</b><h3>Decisions explained</h3><p>Shows why access is granted or denied, and how a workflow will run, before anyone is affected.</p></div>
     </div>
+    <div class="watch rv" id="watch" aria-label="Illustrative: a service stops on a PROD server and a log error appears; the agent alerts the admin chat at once, an admin claims the server, and the alert is resolved">
+      <div class="w-title"><b>Servers, watched live</b><span>agent on every box · alerts by chat and email</span></div>
+      <div class="w-body">
+        <div class="servers">
+          <div class="w-h">PROD servers</div>
+          <div class="srv" data-s="web"><i class="hb"></i><div><strong>tc-web01</strong><span>Active Workspace</span></div><em>running</em></div>
+          <div class="srv" data-s="app1"><i class="hb"></i><div><strong>tc-app01</strong><span>Pool Manager</span></div><em>running</em></div>
+          <div class="srv" data-s="app2"><i class="hb"></i><div><strong>tc-app02</strong><span>Dispatcher</span></div><em>running</em></div>
+          <div class="srv" data-s="fsc"><i class="hb"></i><div><strong>tc-fsc01</strong><span>FSC</span></div><em>running</em></div>
+          <pre class="wlog" id="wlog">02:13:58  heartbeat ok · 4 servers</pre>
+        </div>
+        <div class="wire" aria-hidden="true"><i id="packet"></i></div>
+        <div class="chat2">
+          <div class="w-h">Admin chat</div>
+          <div class="msgs" id="msgs">
+            <div class="cm bad"><b>TeamcenterGuru · 02:14</b><p><strong>PROD tc-fsc01: FSC service stopped</strong> after 2 reports. Log: FSC cache volume is full.</p><span class="acts"><u>Open server</u><u>Ask consultant</u></span></div>
+            <div class="cm warn"><b>TeamcenterGuru · 02:16</b><p><strong>PROD tc-app01: log pattern matched</strong> "tcserver process exited unexpectedly" (3 times in 5 min).</p></div>
+            <div class="cm me"><b>Admin · 02:17</b><p>Claimed tc-fsc01, clearing the cache.</p></div>
+            <div class="cm good"><b>TeamcenterGuru · 02:21</b><p><strong>Resolved: tc-fsc01 FSC running again.</strong></p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="muted">Illustrative. Before anyone opens a ticket, the admin team already knows which server, which service, and why.</p>
   </div>
 </section>
 
@@ -474,6 +542,37 @@ body.present .progress{display:block}
     setTimeout(function(){if(run===heroRun)runOnce();},900+9*650+6000);
   }
   if(!reduce)setTimeout(runOnce,600);
+
+  // Servers watched live: a stop and a log error reach the admin chat; the finished thread is in the HTML.
+  var srv={}; [].forEach.call(document.querySelectorAll("#watch .srv"),function(r){srv[r.dataset.s]=r;});
+  var wlog=document.getElementById("wlog"), packet=document.getElementById("packet"), cms=[].slice.call(document.querySelectorAll("#msgs .cm"));
+  function setSrv(k,state,label){srv[k].classList.remove("down","warn");if(state)srv[k].classList.add(state);srv[k].querySelector("em").textContent=label;}
+  function log(lines){wlog.innerHTML="";lines.forEach(function(l,i){var s=document.createElement("span");if(l[0])s.className=l[0];s.textContent=l[1]+(i<lines.length-1?"\n":"");wlog.appendChild(s);});}
+  function fly(cls){packet.className="";void packet.offsetWidth;packet.className="fly "+cls;}
+  setSrv("fsc","","running");
+  var wRun=0;
+  function watchLoop(){
+    var run=++wRun, at=function(ms,f){setTimeout(function(){if(run===wRun)f();},ms);};
+    cms.forEach(function(c){c.classList.add("hide");});packet.className="";
+    ["web","app1","app2","fsc"].forEach(function(k){setSrv(k,"","running");});
+    log([["","02:13:58  heartbeat ok · 4 servers"]]);
+    at(1400,function(){setSrv("fsc","warn","not running (1)");log([["","02:13:58  heartbeat ok · 4 servers"],["w","02:14:06  tc-fsc01 FSC not running · report 1"]]);});
+    at(2800,function(){setSrv("fsc","down","stopped");log([["w","02:14:06  tc-fsc01 FSC not running · report 1"],["e","02:14:21  tc-fsc01 FSC stopped · report 2"],["e","02:14:21  log: FSC cache volume is full"]]);});
+    at(3200,function(){fly("");});
+    at(3900,function(){cms[0].classList.remove("hide");});
+    at(5600,function(){setSrv("app1","warn","log error");log([["e","02:14:21  tc-fsc01 FSC stopped · report 2"],["w","02:16:40  tc-app01 tcserver process exited"],["w","02:16:40  pattern matched 3 times in 5 min"]]);});
+    at(6000,function(){fly("w");});
+    at(6700,function(){cms[1].classList.remove("hide");});
+    at(8000,function(){cms[2].classList.remove("hide");});
+    at(9600,function(){setSrv("fsc","","running");setSrv("app1","","running");log([["","02:21:03  tc-fsc01 FSC running"],["","02:21:03  heartbeat ok · 4 servers"]]);});
+    at(10000,function(){fly("g");});
+    at(10700,function(){cms[3].classList.remove("hide");});
+    at(16000,watchLoop);
+  }
+  if(!reduce&&"IntersectionObserver" in window){
+    var wIo=new IntersectionObserver(function(es){if(es[0].isIntersecting){wIo.disconnect();watchLoop();}},{threshold:.3});
+    wIo.observe(document.getElementById("watch"));
+  }
 
   // One change, two ways: the silo misses what the whole configuration shows.
   var NS="http://www.w3.org/2000/svg";
@@ -611,6 +710,7 @@ body.present .progress{display:block}
     if(slides[idx].id==="top"&&!reduce)runOnce();
     if(slides[idx].id==="team"&&!reduce)crewLoop();
     if(slides[idx].id==="risk"&&!reduce)twLoop();
+    if(slides[idx].id==="jobs"&&!reduce)watchLoop();
     pc.textContent=(idx+1)+" / "+slides.length;bar.style.width=((idx+1)/slides.length*100)+"%";
   }
   function start(){on=true;document.body.classList.add("present");show(0);var de=document.documentElement;if(de.requestFullscreen)de.requestFullscreen().catch(function(){});}
