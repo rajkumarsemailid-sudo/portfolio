@@ -362,9 +362,11 @@ section.sheet .wrap{display:grid;gap:28px}
 .legend span{display:flex;align-items:center;gap:6px}
 .sw{width:12px;height:12px;border-radius:3px;display:inline-block}
 .sw.hand{background:var(--bar-hand)}.sw.app{background:var(--bar-app)}
-.panels{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-@media (max-width:760px){.panels{grid-template-columns:1fr}}
-.panel{display:grid;gap:10px;min-width:0}
+.panels{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media (max-width:1000px){.panels{grid-template-columns:repeat(2,1fr);row-gap:32px}}
+@media (max-width:560px){.panels{grid-template-columns:1fr}}
+.panel{display:grid;gap:10px;min-width:0;grid-template-rows:auto 1fr auto auto}
+.panel-h{align-self:start}
 .panel-k{font:500 .7rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
 .panel-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .panel-h strong{font:800 2rem/1 var(--display);font-variant-numeric:tabular-nums;color:var(--ink)}
@@ -630,7 +632,7 @@ body.present .progress{display:block}
     </div>
     <figure class="impact rv" id="impact">
       <div class="impact-head">
-        <b>Time, risk and cost, before and after</b>
+        <b>Time, risk, cost and productivity, before and after</b>
         <div class="legend" aria-hidden="true"><span><i class="sw hand"></i>By hand</span><span><i class="sw app"></i>With TeamcenterGuru</span></div>
       </div>
       <div class="panels" id="panels"></div>
@@ -642,6 +644,7 @@ body.present .progress{display:block}
           <tr><td>Release check effort, hours per release</td><td>24</td><td>2</td><td>−92%</td></tr>
           <tr><td>Configuration issues reaching Production, per quarter</td><td>6</td><td>1</td><td>−83%</td></tr>
           <tr><td>Monitoring and log analysis, hours per month</td><td>160</td><td>40</td><td>−75%</td></tr>
+          <tr><td>Admin requests closed, per person per month</td><td>20</td><td>60</td><td>+200%</td></tr>
         </tbody>
       </table>
       <figcaption>Illustrative example, not measured. Assumes a site with four environments, monthly releases, and one admin and one support lead reviewing the agents' work. Replace with your own figures.</figcaption>
@@ -826,15 +829,16 @@ body.present .progress{display:block}
   inView(hubSvg,function(){hubOnScreen=true;hubLoop();},function(){hubOnScreen=false;hubRest();});
   hubMq.addEventListener("change",function(){hubBuild();hubRest();if(hubOnScreen&&!reduce)hubLoop();});
 
-  // Impact chart: three panels, each on its own scale (never a shared or dual axis). Example figures.
+  // Impact chart: four panels, each on its own scale (never a shared or dual axis). Example figures.
   var IMPACT=[
     {k:"Time saved",what:"Release check effort",unit:"hours per release",hand:24,app:2,ticks:[0,12,24]},
     {k:"Risk reduced",what:"Configuration issues reaching Production",unit:"per quarter",hand:6,app:1,ticks:[0,3,6]},
-    {k:"Cost saved",what:"Monitoring and log analysis",unit:"hours per month",hand:160,app:40,ticks:[0,80,160]}
+    {k:"Cost saved",what:"Monitoring and log analysis",unit:"hours per month",hand:160,app:40,ticks:[0,80,160]},
+    {k:"Productivity up",what:"Admin requests closed",unit:"per person per month",hand:20,app:60,ticks:[0,30,60],up:true}
   ];
   var panelsEl=document.getElementById("panels"), impact=document.getElementById("impact"), ctip=document.getElementById("ctip"), pctEls=[];
   IMPACT.forEach(function(d){
-    var max=d.ticks[d.ticks.length-1], pct=Math.round((1-d.app/d.hand)*100);
+    var max=d.ticks[d.ticks.length-1], pct=Math.round(Math.abs(d.app/d.hand-1)*100), sign=d.up?"+":"−";
     var p=document.createElement("div");p.className="panel";
     var grid="", ys="";
     d.ticks.forEach(function(t){var y=(t/max*100);grid+=t?'<i class="gl" style="bottom:'+y+'%"></i>':"";ys+='<span style="bottom:'+y+'%">'+t+'</span>';});
@@ -842,12 +846,12 @@ body.present .progress{display:block}
       return '<div class="cbar '+cls+'" tabindex="0" data-label="'+label+'" data-v="'+v+'" aria-label="'+label+': '+v+' '+d.unit+'">'+
         '<i style="height:'+h+'%"></i><b style="bottom:calc('+h+'% + 6px)">'+v+'</b></div>';}
     p.innerHTML='<div class="panel-k">'+d.k+'</div>'+
-      '<div class="panel-h"><strong>−'+pct+'%</strong><span>'+d.what+', '+d.unit+'</span></div>'+
+      '<div class="panel-h"><strong>'+sign+pct+'%</strong><span>'+d.what+', '+d.unit+'</span></div>'+
       '<div class="plot"><div class="yaxis">'+ys+'</div><div class="area">'+grid+
         '<div class="bars">'+bar("hand","By hand",d.hand)+bar("app","With TeamcenterGuru",d.app)+'</div></div></div>'+
       '<div class="xlab"><span></span><div><span>By hand</span><span>With TeamcenterGuru</span></div></div>';
     panelsEl.appendChild(p);
-    var strong=p.querySelector(".panel-h strong");pctEls.push({el:strong,pct:pct});
+    var strong=p.querySelector(".panel-h strong");pctEls.push({el:strong,pct:pct,sign:sign});
     [].forEach.call(p.querySelectorAll(".cbar"),function(b){
       function tipOn(){var r=b.getBoundingClientRect(), f=impact.getBoundingClientRect();
         ctip.innerHTML="";var s=document.createElement("strong");s.textContent=b.dataset.v+" "+d.unit;ctip.appendChild(s);ctip.appendChild(document.createTextNode(b.dataset.label+" · "+d.what));
@@ -861,7 +865,7 @@ body.present .progress{display:block}
     impact.classList.add("notr","grow");void impact.offsetWidth;impact.classList.remove("notr");
     [].forEach.call(impact.querySelectorAll(".cbar i"),function(b,i){b.style.transitionDelay=(i*140)+"ms";});
     setTimeout(function(){impact.classList.remove("grow");
-      pctEls.forEach(function(o){var t0=null;(function step(ts){if(!t0)t0=ts;var q=Math.min(1,(ts-t0)/900);o.el.textContent="−"+Math.round(o.pct*q)+"%";if(q<1)requestAnimationFrame(step);})(performance.now());});
+      pctEls.forEach(function(o){var t0=null;(function step(ts){if(!t0)t0=ts;var q=Math.min(1,(ts-t0)/900);o.el.textContent=o.sign+Math.round(o.pct*q)+"%";if(q<1)requestAnimationFrame(step);})(performance.now());});
     },120);
   }
   inView(impact,growImpact,function(){});
