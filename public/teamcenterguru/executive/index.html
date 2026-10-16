@@ -255,7 +255,14 @@ section.sheet .wrap{display:grid;gap:28px}
 
 /* the work it takes off: three stories as live data flow between 3D blocks, on a dark stage in both themes */
 .flow{background:var(--code-bg);color:var(--code-fg);border-radius:16px;overflow:hidden;box-shadow:0 24px 60px -34px rgba(8,30,44,.5);display:grid}
-.fl-tabs{display:flex;gap:6px;flex-wrap:wrap;padding:14px 16px 0}
+.fl-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding:14px 16px 0}
+.fl-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.fl-pp{font:600 .8rem/1 var(--body);color:#e4eef3;background:transparent;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.fl-pp:hover{border-color:#4cc3d6;color:#ffffff}
+.fl-pp svg{width:12px;height:12px;fill:currentColor}
+.fl-pp .i-play,.fl-pp[aria-pressed="true"] .i-pause{display:none}
+.fl-pp[aria-pressed="true"] .i-play{display:inline}
+@media (prefers-reduced-motion:reduce){.fl-pp{display:none}}
 .fl-tabs button{font:600 .82rem/1 var(--body);color:var(--code-dim);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:9px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .3s,color .3s}
 .fl-tabs button i{font:500 .7rem/1 var(--mono);font-style:normal;opacity:.75}
 .fl-tabs button:hover{color:#ffffff}
@@ -511,10 +518,13 @@ body.present .progress{display:block}
     <div class="eyebrow">What it does</div>
     <h2>The work it takes off the admin team.</h2>
     <div class="flow rv paused" id="flow" aria-label="Illustrative, three stories as live data flow: a PROD server failure reaches the admin and is fixed in minutes; a support question about a failed SAP transfer is answered from live Teamcenter, the integration logs and configuration in about a minute; a new workflow handler is drafted from the site's configuration and Siemens documentation and compile-checked in about two minutes">
-      <div class="fl-tabs" id="flTabs" role="tablist">
-        <button type="button" role="tab" aria-selected="true"><i>1</i>Server failure</button>
-        <button type="button" role="tab" aria-selected="false"><i>2</i>Support question</button>
-        <button type="button" role="tab" aria-selected="false"><i>3</i>New workflow handler</button>
+      <div class="fl-bar">
+        <div class="fl-tabs" id="flTabs" role="tablist">
+          <button type="button" role="tab" aria-selected="true"><i>1</i>Server failure</button>
+          <button type="button" role="tab" aria-selected="false"><i>2</i>Support question</button>
+          <button type="button" role="tab" aria-selected="false"><i>3</i>New workflow handler</button>
+        </div>
+        <button type="button" class="fl-pp" id="flPP" aria-pressed="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path class="i-pause" d="M3 2h2v8H3zM7 2h2v8H7z"/><path class="i-play" d="M3 1.5l7 4.5-7 4.5z"/></svg><span>Pause</span></button>
       </div>
       <div class="fl-say"><b id="flClock"></b><span id="flSay"></span></div>
       <svg class="flsvg" id="flSvg" viewBox="0 0 900 480" aria-hidden="true">
@@ -846,6 +856,15 @@ body.present .progress{display:block}
      out:["Drafted in about 2 minutes","By hand: a day or more"]}
   ];
   var FL_TRAVEL=1500; // ms for a packet to cross a pipe
+  var flHeld=null, flLost=0, flTasks=[];
+  function flNow(){return (flHeld!==null?flHeld:performance.now())-flLost;}
+  function flAt(run,ms,fn){flTasks.push({run:run,due:flNow()+ms,fn:fn});}
+  setInterval(function(){
+    if(flHeld!==null||!flTasks.length)return;
+    var now=flNow(), due=flTasks.filter(function(t){return t.due<=now;});
+    flTasks=flTasks.filter(function(t){return t.due>now;});
+    due.forEach(function(t){if(t.run===flRun)t.fn();});
+  },40);
   var FL_COL={go:"#4cc3d6",bad:"#ff8a80",ok:"#5fd18d"};
   var flowEl=document.getElementById("flow"), flSvg=document.getElementById("flSvg"), flPipes=document.getElementById("flPipes"), flBlocks=document.getElementById("flBlocks"),
       flPk=document.getElementById("flPk"), flSteps=document.getElementById("flSteps"), flOut=document.getElementById("flOut"), flOutA=document.getElementById("flOutA"),
@@ -920,7 +939,7 @@ body.present .progress{display:block}
     function clear(){path.remove();dots.forEach(function(d){d.remove();});if(lab)lab.remove();if(P.pipe)P.pipe.classList.remove("hot");}
     (function step(){
       if(run!==flRun){clear();return;}
-      var now=performance.now();if(!t0)t0=now;var q=Math.min(1,(now-t0)/FL_TRAVEL);
+      var now=flNow();if(!t0)t0=now;var q=Math.min(1,(now-t0)/FL_TRAVEL);
       dots.forEach(function(d,j){var u=Math.max(0,q-j*.05), e=u*u*(3-2*u), pt=path.getPointAtLength(e*L);d.setAttribute("cx",pt.x);d.setAttribute("cy",pt.y);if(!j&&lab)lab.move(pt.x,pt.y-22);});
       if(q<1)requestAnimationFrame(step);else{clear();flPing(b);cb();}
     })();
@@ -933,7 +952,7 @@ body.present .progress{display:block}
   function flDone(li,st){li.className="done";if(st.res)li.querySelector("small").textContent=st.res;}
   function flPlay(si,run){
     flCur=si;flBuild(si);
-    var f=FLOWS[si], lis=[].slice.call(flSteps.children), i=0, at=function(ms,fn){setTimeout(function(){if(run===flRun)fn();},ms);};
+    var f=FLOWS[si], lis=[].slice.call(flSteps.children), i=0, at=function(ms,fn){flAt(run,ms,fn);};
     function next(){
       if(i>=f.steps.length){flOut.classList.remove("wait");at(8500,function(){flPlay((si+1)%FLOWS.length,run);});return;}
       var st=f.steps[i], li=lis[i];
@@ -949,15 +968,27 @@ body.present .progress{display:block}
     at(1000,next);
   }
   function flRest(si){ // the finished story, still
-    flRun++;flCur=si;flBuild(si);
+    flRun++;flPlaying=false;flHold(false);flCur=si;flBuild(si);
     var f=FLOWS[si];
     f.steps.forEach(function(st,i){flApply(st);flDone(flSteps.children[i],st);});
     flSayStep(f.steps[f.steps.length-1],true);flOut.classList.remove("wait");
   }
-  function flStart(){var run=++flRun;flPlay(flCur,run);}
+  var flPP=document.getElementById("flPP"), flPlaying=false;
+  function flHold(on){ // pause or resume the flow where it is
+    if(on&&flHeld===null)flHeld=performance.now();
+    if(!on&&flHeld!==null){flLost+=performance.now()-flHeld;flHeld=null;}
+    flPP.setAttribute("aria-pressed",on?"true":"false");flPP.querySelector("span").textContent=on?"Play":"Pause";
+    flowEl.classList.toggle("paused",on||!flPlaying);
+  }
+  function flStart(){flPlaying=true;flHold(false);var run=++flRun;flPlay(flCur,run);}
   flRest(0);
-  inView(flowEl,function(){flOn=true;flowEl.classList.remove("paused");flStart();},function(){flOn=false;flowEl.classList.add("paused");flRest(flCur);});
+  inView(flowEl,function(){flOn=true;flStart();},function(){flOn=false;flRest(flCur);});
   flTabs.forEach(function(b,i){b.addEventListener("click",function(){flCur=i;if(flOn&&!reduce)flStart();else flRest(i);});});
+  flPP.addEventListener("click",function(){
+    if(flHeld!==null)flHold(false);
+    else if(flPlaying)flHold(true);
+    else flStart(); // not yet started: play from the start
+  });
   hubMq.addEventListener("change",function(){if(flOn&&!reduce)flStart();else flRest(flCur);});
 
   // One change, two ways: the silo misses what the whole configuration shows.
