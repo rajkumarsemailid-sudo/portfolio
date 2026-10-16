@@ -296,7 +296,7 @@ section.sheet .wrap{display:grid;gap:28px}
 .fl-steps li.now::before{border-color:#4cc3d6;color:#4cc3d6;box-shadow:0 0 0 4px rgba(76,195,214,.15)}
 .fl-steps li.done::before{content:"✓";background:#3fcf7f;border-color:#3fcf7f;color:#06121a}
 .fl-steps li.wait{opacity:.35}
-.fl-steps small{display:block;font:400 .72rem/1.35 var(--mono);color:#7fe0a5}
+.fl-steps small{grid-column:2;margin-top:-4px;font:400 .72rem/1.35 var(--mono);color:#7fe0a5}
 .fl-steps small:empty{display:none}
 .fl-out{padding:14px 18px;display:grid;gap:8px;align-content:center;border-left:1px solid rgba(255,255,255,.08);transition:opacity .5s}
 @media (max-width:760px){.fl-out{border-left:0;border-top:1px solid rgba(255,255,255,.08)}}
