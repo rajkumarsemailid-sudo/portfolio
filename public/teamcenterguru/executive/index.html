@@ -34,10 +34,7 @@
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-.wstage{display:grid}
-.wstage > *{grid-area:1 / 1}
-.wstage > .off{visibility:hidden;animation:none}
-.run,.twoways,.crew,.watch{position:relative}
+.run,.twoways,.crew{position:relative}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.6 var(--body);padding-inline:16px;padding-block:0}
 .wrap{max-width:68rem;margin-inline:auto}
@@ -256,93 +253,62 @@ section.sheet .wrap{display:grid;gap:28px}
   .crow > div{font-size:.82rem}
 }
 
-/* servers watched live: a stop and a log error reach the admin chat */
-.watch{background:var(--code-bg);color:var(--code-fg);border-radius:14px;overflow:hidden;box-shadow:0 24px 60px -34px rgba(8,30,44,.5)}
-.w-title{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
-.w-title b{font:700 1rem/1.3 var(--display);color:#ffffff}
-.w-title span{font:400 .74rem/1.4 var(--mono);color:var(--code-dim)}
-.w-body{display:grid;grid-template-columns:1fr 90px 1.15fr;align-items:stretch}
-@media (max-width:860px){.w-body{grid-template-columns:1fr}.wire{height:44px}}
-.w-h{font:500 .68rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--code-dim)}
-.servers,.chat2{padding:16px 18px;display:grid;gap:8px;align-content:start;min-width:0}
-.srv{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);transition:background .4s,border-color .4s}
-.srv strong{display:block;font:500 .8rem/1.2 var(--mono);color:#ffffff}
-.srv span{font-size:.74rem;color:var(--code-dim)}
-.srv em{font:500 .7rem/1 var(--mono);font-style:normal;color:#7fe0a5}
-.hb{width:9px;height:9px;border-radius:50%;background:#3fcf7f;animation:hb 1.6s ease-in-out infinite}
-@keyframes hb{0%,100%{box-shadow:0 0 0 0 rgba(63,207,127,.5)}50%{box-shadow:0 0 0 6px rgba(63,207,127,0)}}
-.srv.down{background:rgba(255,138,128,.1);border-color:rgba(255,138,128,.45)}
-.srv.down .hb{background:#ff8a80;animation:hbbad .9s ease-in-out infinite}
-.srv.down em{color:#ff9d94}
-.srv.warn{background:rgba(240,191,90,.09);border-color:rgba(240,191,90,.4)}
-.srv.warn .hb{background:#f0bf5a;animation:none}
-.srv.warn em{color:#f3c86e}
-@keyframes hbbad{0%,100%{box-shadow:0 0 0 0 rgba(255,138,128,.6)}50%{box-shadow:0 0 0 7px rgba(255,138,128,0)}}
-.wlog{margin:4px 0 0;padding:8px 10px;border-radius:6px;background:rgba(0,0,0,.25);font:400 .68rem/1.5 var(--mono);color:var(--code-dim);white-space:pre-wrap;min-height:4.6em}
-.wlog .e{color:#ff9d94}.wlog .w{color:#f3c86e}
-.wire{position:relative;display:grid;place-items:center}
-.wire::before{content:"";position:absolute;left:10px;right:10px;top:50%;height:2px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.18) 0 6px,transparent 6px 12px)}
-@media (max-width:860px){.wire::before{left:50%;right:auto;top:6px;bottom:6px;width:2px;height:auto;background:repeating-linear-gradient(180deg,rgba(255,255,255,.18) 0 6px,transparent 6px 12px)}}
-.wire i{position:absolute;top:calc(50% - 6px);left:10px;width:12px;height:12px;border-radius:50%;background:#ff8a80;opacity:0}
-.wire i.fly{animation:fly .7s ease-in forwards}
-.wire i.fly.w{background:#f0bf5a}
-.wire i.fly.g{background:#3fcf7f}
-@keyframes fly{0%{left:10px;opacity:1}100%{left:calc(100% - 22px);opacity:1}}
-@media (max-width:860px){.wire i{left:calc(50% - 6px);top:6px}@keyframes fly{0%{top:6px;opacity:1}100%{top:calc(100% - 18px);opacity:1}}}
-.msgs{display:grid;gap:8px}
-.cm{border-radius:10px;padding:9px 12px;background:rgba(255,255,255,.05);border-left:3px solid var(--code-dim);display:grid;gap:4px;transition:opacity .35s,transform .35s}
-.cm b{font:500 .66rem/1 var(--mono);color:var(--code-dim)}
-.cm p{margin:0;font-size:.82rem;line-height:1.45;color:#e4eef3}
-.cm strong{color:#ffffff}
-.cm.bad{border-left-color:#ff8a80}.cm.warn{border-left-color:#f0bf5a}.cm.good{border-left-color:#3fcf7f}
-.cm.me{border-left-color:#4cc3d6;background:rgba(76,195,214,.1);margin-left:24px}
-.acts{display:flex;gap:8px}
-.acts u{text-decoration:none;font:600 .7rem/1 var(--body);padding:5px 8px;border-radius:5px;border:1px solid rgba(255,255,255,.18);color:#e4eef3}
-.cm.hide{opacity:0;transform:translateY(8px);visibility:hidden}
-.w-title > span{display:flex;align-items:center;gap:12px}
-.scene-dots{display:flex;gap:5px}
-.scene-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2);transition:background .3s}
-.scene-dots i.on{background:#4cc3d6}
-.w-body,.w-body2{animation:scenein .5s ease-out}
-@keyframes scenein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-/* scene 2: the consultant solves it */
-.w-body2{display:grid;grid-template-columns:1.5fr 1fr}
-@media (max-width:860px){.w-body2{grid-template-columns:1fr}}
-.solve-chat,.ttime{padding:16px 18px;display:grid;gap:10px;align-content:start;min-width:0}
-.ttime{border-left:1px solid rgba(255,255,255,.08)}
-@media (max-width:860px){.ttime{border-left:0;border-top:1px solid rgba(255,255,255,.08)}}
-.sq{justify-self:end;max-width:88%;background:rgba(76,195,214,.14);border-radius:10px;padding:9px 12px;font-size:.86rem;color:#e4f6fa}
-.ssteps{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.ssteps li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);transition:opacity .35s,background .35s}
-.ssteps li > i{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.18);flex:none}
-.ssteps li.run > i{border-color:#4cc3d6;border-right-color:transparent;animation:spin .7s linear infinite}
-.ssteps li.done > i{border:0;background:#3fcf7f;position:relative}
-.ssteps li.done > i::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;font:700 .6rem/1 var(--body);color:#06121a}
-@keyframes spin{to{transform:rotate(360deg)}}
-.ssteps strong{display:block;font:600 .82rem/1.25 var(--body);color:#ffffff}
-.ssteps small{font:400 .68rem var(--mono);color:var(--code-dim);margin-left:4px}
-.ssteps span{display:block;font-size:.76rem;color:var(--code-dim);line-height:1.35}
-.ssteps em{font-style:normal;display:grid;justify-items:end;gap:2px;font:500 .68rem/1.2 var(--mono)}
-.ssteps em s{text-decoration:line-through;color:#ff9d94;opacity:.8}
-.ssteps em b{color:#7fe0a5;font-weight:600}
-.ssteps li.wait{opacity:.35}
-.ssteps li.wait span,.ssteps li.wait em,.ssteps li.run em{visibility:hidden}
-.sanswer{border-left:3px solid #3fcf7f;background:rgba(63,207,127,.08);border-radius:8px;padding:10px 12px;display:grid;gap:4px;transition:opacity .4s}
-.sanswer b{font:500 .66rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#7fe0a5}
-.sanswer p{margin:0;font-size:.84rem;line-height:1.5;color:#e4eef3}
-.sanswer.wait{opacity:0}
-.tt-row{display:grid;gap:6px}
-.tt-row span{font-size:.78rem;color:var(--code-dim)}
-.tt-who{display:flex;align-items:center;gap:8px}
+/* the work it takes off: three stories as live data flow between 3D blocks, on a dark stage in both themes */
+.flow{background:var(--code-bg);color:var(--code-fg);border-radius:16px;overflow:hidden;box-shadow:0 24px 60px -34px rgba(8,30,44,.5);display:grid}
+.fl-tabs{display:flex;gap:6px;flex-wrap:wrap;padding:14px 16px 0}
+.fl-tabs button{font:600 .82rem/1 var(--body);color:var(--code-dim);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:9px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .3s,color .3s}
+.fl-tabs button i{font:500 .7rem/1 var(--mono);font-style:normal;opacity:.75}
+.fl-tabs button:hover{color:#ffffff}
+.fl-tabs button[aria-selected="true"]{color:#06121a;background:#4cc3d6;border-color:#4cc3d6}
+.fl-say{display:flex;gap:12px;align-items:baseline;padding:14px 18px 0;min-height:4.2em}
+.fl-say b{flex:none;font:500 .78rem/1.4 var(--mono);color:#4cc3d6;font-variant-numeric:tabular-nums}
+.fl-say span{font:600 1.02rem/1.4 var(--body);color:#ffffff}
+.fl-say em{font-style:normal;color:#7fe0a5}
+.flsvg{width:100%;height:auto;display:block;max-height:62vh}
+.flsvg text{font-family:var(--body);paint-order:stroke;stroke:var(--code-bg);stroke-width:4px;stroke-linejoin:round}
+.fl-grid{fill:none;stroke:rgba(255,255,255,.07);stroke-width:1}
+.fl-pipe{fill:none;stroke:rgba(255,255,255,.07);stroke-width:12;stroke-linecap:round}
+.fl-core{fill:none;stroke:rgba(76,195,214,.4);stroke-width:2;stroke-dasharray:2 10;stroke-linecap:round;animation:flstream 1.1s linear infinite;transition:stroke .3s}
+.fl-core.hot{stroke:#4cc3d6;stroke-width:3}
+.flow.paused .fl-core{animation-play-state:paused}
+@keyframes flstream{to{stroke-dashoffset:-12}}
+.fl-hop{fill:none;stroke:rgba(255,255,255,.3);stroke-width:2;stroke-dasharray:4 6;opacity:0}
+.fl-hop.on{opacity:1}
+.fb .top,.fb .lf,.fb .rt{stroke:rgba(255,255,255,.14);stroke-width:1;stroke-linejoin:round;transition:fill .45s}
+.fb .top{fill:#1d3d4d}.fb .lf{fill:#132f3c}.fb .rt{fill:#0c2430}
+.fb.on .top{fill:#2f9db1}.fb.on .lf{fill:#1f7787}.fb.on .rt{fill:#175e6b}
+.fb.bad .top{fill:#ff8a80}.fb.bad .lf{fill:#d0625a}.fb.bad .rt{fill:#a84a43}
+.fb.ok .top{fill:#5fd18d}.fb.ok .lf{fill:#3fae6e}.fb.ok .rt{fill:#2c8653}
+.fb.hub .top{fill:#4cc3d6}.fb.hub .lf{fill:#2a9db1}.fb.hub .rt{fill:#1c7686}
+.fb .chip{fill:#13303d;stroke:rgba(255,255,255,.22);stroke-width:1.2}
+.fb .gl{fill:none;stroke:#d7e6ee;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fb .glf{fill:#d7e6ee;stroke:none;font:700 12px var(--mono)}
+.fb .t{fill:#ffffff;font-weight:600}
+.fb .s{fill:#7d97a6;transition:fill .4s}
+.fb.bad .s{fill:#ff9d94}.fb.ok .s{fill:#7fe0a5}.fb.on .s{fill:#9fdfea}
+.fl-ring{fill:none;stroke:#4cc3d6;stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
+.fb.ping .fl-ring{animation:hbeat .8s ease-out}
+.fl-foot{display:grid;grid-template-columns:1.6fr 1fr;border-top:1px solid rgba(255,255,255,.08)}
+@media (max-width:760px){.fl-foot{grid-template-columns:1fr}}
+.fl-steps{list-style:none;margin:0;padding:14px 18px;display:grid;gap:7px;counter-reset:fs}
+.fl-steps li{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:.84rem;line-height:1.4;color:#e4eef3;transition:opacity .35s}
+.fl-steps li::before{counter-increment:fs;content:counter(fs);width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font:600 .66rem/1 var(--mono);border:1.5px solid rgba(255,255,255,.2);color:var(--code-dim);transition:all .3s}
+.fl-steps li.now::before{border-color:#4cc3d6;color:#4cc3d6;box-shadow:0 0 0 4px rgba(76,195,214,.15)}
+.fl-steps li.done::before{content:"✓";background:#3fcf7f;border-color:#3fcf7f;color:#06121a}
+.fl-steps li.wait{opacity:.35}
+.fl-steps small{display:block;font:400 .72rem/1.35 var(--mono);color:#7fe0a5}
+.fl-steps small:empty{display:none}
+.fl-out{padding:14px 18px;display:grid;gap:8px;align-content:center;border-left:1px solid rgba(255,255,255,.08);transition:opacity .5s}
+@media (max-width:760px){.fl-out{border-left:0;border-top:1px solid rgba(255,255,255,.08)}}
+.fl-out.wait{opacity:.12}
+.fl-out b{font:500 .66rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#7fe0a5}
+.fl-out strong{font:800 1.5rem/1.15 var(--display);color:#ffffff}
+.fl-out span{font-size:.84rem;color:#ff9d94}
+
+/* person and AI icons */
 .who-ic{width:18px;height:22px;flex:none}
 .who-ic circle,.who-ic path{fill:#d9675c}
 .ai-ic{flex:none;width:22px;height:22px;border-radius:7px;display:grid;place-items:center;background:linear-gradient(135deg,#8b5cf6,#4cc3d6);color:#ffffff;font:700 .6rem/1 var(--mono)}
-.tt-row strong{font:800 1.5rem/1 var(--display);color:#ffffff;font-variant-numeric:tabular-nums}
-.tt-track{height:10px;border-radius:5px;background:rgba(255,255,255,.07);overflow:hidden}
-.tt-track i{display:block;height:100%;border-radius:5px;transition:width .6s ease-out}
-.tt-track i.m{background:#d9675c;width:100%}
-.tt-track i.a{background:#1f98ad;width:1.5%}
-.ttime p{margin:6px 0 0;font-size:.8rem;color:var(--code-dim)}
 
 /* 4. outcomes */
 .outcomes{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
@@ -544,6 +510,29 @@ body.present .progress{display:block}
   <div class="wrap">
     <div class="eyebrow">What it does</div>
     <h2>The work it takes off the admin team.</h2>
+    <div class="flow rv paused" id="flow" aria-label="Illustrative, three stories as live data flow: a PROD server failure reaches the admin and is fixed in minutes; a support question about a failed SAP transfer is answered from live Teamcenter, the integration logs and configuration in about a minute; a new workflow handler is drafted from the site's configuration and Siemens documentation and compile-checked in about two minutes">
+      <div class="fl-tabs" id="flTabs" role="tablist">
+        <button type="button" role="tab" aria-selected="true"><i>1</i>Server failure</button>
+        <button type="button" role="tab" aria-selected="false"><i>2</i>Support question</button>
+        <button type="button" role="tab" aria-selected="false"><i>3</i>New workflow handler</button>
+      </div>
+      <div class="fl-say"><b id="flClock"></b><span id="flSay"></span></div>
+      <svg class="flsvg" id="flSvg" viewBox="0 0 900 480" aria-hidden="true">
+        <defs>
+          <pattern id="flGridP" width="56" height="28" patternUnits="userSpaceOnUse"><path class="fl-grid" d="M0 14L28 0L56 14L28 28Z"/></pattern>
+          <radialGradient id="flFade"><stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+          <mask id="flMask"><rect id="flMaskR" width="900" height="480" fill="url(#flFade)"/></mask>
+          <filter id="flGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <rect id="flGridR" width="900" height="480" fill="url(#flGridP)" mask="url(#flMask)"/>
+        <g id="flPipes"></g><g id="flBlocks"></g><g id="flPk"></g>
+      </svg>
+      <div class="fl-foot">
+        <ol class="fl-steps" id="flSteps"></ol>
+        <div class="fl-out wait" id="flOut"><b>Result</b><strong id="flOutA"></strong><span id="flOutB"></span></div>
+      </div>
+    </div>
+    <p class="muted">Illustrative. Three everyday jobs, each traced from the first signal to the answer.</p>
     <div class="jobs rv">
       <div><b>Servers</b><h3>Watched live</h3><p>An agent on each Teamcenter server reports services and health, and raises an alert when something stops.</p></div>
       <div><b>Environments</b><h3>On record</h3><p>Each environment's configuration is captured automatically and kept with its full history.</p></div>
@@ -552,52 +541,6 @@ body.present .progress{display:block}
       <div><b>Upgrades</b><h3>Scoped up front</h3><p>Shows what the site changed, what the new release changes, and where they collide, with a report and a runbook.</p></div>
       <div><b>Simulation</b><h3>Decisions explained</h3><p>Shows why access is granted or denied, and how a workflow will run, before anyone is affected.</p></div>
     </div>
-    <div class="watch rv" id="watch" aria-label="Illustrative, two scenes: a PROD service stops and the admin chat is alerted at once; then the AI consultant finds the cause of a failing SAP transfer by reading live Teamcenter, server logs, integration logs, configuration and Siemens Support Center, in about a minute instead of hours">
-      <div class="w-title"><b id="wTitle">Support, solved with the AI consultant</b><span><span id="wSub">live Teamcenter · server and integration logs · configuration · Siemens support</span><span class="scene-dots" aria-hidden="true"><i class="on" id="dot2"></i><i id="dot1"></i></span></span></div>
-      <div class="wstage">
-      <div class="w-body off" id="scene1">
-        <div class="servers">
-          <div class="w-h">PROD servers</div>
-          <div class="srv" data-s="web"><i class="hb"></i><div><strong>tc-web01</strong><span>Active Workspace</span></div><em>running</em></div>
-          <div class="srv" data-s="app1"><i class="hb"></i><div><strong>tc-app01</strong><span>Pool Manager</span></div><em>running</em></div>
-          <div class="srv" data-s="app2"><i class="hb"></i><div><strong>tc-app02</strong><span>Dispatcher</span></div><em>running</em></div>
-          <div class="srv" data-s="fsc"><i class="hb"></i><div><strong>tc-fsc01</strong><span>FSC</span></div><em>running</em></div>
-          <pre class="wlog" id="wlog">02:13:58  heartbeat ok · 4 servers</pre>
-        </div>
-        <div class="wire" aria-hidden="true"><i id="packet"></i></div>
-        <div class="chat2">
-          <div class="w-h">Admin chat</div>
-          <div class="msgs" id="msgs">
-            <div class="cm bad"><b>TeamcenterGuru · 02:14</b><p><strong>PROD tc-fsc01: FSC service stopped</strong> after 2 reports. Log: FSC cache volume is full.</p><span class="acts"><u>Open server</u><u>Ask consultant</u></span></div>
-            <div class="cm warn"><b>TeamcenterGuru · 02:16</b><p><strong>PROD tc-app01: log pattern matched</strong> "tcserver process exited unexpectedly" (3 times in 5 min).</p></div>
-            <div class="cm me"><b>Admin · 02:17</b><p>Claimed tc-fsc01, clearing the cache.</p></div>
-            <div class="cm good"><b>TeamcenterGuru · 02:21</b><p><strong>Resolved: tc-fsc01 FSC running again.</strong></p></div>
-          </div>
-        </div>
-      </div>
-      <div class="w-body2" id="scene2">
-        <div class="solve-chat">
-          <div class="w-h">Support chat · AI consultant</div>
-          <div class="sq">Users report SAP transfers failing since last night. What's wrong?</div>
-          <ol class="ssteps" id="ssteps">
-            <li class="done"><i></i><div><strong>Live Teamcenter <small>signed in as you</small></strong><span>Wdg4_Part 000124/B is released; its transfer to SAP is pending</span></div><em><s>by hand ~20 min</s><b>4 s</b></em></li>
-            <li class="done"><i></i><div><strong>Server logs <small>tc-app01 syslog</small></strong><span>tcserver exited after a mapping exception at 02:16</span></div><em><s>by hand ~45 min</s><b>6 s</b></em></li>
-            <li class="done"><i></i><div><strong>Active Integration logs <small>gateway transactions</small></strong><span>Transfer failed: no mapping for wdg4_material</span></div><em><s>by hand ~60 min</s><b>5 s</b></em></li>
-            <li class="done"><i></i><div><strong>Configuration <small>AIG mapping, Prod vs QA</small></strong><span>QA maps wdg4_material; Prod does not. Added in REL-000123</span></div><em><s>by hand ~45 min</s><b>3 s</b></em></li>
-            <li class="done"><i></i><div><strong>Siemens Support Center <small>KB and docs</small></strong><span>Same symptom documented for an unmapped attribute</span></div><em><s>by hand ~50 min</s><b>8 s</b></em></li>
-          </ol>
-          <div class="sanswer" id="sanswer"><b>Root cause</b><p>Prod's integration mapping has no entry for wdg4_material, which the last release added to the data model. Fix: copy QA's mapping entry to Prod through a change notice. The change is drafted for review.</p></div>
-        </div>
-        <div class="ttime">
-          <div class="w-h">Time to the answer</div>
-          <div class="tt-row"><span class="tt-who"><svg class="who-ic" viewBox="0 0 18 22" aria-hidden="true"><circle cx="9" cy="5" r="4"/><path d="M1 21c0-5 3.6-8 8-8s8 3 8 8z"/></svg>By hand</span><div class="tt-track"><i class="m" id="ttM"></i></div><strong id="ttMv">3 h 40 min</strong></div>
-          <div class="tt-row"><span class="tt-who"><b class="ai-ic" aria-hidden="true">AI</b>With the consultant</span><div class="tt-track"><i class="a" id="ttA"></i></div><strong id="ttAv">about 1 min</strong></div>
-          <p>Five sources read and cross-checked, each one cited in the answer.</p>
-        </div>
-      </div>
-      </div>
-    </div>
-    <p class="muted">Illustrative. Before anyone opens a ticket, the admin team knows which server and why, and the consultant has the root cause of an integration failure in about a minute.</p>
   </div>
 </section>
 
@@ -796,9 +739,9 @@ body.present .progress{display:block}
   function hubBeat(){hubG.classList.remove("beat");void hubG.getBBox();hubG.classList.add("beat");}
   function hubPacket(i,run){ // a dot travels the spoke from system i into the hub
     var d=HUB_NODES[i], c=hsvg("circle",{"class":"hpk",r:hubMq.matches?3.5:4.5,cx:d.x,cy:d.y},hPk), t0=null;
-    (function step(ts){
+    (function step(){
       if(run!==hubRun){c.remove();return;}
-      if(!t0)t0=ts;var q=Math.min(1,(ts-t0)/700), e=q*q*(3-2*q);
+      var now=performance.now();if(!t0)t0=now;var q=Math.min(1,(now-t0)/700), e=q*q*(3-2*q);
       c.setAttribute("cx",d.x+(HL.cx-d.x)*e);c.setAttribute("cy",d.y+(HL.cy-d.y)*e);
       if(q<1)requestAnimationFrame(step);else{c.remove();hubBeat();}
     })(performance.now());
@@ -870,64 +813,137 @@ body.present .progress{display:block}
   }
   inView(impact,growImpact,function(){});
 
-  // Servers watched live: a stop and a log error reach the admin chat; the finished thread is in the HTML.
-  var srv={}; [].forEach.call(document.querySelectorAll("#watch .srv"),function(r){srv[r.dataset.s]=r;});
-  var wlog=document.getElementById("wlog"), packet=document.getElementById("packet"), cms=[].slice.call(document.querySelectorAll("#msgs .cm"));
-  function setSrv(k,state,label){srv[k].classList.remove("down","warn");if(state)srv[k].classList.add(state);srv[k].querySelector("em").textContent=label;}
-  function log(lines){wlog.innerHTML="";lines.forEach(function(l,i){var s=document.createElement("span");if(l[0])s.className=l[0];s.textContent=l[1]+(i<lines.length-1?"\n":"");wlog.appendChild(s);});}
-  function fly(cls){packet.className="";void packet.offsetWidth;packet.className="fly "+cls;}
-  setSrv("fsc","","running");
-  var wRun=0;
-  var scene1=document.getElementById("scene1"), scene2=document.getElementById("scene2"), wTitle=document.getElementById("wTitle"), wSub=document.getElementById("wSub"),
-      dot1=document.getElementById("dot1"), dot2=document.getElementById("dot2"), ssteps=[].slice.call(document.querySelectorAll("#ssteps li")),
-      sanswer=document.getElementById("sanswer"), ttM=document.getElementById("ttM"), ttA=document.getElementById("ttA"), ttMv=document.getElementById("ttMv"), ttAv=document.getElementById("ttAv");
-  var MANUAL=[20,45,60,45,50], AUTO=[4,6,5,3,8], MAN_TOTAL=220;
-  function scene(n){
-    scene1.classList.toggle("off",n!==1);scene2.classList.toggle("off",n!==2);dot1.classList.toggle("on",n===1);dot2.classList.toggle("on",n===2);
-    wTitle.textContent=n===1?"Servers, watched live":"Support, solved with the AI consultant";
-    wSub.textContent=n===1?"agent on every box · alerts by chat and email":"live Teamcenter · server and integration logs · configuration · Siemens support";
+  // The work it takes off the admin team: three stories as live data flow between 3D blocks.
+  // Pipes always stream into the hub; each step sends a glowing packet, and a query comes back with its result.
+  var FL_IC={person:'<circle class="gl" cx="0" cy="-5" r="4.5"/><path class="gl" d="M-8 10c0-5 3.6-8 8-8s8 3 8 8"/>',
+    server:HUB_NODES[0].g, sliders:HUB_NODES[1].g, tc:HUB_NODES[2].g, aig:HUB_NODES[3].g, doc:HUB_NODES[4].g,
+    code:'<path class="gl" d="M-5-7l-7 7 7 7M5-7l7 7-7 7"/>', ai:'<text class="glf" x="0" y="4" text-anchor="middle">AI</text>'};
+  var FLOWS=[
+    {nodes:{L:{t:"Admin",s:"on call",ic:"person"},R1:{t:"tc-app01",s:"PROD · pool running",ic:"server"},R2:{t:"tc-fsc01",s:"PROD · FSC running",ic:"server"},R3:{t:"tc-web01",s:"PROD · AWC running",ic:"server"}},
+     steps:[
+      {t:"02:14",say:"PROD server tc-fsc01: the FSC service stops.",set:{R2:["bad","FSC stopped"]}},
+      {t:"02:14",say:"The agent on the server reports it to TeamcenterGuru.",go:["R2","H"],c:"bad"},
+      {t:"02:15",say:"TeamcenterGuru alerts the admin by chat and email, with the cause from the log.",go:["H","L"],c:"bad",res:"FSC cache volume is full",set:{L:["bad","alerted"]}},
+      {t:"02:19",say:"The admin clears the cache and restarts the service.",go:["L","R2"],c:"ok",set:{L:["on","fixing"],R2:["ok","FSC running"]}},
+      {t:"02:21",say:"The agent reports the service running again.",go:["R2","H"],c:"ok"},
+      {t:"02:21",say:"Resolved, and logged with its cause.",go:["H","L"],c:"ok",set:{L:["ok","resolved"]}}],
+     out:["Fixed in 7 minutes","By hand: found when users call in the morning"]},
+    {nodes:{L:{t:"Support user",s:"asks in chat",ic:"person"},R1:{t:"Live Teamcenter",s:"signed in as the user",ic:"tc"},R2:{t:"AIG gateway",s:"transaction logs",ic:"aig"},R3:{t:"Configuration",s:"Prod and QA",ic:"sliders"}},
+     steps:[
+      {t:"+0 s",say:"“Why did the SAP transfer of part 000124/B fail?”",go:["L","H"]},
+      {t:"+8 s",say:"Reads the part, its release status and workflow in live Teamcenter.",go:["H","R1"],back:1,res:"Released by Wdg_ECO; transfer pending"},
+      {t:"+20 s",say:"Reads the integration gateway's transaction log.",go:["H","R2"],back:1,bad:1,res:"Failed: no mapping for wdg4_material"},
+      {t:"+35 s",say:"Compares the integration mapping, Prod against QA.",go:["H","R3"],back:1,res:"QA maps wdg4_material; Prod does not"},
+      {t:"+50 s",say:"Answers with the root cause and the fix, every source cited.",go:["H","L"],c:"ok",set:{L:["ok","answered"]}}],
+     out:["Answered in about a minute","By hand: about 3 h 40 min"]},
+    {nodes:{L:{t:"Admin",s:"asks in chat",ic:"person"},R1:{t:"Current configuration",s:"workflows, handlers",ic:"sliders"},R2:{t:"Siemens Support Center",s:"ITK docs, KB",ic:"doc"},R3:{t:"Build check",s:"ITK compile",ic:"code"}},
+     steps:[
+      {t:"+0 s",say:"“Add a handler that blocks release when a part has no material.”",go:["L","H"]},
+      {t:"+15 s",say:"Reads the workflows and handlers already on the site.",go:["H","R1"],back:1,res:"Wdg_ECO release task, 2 rule handlers"},
+      {t:"+40 s",say:"Reads the handler API for your Teamcenter release.",go:["H","R2"],back:1,res:"EPM rule handler docs for your release"},
+      {t:"+1 min 30 s",say:"Writes the handler and compiles it.",go:["H","R3"],back:1,res:"Compiles clean"},
+      {t:"+2 min",say:"Suggests the handler and the workflow change that attaches it, ready for review.",go:["H","L"],c:"ok",set:{L:["ok","ready to review"]}}],
+     out:["Drafted in about 2 minutes","By hand: a day or more"]}
+  ];
+  var FL_COL={go:"#4cc3d6",bad:"#ff8a80",ok:"#5fd18d"};
+  var flowEl=document.getElementById("flow"), flSvg=document.getElementById("flSvg"), flPipes=document.getElementById("flPipes"), flBlocks=document.getElementById("flBlocks"),
+      flPk=document.getElementById("flPk"), flSteps=document.getElementById("flSteps"), flOut=document.getElementById("flOut"), flOutA=document.getElementById("flOutA"),
+      flOutB=document.getElementById("flOutB"), flSay=document.getElementById("flSay"), flClock=document.getElementById("flClock"),
+      flTabs=[].slice.call(document.querySelectorAll("#flTabs button")), flCur=0, flRun=0, flOn=false, FB={}, FP={}, FLL;
+  function flLayout(){ // phone: the hub in the middle of a tall scene; wide: requester left, sources right
+    return hubMq.matches?{w:400,h:600,L:[200,120],H:[200,300],R1:[78,470],R2:[200,505],R3:[322,470],a:36,bh:28,ha:52,hh:46,ft:13,fs:11}
+      :{w:900,h:480,L:[170,265],H:[450,255],R1:[690,110],R2:[790,262],R3:[690,410],a:44,bh:32,ha:62,hh:54,ft:15,fs:12};
   }
-  function fmtMin(m){var h=Math.floor(m/60),r=m%60;return (h?h+" h ":"")+(r||!h?r+" min":"");}
-  function solveScene(run){
-    var at=function(ms,f){setTimeout(function(){if(run===wRun)f();},ms);};
-    scene(2);
-    ssteps.forEach(function(li){li.className="wait";});sanswer.classList.add("wait");
-    ttM.style.width="0%";ttA.style.width="0%";ttMv.textContent="0 min";ttAv.textContent="0 s";
-    var man=0, auto=0;
-    ssteps.forEach(function(li,i){
-      at(900+i*1500,function(){li.className="run";});
-      at(900+i*1500+1100,function(){li.className="done";man+=MANUAL[i];auto+=AUTO[i];
-        ttM.style.width=(man/MAN_TOTAL*100)+"%";ttMv.textContent=fmtMin(man);
-        ttA.style.width=Math.max(1.5,auto/60/MAN_TOTAL*100)+"%";ttAv.textContent=auto+" s";});
+  function poly(pts){return pts.map(function(p){return p[0]+","+p[1];}).join(" ");}
+  function flBlock(id,nd){
+    var p=FLL[id], x=p[0], y=p[1], hub=id==="H", a=hub?FLL.ha:FLL.a, h=hub?FLL.hh:FLL.bh, b=a/2, base="fb"+(hub?" hub":"");
+    var g=hsvg("g",{"class":base},flBlocks);
+    hsvg("ellipse",{"class":"fl-ring",cx:x,cy:y,rx:a+8,ry:b+4},g);
+    hsvg("polygon",{"class":"lf",points:poly([[x-a,y-h],[x,y-h+b],[x,y+b],[x-a,y]])},g);
+    hsvg("polygon",{"class":"rt",points:poly([[x,y-h+b],[x+a,y-h],[x+a,y],[x,y+b]])},g);
+    hsvg("polygon",{"class":"top",points:poly([[x,y-h-b],[x+a,y-h],[x,y-h+b],[x-a,y-h]])},g);
+    var cy=y-h-b-26;
+    hsvg("rect",{"class":"chip",x:x-20,y:cy-15,width:40,height:30,rx:7},g);
+    hsvg("g",{transform:"translate("+x+","+cy+")"},g).innerHTML=FL_IC[nd.ic];
+    var t=hsvg("text",{"class":"t",x:x,y:y+b+FLL.ft+8,"text-anchor":"middle","font-size":FLL.ft},g);t.textContent=nd.t;
+    var s=hsvg("text",{"class":"s",x:x,y:y+b+FLL.ft+FLL.fs+12,"text-anchor":"middle","font-size":FLL.fs},g);s.textContent=nd.s;
+    FB[id]={g:g,s:s,base:base};
+  }
+  function flState(id,st,sub){var b=FB[id];if(!b)return;b.g.setAttribute("class",b.base+(st?" "+st:""));if(sub!==undefined)b.s.textContent=sub;}
+  function flPing(id){var b=FB[id];if(!b)return;b.g.classList.remove("ping");void b.g.getBBox();b.g.classList.add("ping");}
+  function flBuild(si){
+    FLL=flLayout();
+    var f=FLOWS[si], nodes=Object.assign({H:{t:"TeamcenterGuru",s:"AI agents",ic:"ai"}},f.nodes), ids=Object.keys(nodes);
+    flSvg.setAttribute("viewBox","0 0 "+FLL.w+" "+FLL.h);
+    ["flGridR","flMaskR"].forEach(function(id){var r=document.getElementById(id);r.setAttribute("width",FLL.w);r.setAttribute("height",FLL.h);});
+    flPipes.textContent="";flBlocks.textContent="";flPk.textContent="";FB={};FP={};
+    ids.forEach(function(id){ // every pipe runs into the hub, so the stream always flows toward it
+      if(id==="H")return;var A=FLL[id], H=FLL.H, d="M"+A[0]+" "+A[1]+"L"+H[0]+" "+H[1];
+      hsvg("path",{"class":"fl-pipe",d:d},flPipes);FP[id]=hsvg("path",{"class":"fl-core",d:d},flPipes);
     });
-    at(900+5*1500+400,function(){sanswer.classList.remove("wait");ttAv.textContent="about 1 min";ttA.style.width="1.5%";});
-    at(900+5*1500+7000,function(){serversScene(run);});
+    ids.sort(function(a,b){return FLL[a][1]-FLL[b][1];}).forEach(function(id){flBlock(id,nodes[id]);}); // back to front
+    flSteps.textContent="";
+    f.steps.forEach(function(st){
+      var li=document.createElement("li"), sp=document.createElement("span");li.className="wait";sp.textContent=st.say;
+      li.appendChild(sp);li.appendChild(document.createElement("small"));flSteps.appendChild(li);
+    });
+    flOutA.textContent=f.out[0];flOutB.textContent=f.out[1];flOut.classList.add("wait");
+    flTabs.forEach(function(b,i){b.setAttribute("aria-selected",i===si?"true":"false");});
+    flSay.textContent="";flClock.textContent="";
   }
-  function watchLoop(){var run=++wRun;solveScene(run);}
-  function serversScene(run){
-    var at=function(ms,f){setTimeout(function(){if(run===wRun)f();},ms);};
-    scene(1);
-    cms.forEach(function(c){c.classList.add("hide");});packet.className="";
-    ["web","app1","app2","fsc"].forEach(function(k){setSrv(k,"","running");});
-    log([["","02:13:58  heartbeat ok · 4 servers"]]);
-    at(1400,function(){setSrv("fsc","warn","not running (1)");log([["","02:13:58  heartbeat ok · 4 servers"],["w","02:14:06  tc-fsc01 FSC not running · report 1"]]);});
-    at(2800,function(){setSrv("fsc","down","stopped");log([["w","02:14:06  tc-fsc01 FSC not running · report 1"],["e","02:14:21  tc-fsc01 FSC stopped · report 2"],["e","02:14:21  log: FSC cache volume is full"]]);});
-    at(3200,function(){fly("");});
-    at(3900,function(){cms[0].classList.remove("hide");});
-    at(5600,function(){setSrv("app1","warn","log error");log([["e","02:14:21  tc-fsc01 FSC stopped · report 2"],["w","02:16:40  tc-app01 tcserver process exited"],["w","02:16:40  pattern matched 3 times in 5 min"]]);});
-    at(6000,function(){fly("w");});
-    at(6700,function(){cms[1].classList.remove("hide");});
-    at(8000,function(){cms[2].classList.remove("hide");});
-    at(9600,function(){setSrv("fsc","","running");setSrv("app1","","running");log([["","02:21:03  tc-fsc01 FSC running"],["","02:21:03  heartbeat ok · 4 servers"]]);});
-    at(10000,function(){fly("g");});
-    at(10700,function(){cms[3].classList.remove("hide");});
-    at(14500,function(){solveScene(run);});
+  function flPath(a,b){ // along the pipe when the hub is one end; otherwise a dashed arc lifted off the floor
+    var A=FLL[a], B=FLL[b];
+    if(a==="H"||b==="H")return {d:"M"+A[0]+" "+A[1]+"L"+B[0]+" "+B[1],pipe:FP[a==="H"?b:a]};
+    var dx=B[0]-A[0], dy=B[1]-A[1], len=Math.hypot(dx,dy), px=dy/len, py=-dx/len, k=len*.35;
+    if(py>0||(py===0&&px<0)){px=-px;py=-py;}
+    return {d:"M"+A[0]+" "+A[1]+"Q"+((A[0]+B[0])/2+px*k)+" "+((A[1]+B[1])/2+py*k)+" "+B[0]+" "+B[1],hop:true};
   }
-  function watchRest(){ // the consultant scene, finished
-    wRun++;scene(2);ssteps.forEach(function(li){li.className="done";});sanswer.classList.remove("wait");
-    ttM.style.width="100%";ttMv.textContent="3 h 40 min";ttA.style.width="1.5%";ttAv.textContent="about 1 min";
+  function flPacket(a,b,col,run,cb){
+    var P=flPath(a,b), path=hsvg("path",{"class":"fl-hop"+(P.hop?" on":""),d:P.d},flPk), L=path.getTotalLength(), dots=[], t0=null;
+    if(P.pipe)P.pipe.classList.add("hot");
+    [7,4.5,3].forEach(function(r,j){var at={r:r,fill:col,opacity:[1,.55,.3][j]};if(!j)at.filter="url(#flGlow)";dots.push(hsvg("circle",at,flPk));});
+    function clear(){path.remove();dots.forEach(function(d){d.remove();});if(P.pipe)P.pipe.classList.remove("hot");}
+    (function step(){
+      if(run!==flRun){clear();return;}
+      var now=performance.now();if(!t0)t0=now;var q=Math.min(1,(now-t0)/900);
+      dots.forEach(function(d,j){var u=Math.max(0,q-j*.07), e=u*u*(3-2*u), pt=path.getPointAtLength(e*L);d.setAttribute("cx",pt.x);d.setAttribute("cy",pt.y);});
+      if(q<1)requestAnimationFrame(step);else{clear();flPing(b);cb();}
+    })();
   }
-  inView(document.getElementById("watch"),watchLoop,watchRest);
+  function flApply(st){if(st.set)Object.keys(st.set).forEach(function(id){flState(id,st.set[id][0],st.set[id][1]);});if(st.back)flState(st.go[1],st.bad?"bad":"on");}
+  function flSayStep(st,res){
+    flClock.textContent=st.t;flSay.textContent=st.say;
+    if(res&&st.res){var em=document.createElement("em");em.textContent=" → "+st.res;flSay.appendChild(em);}
+  }
+  function flDone(li,st){li.className="done";if(st.res)li.querySelector("small").textContent=st.res;}
+  function flPlay(si,run){
+    flCur=si;flBuild(si);
+    var f=FLOWS[si], lis=[].slice.call(flSteps.children), i=0, at=function(ms,fn){setTimeout(function(){if(run===flRun)fn();},ms);};
+    function next(){
+      if(i>=f.steps.length){flOut.classList.remove("wait");at(5500,function(){flPlay((si+1)%FLOWS.length,run);});return;}
+      var st=f.steps[i], li=lis[i];
+      li.className="now";flSayStep(st,false);
+      function finish(){flApply(st);flSayStep(st,true);flDone(li,st);i++;at(st.res?1600:900,next);}
+      if(!st.go){at(500,finish);return;}
+      flPacket(st.go[0],st.go[1],FL_COL[st.c||"go"],run,function(){
+        if(!st.back){finish();return;}
+        flState(st.go[1],"on"); // the source is read, and its answer travels back
+        at(400,function(){flPacket(st.go[1],st.go[0],st.bad?FL_COL.bad:FL_COL.ok,run,finish);});
+      });
+    }
+    at(700,next);
+  }
+  function flRest(si){ // the finished story, still
+    flRun++;flCur=si;flBuild(si);
+    var f=FLOWS[si];
+    f.steps.forEach(function(st,i){flApply(st);flDone(flSteps.children[i],st);});
+    flSayStep(f.steps[f.steps.length-1],true);flOut.classList.remove("wait");
+  }
+  function flStart(){var run=++flRun;flPlay(flCur,run);}
+  flRest(0);
+  inView(flowEl,function(){flOn=true;flowEl.classList.remove("paused");flStart();},function(){flOn=false;flowEl.classList.add("paused");flRest(flCur);});
+  flTabs.forEach(function(b,i){b.addEventListener("click",function(){flCur=i;if(flOn&&!reduce)flStart();else flRest(i);});});
+  hubMq.addEventListener("change",function(){if(flOn&&!reduce)flStart();else flRest(flCur);});
 
   // One change, two ways: the silo misses what the whole configuration shows.
   var NS="http://www.w3.org/2000/svg";
@@ -1066,7 +1082,7 @@ body.present .progress{display:block}
     if(slides[idx].id==="hub"&&!reduce)hubLoop();
     if(slides[idx].id==="team"&&!reduce)crewLoop();
     if(slides[idx].id==="risk"&&!reduce)twLoop();
-    if(slides[idx].id==="jobs"&&!reduce)watchLoop();
+    if(slides[idx].id==="jobs"&&!reduce)flStart();
     if(slides[idx].id==="outcomes"&&!reduce)growImpact();
     pc.textContent=(idx+1)+" / "+slides.length;bar.style.width=((idx+1)/slides.length*100)+"%";
   }
