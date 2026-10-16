@@ -288,22 +288,22 @@ section.sheet .wrap{display:grid;gap:28px}
 .fb.bad .s{fill:#ff9d94}.fb.ok .s{fill:#7fe0a5}.fb.on .s{fill:#9fdfea}
 .fl-ring{fill:none;stroke:#4cc3d6;stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
 .fb.ping .fl-ring{animation:hbeat .8s ease-out}
-.fl-foot{display:grid;grid-template-columns:1.6fr 1fr;border-top:1px solid rgba(255,255,255,.08)}
-@media (max-width:760px){.fl-foot{grid-template-columns:1fr}}
-.fl-steps{list-style:none;margin:0;padding:14px 18px;display:grid;gap:7px;counter-reset:fs}
-.fl-steps li{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:.84rem;line-height:1.4;color:#e4eef3;transition:opacity .35s}
-.fl-steps li::before{counter-increment:fs;content:counter(fs);width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font:600 .66rem/1 var(--mono);border:1.5px solid rgba(255,255,255,.2);color:var(--code-dim);transition:all .3s}
+.fl-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;padding:12px 18px;border-top:1px solid rgba(255,255,255,.08)}
+.fl-steps{list-style:none;margin:0;padding:0;display:flex;align-items:center;counter-reset:fs}
+.fl-steps li{display:flex;align-items:center;transition:opacity .35s}
+.fl-steps li > *{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.fl-steps li::before{counter-increment:fs;content:counter(fs);width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:600 .68rem/1 var(--mono);border:1.5px solid rgba(255,255,255,.2);color:var(--code-dim);transition:all .3s}
+.fl-steps li:not(:last-child)::after{content:"";width:16px;height:2px;margin:0 4px;background:rgba(255,255,255,.14)}
 .fl-steps li.now::before{border-color:#4cc3d6;color:#4cc3d6;box-shadow:0 0 0 4px rgba(76,195,214,.15)}
-.fl-steps li.done::before{content:"✓";background:#3fcf7f;border-color:#3fcf7f;color:#06121a}
+.fl-steps li.done::before{content:"\2713";background:#3fcf7f;border-color:#3fcf7f;color:#06121a}
 .fl-steps li.wait{opacity:.35}
-.fl-steps small{grid-column:2;margin-top:-4px;font:400 .72rem/1.35 var(--mono);color:#7fe0a5}
-.fl-steps small:empty{display:none}
-.fl-out{padding:14px 18px;display:grid;gap:8px;align-content:center;border-left:1px solid rgba(255,255,255,.08);transition:opacity .5s}
-@media (max-width:760px){.fl-out{border-left:0;border-top:1px solid rgba(255,255,255,.08)}}
+.fl-out{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap;transition:opacity .5s}
 .fl-out.wait{opacity:.12}
 .fl-out b{font:500 .66rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#7fe0a5}
-.fl-out strong{font:800 1.5rem/1.15 var(--display);color:#ffffff}
+.fl-out strong{font:800 1.2rem/1.2 var(--display);color:#ffffff}
 .fl-out span{font-size:.84rem;color:#ff9d94}
+.pill text{stroke:none;fill:#06121a;font-weight:600}
+.fb .tag rect{fill:#4cc3d6}.fb.bad .tag rect{fill:#ff8a80}.fb.ok .tag rect{fill:#5fd18d}
 
 /* person and AI icons */
 .who-ic{width:18px;height:22px;flex:none}
@@ -822,27 +822,27 @@ body.present .progress{display:block}
     {nodes:{L:{t:"Admin",s:"on call",ic:"person"},R1:{t:"tc-app01",s:"PROD · pool running",ic:"server"},R2:{t:"tc-fsc01",s:"PROD · FSC running",ic:"server"},R3:{t:"tc-web01",s:"PROD · AWC running",ic:"server"}},
      steps:[
       {t:"02:14",say:"PROD server tc-fsc01: the FSC service stops.",set:{R2:["bad","FSC stopped"]}},
-      {t:"02:14",say:"The agent on the server reports it to TeamcenterGuru.",go:["R2","H"],c:"bad"},
-      {t:"02:15",say:"TeamcenterGuru alerts the admin by chat and email, with the cause from the log.",go:["H","L"],c:"bad",res:"FSC cache volume is full",set:{L:["bad","alerted"]}},
-      {t:"02:19",say:"The admin clears the cache and restarts the service.",go:["L","R2"],c:"ok",set:{L:["on","fixing"],R2:["ok","FSC running"]}},
-      {t:"02:21",say:"The agent reports the service running again.",go:["R2","H"],c:"ok"},
-      {t:"02:21",say:"Resolved, and logged with its cause.",go:["H","L"],c:"ok",set:{L:["ok","resolved"]}}],
+      {t:"02:14",say:"The agent on the server reports it to TeamcenterGuru.",go:["R2","H"],c:"bad",pk:"FSC stopped"},
+      {t:"02:15",say:"TeamcenterGuru alerts the admin by chat and email, with the cause from the log.",go:["H","L"],c:"bad",pk:"Alert: cache full",res:"FSC cache volume is full",set:{L:["bad","cache volume full"]}},
+      {t:"02:19",say:"The admin clears the cache and restarts the service.",go:["L","R2"],c:"ok",pk:"Clear cache, restart",set:{L:["on","fixing"],R2:["ok","FSC running"]}},
+      {t:"02:21",say:"The agent reports the service running again.",go:["R2","H"],c:"ok",pk:"FSC running"},
+      {t:"02:21",say:"Resolved, and logged with its cause.",go:["H","L"],c:"ok",pk:"Resolved",set:{L:["ok","resolved 02:21"]}}],
      out:["Fixed in 7 minutes","By hand: found when users call in the morning"]},
     {nodes:{L:{t:"Support user",s:"asks in chat",ic:"person"},R1:{t:"Live Teamcenter",s:"signed in as the user",ic:"tc"},R2:{t:"AIG gateway",s:"transaction logs",ic:"aig"},R3:{t:"Configuration",s:"Prod and QA",ic:"sliders"}},
      steps:[
-      {t:"+0 s",say:"“Why did the SAP transfer of part 000124/B fail?”",go:["L","H"]},
-      {t:"+8 s",say:"Reads the part, its release status and workflow in live Teamcenter.",go:["H","R1"],back:1,res:"Released by Wdg_ECO; transfer pending"},
-      {t:"+20 s",say:"Reads the integration gateway's transaction log.",go:["H","R2"],back:1,bad:1,res:"Failed: no mapping for wdg4_material"},
-      {t:"+35 s",say:"Compares the integration mapping, Prod against QA.",go:["H","R3"],back:1,res:"QA maps wdg4_material; Prod does not"},
-      {t:"+50 s",say:"Answers with the root cause and the fix, every source cited.",go:["H","L"],c:"ok",set:{L:["ok","answered"]}}],
+      {t:"+0 s",say:"“Why did the SAP transfer of part 000124/B fail?”",go:["L","H"],pk:"Why did 000124/B fail?"},
+      {t:"+8 s",say:"Reads the part, its release status and workflow in live Teamcenter.",go:["H","R1"],back:1,pk:"Part, status, workflow?",tag:"Released · pending",res:"Released by Wdg_ECO; transfer pending"},
+      {t:"+20 s",say:"Reads the integration gateway's transaction log.",go:["H","R2"],back:1,bad:1,pk:"Transaction log?",tag:"No mapping: wdg4_material",res:"Failed: no mapping for wdg4_material"},
+      {t:"+35 s",say:"Compares the integration mapping, Prod against QA.",go:["H","R3"],back:1,pk:"Mapping, Prod vs QA?",tag:"Prod lacks the mapping",res:"QA maps wdg4_material; Prod does not"},
+      {t:"+50 s",say:"Answers with the root cause and the fix, every source cited.",go:["H","L"],c:"ok",pk:"Root cause + fix",set:{L:["ok","answered"]}}],
      out:["Answered in about a minute","By hand: about 3 h 40 min"]},
     {nodes:{L:{t:"Admin",s:"asks in chat",ic:"person"},R1:{t:"Current configuration",s:"workflows, handlers",ic:"sliders"},R2:{t:"Siemens Support Center",s:"ITK docs, KB",ic:"doc"},R3:{t:"Build check",s:"ITK compile",ic:"code"}},
      steps:[
-      {t:"+0 s",say:"“Add a handler that blocks release when a part has no material.”",go:["L","H"]},
-      {t:"+15 s",say:"Reads the workflows and handlers already on the site.",go:["H","R1"],back:1,res:"Wdg_ECO release task, 2 rule handlers"},
-      {t:"+40 s",say:"Reads the handler API for your Teamcenter release.",go:["H","R2"],back:1,res:"EPM rule handler docs for your release"},
-      {t:"+1 min 30 s",say:"Writes the handler and compiles it.",go:["H","R3"],back:1,res:"Compiles clean"},
-      {t:"+2 min",say:"Suggests the handler and the workflow change that attaches it, ready for review.",go:["H","L"],c:"ok",set:{L:["ok","ready to review"]}}],
+      {t:"+0 s",say:"“Add a handler that blocks release when a part has no material.”",go:["L","H"],pk:"Block release w/o material"},
+      {t:"+15 s",say:"Reads the workflows and handlers already on the site.",go:["H","R1"],back:1,pk:"Handlers in use?",tag:"Wdg_ECO: 2 rule handlers",res:"Wdg_ECO release task, 2 rule handlers"},
+      {t:"+40 s",say:"Reads the handler API for your Teamcenter release.",go:["H","R2"],back:1,pk:"Handler API, your release?",tag:"EPM rule handler docs",res:"EPM rule handler docs for your release"},
+      {t:"+1 min 30 s",say:"Writes the handler and compiles it.",go:["H","R3"],back:1,pk:"Compile the handler",tag:"Compiles clean",res:"Compiles clean"},
+      {t:"+2 min",say:"Suggests the handler and the workflow change that attaches it, ready for review.",go:["H","L"],c:"ok",pk:"Handler + workflow change",set:{L:["ok","ready to review"]}}],
      out:["Drafted in about 2 minutes","By hand: a day or more"]}
   ];
   var FL_COL={go:"#4cc3d6",bad:"#ff8a80",ok:"#5fd18d"};
@@ -852,7 +852,7 @@ body.present .progress{display:block}
       flTabs=[].slice.call(document.querySelectorAll("#flTabs button")), flCur=0, flRun=0, flOn=false, FB={}, FP={}, FLL;
   function flLayout(){ // phone: the hub in the middle of a tall scene; wide: requester left, sources right
     return hubMq.matches?{w:400,h:600,L:[200,120],H:[200,300],R1:[78,470],R2:[200,505],R3:[322,470],a:36,bh:28,ha:52,hh:46,ft:13,fs:11}
-      :{w:900,h:480,L:[170,265],H:[450,255],R1:[690,110],R2:[790,262],R3:[690,410],a:44,bh:32,ha:62,hh:54,ft:15,fs:12};
+      :{w:900,h:500,L:[170,270],H:[450,260],R1:[640,110],R2:[790,280],R3:[640,425],a:44,bh:32,ha:62,hh:54,ft:15,fs:12};
   }
   function poly(pts){return pts.map(function(p){return p[0]+","+p[1];}).join(" ");}
   function flBlock(id,nd){
@@ -867,9 +867,22 @@ body.present .progress{display:block}
     hsvg("g",{transform:"translate("+x+","+cy+")"},g).innerHTML=FL_IC[nd.ic];
     var t=hsvg("text",{"class":"t",x:x,y:y+b+FLL.ft+8,"text-anchor":"middle","font-size":FLL.ft},g);t.textContent=nd.t;
     var s=hsvg("text",{"class":"s",x:x,y:y+b+FLL.ft+FLL.fs+12,"text-anchor":"middle","font-size":FLL.fs},g);s.textContent=nd.s;
-    FB[id]={g:g,s:s,base:base};
+    FB[id]={g:g,s:s,base:base,x:x,sy:y+b+FLL.ft+FLL.fs+15-FLL.fs*.35};
   }
-  function flState(id,st,sub){var b=FB[id];if(!b)return;b.g.setAttribute("class",b.base+(st?" "+st:""));if(sub!==undefined)b.s.textContent=sub;}
+  function flPill(parent,x,y,txt){ // a rounded label, kept inside the scene
+    var g=hsvg("g",{"class":"pill"},parent), r=hsvg("rect",{},g), t=hsvg("text",{x:0,y:FLL.fs*.36,"text-anchor":"middle","font-size":FLL.fs},g);
+    t.textContent=txt;var w=t.getComputedTextLength()+16, h=FLL.fs+9;
+    r.setAttribute("x",-w/2);r.setAttribute("y",-h/2);r.setAttribute("width",w);r.setAttribute("height",h);r.setAttribute("rx",h/2);
+    g.move=function(px,py){g.setAttribute("transform","translate("+Math.max(w/2+4,Math.min(FLL.w-w/2-4,px))+","+py+")");};
+    g.move(x,y);return g;
+  }
+  function flState(id,st,sub){
+    var b=FB[id];if(!b)return;b.g.setAttribute("class",b.base+(st?" "+st:""));
+    if(sub===undefined)return;
+    if(b.tag){b.tag.remove();b.tag=null;}
+    if(st){b.s.style.visibility="hidden";b.tag=flPill(b.g,b.x,b.sy,sub);b.tag.classList.add("tag");}
+    else{b.s.style.visibility="";b.s.textContent=sub;}
+  }
   function flPing(id){var b=FB[id];if(!b)return;b.g.classList.remove("ping");void b.g.getBBox();b.g.classList.add("ping");}
   function flBuild(si){
     FLL=flLayout();
@@ -898,19 +911,20 @@ body.present .progress{display:block}
     if(py>0||(py===0&&px<0)){px=-px;py=-py;}
     return {d:"M"+A[0]+" "+A[1]+"Q"+((A[0]+B[0])/2+px*k)+" "+((A[1]+B[1])/2+py*k)+" "+B[0]+" "+B[1],hop:true};
   }
-  function flPacket(a,b,col,run,cb){
-    var P=flPath(a,b), path=hsvg("path",{"class":"fl-hop"+(P.hop?" on":""),d:P.d},flPk), L=path.getTotalLength(), dots=[], t0=null;
+  function flPacket(a,b,col,run,cb,label){
+    var P=flPath(a,b), path=hsvg("path",{"class":"fl-hop"+(P.hop?" on":""),d:P.d},flPk), L=path.getTotalLength(), dots=[], t0=null, lab=null;
     if(P.pipe)P.pipe.classList.add("hot");
     [7,4.5,3].forEach(function(r,j){var at={r:r,fill:col,opacity:[1,.55,.3][j]};if(!j)at.filter="url(#flGlow)";dots.push(hsvg("circle",at,flPk));});
-    function clear(){path.remove();dots.forEach(function(d){d.remove();});if(P.pipe)P.pipe.classList.remove("hot");}
+    if(label){var p0=path.getPointAtLength(0);lab=flPill(flPk,p0.x,p0.y-22,label);lab.querySelector("rect").setAttribute("fill",col);}
+    function clear(){path.remove();dots.forEach(function(d){d.remove();});if(lab)lab.remove();if(P.pipe)P.pipe.classList.remove("hot");}
     (function step(){
       if(run!==flRun){clear();return;}
       var now=performance.now();if(!t0)t0=now;var q=Math.min(1,(now-t0)/900);
-      dots.forEach(function(d,j){var u=Math.max(0,q-j*.07), e=u*u*(3-2*u), pt=path.getPointAtLength(e*L);d.setAttribute("cx",pt.x);d.setAttribute("cy",pt.y);});
+      dots.forEach(function(d,j){var u=Math.max(0,q-j*.07), e=u*u*(3-2*u), pt=path.getPointAtLength(e*L);d.setAttribute("cx",pt.x);d.setAttribute("cy",pt.y);if(!j&&lab)lab.move(pt.x,pt.y-22);});
       if(q<1)requestAnimationFrame(step);else{clear();flPing(b);cb();}
     })();
   }
-  function flApply(st){if(st.set)Object.keys(st.set).forEach(function(id){flState(id,st.set[id][0],st.set[id][1]);});if(st.back)flState(st.go[1],st.bad?"bad":"on");}
+  function flApply(st){if(st.set)Object.keys(st.set).forEach(function(id){flState(id,st.set[id][0],st.set[id][1]);});if(st.back)flState(st.go[1],st.bad?"bad":"on",st.tag);}
   function flSayStep(st,res){
     flClock.textContent=st.t;flSay.textContent=st.say;
     if(res&&st.res){var em=document.createElement("em");em.textContent=" → "+st.res;flSay.appendChild(em);}
@@ -928,8 +942,8 @@ body.present .progress{display:block}
       flPacket(st.go[0],st.go[1],FL_COL[st.c||"go"],run,function(){
         if(!st.back){finish();return;}
         flState(st.go[1],"on"); // the source is read, and its answer travels back
-        at(400,function(){flPacket(st.go[1],st.go[0],st.bad?FL_COL.bad:FL_COL.ok,run,finish);});
-      });
+        at(400,function(){flPacket(st.go[1],st.go[0],st.bad?FL_COL.bad:FL_COL.ok,run,finish,st.tag);});
+      },st.pk);
     }
     at(700,next);
   }
