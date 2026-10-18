@@ -317,6 +317,11 @@ section.sheet .wrap{display:grid;gap:28px}
 .who-ic circle,.who-ic path{fill:#d9675c}
 .ai-ic{flex:none;width:22px;height:22px;border-radius:7px;display:grid;place-items:center;background:linear-gradient(135deg,#8b5cf6,#4cc3d6);color:#ffffff;font:700 .6rem/1 var(--mono)}
 
+/* end to end: one change notice through the seven stages */
+.lc{padding-top:6px}
+.lc-foot{display:flex;gap:8px 28px;flex-wrap:wrap;justify-content:center;padding:12px 18px 16px;border-top:1px solid rgba(255,255,255,.08);font:600 .92rem/1.3 var(--body);color:#7fe0a5;transition:opacity .5s}
+.lc-foot.wait{opacity:.12}
+
 /* 4. outcomes */
 .outcomes{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 @media (max-width:760px){.outcomes{grid-template-columns:1fr}}
@@ -553,6 +558,18 @@ body.present .progress{display:block}
   </div>
 </section>
 
+<!-- End to end -->
+<section class="sheet" id="lifecycle">
+  <div class="wrap">
+    <div class="eyebrow">End to end</div>
+    <h2>Every change, from capture to verified.</h2>
+    <div class="flow lc rv" id="lc" aria-label="Illustrative: change notice CN-000041 moves through seven stages, capture, compare, change notice, merge, package, deploy and verify, and every step is recorded">
+      <svg class="flsvg" id="lcSvg" viewBox="0 0 1000 200" aria-hidden="true"><g id="lcPipes"></g><g id="lcBlocks"></g><g id="lcPk"></g></svg>
+      <div class="lc-foot wait" id="lcFoot"><span>✓ Every step recorded</span><span>↺ Rollback package ready</span></div>
+    </div>
+  </div>
+</section>
+
 <!-- Same team, more done -->
 <section class="sheet" id="team">
   <div class="wrap">
@@ -653,7 +670,7 @@ body.present .progress{display:block}
 </footer>
 
 <div class="pctl" role="group" aria-label="Presentation controls">
-  <span id="pcount">1 / 8</span>
+  <span id="pcount">1 / 9</span>
   <button type="button" id="pPrev" aria-label="Previous slide">‹</button>
   <button type="button" id="pNext" aria-label="Next slide">›</button>
   <button type="button" id="exit">Exit</button>
@@ -780,6 +797,83 @@ body.present .progress{display:block}
   var hubOnScreen=false;
   inView(hubSvg,function(){hubOnScreen=true;hubLoop();},function(){hubOnScreen=false;hubRest();});
   hubMq.addEventListener("change",function(){hubBuild();hubRest();if(hubOnScreen&&!reduce)hubLoop();});
+
+  // End to end: one change notice travels the seven stages; each lights, with its result, as the notice reaches it.
+  var LC=[
+    {t:"Capture",tag:"PROD on record",g:'<path class="gl" d="M0-9v11M-5-3l5 5 5-5M-9 7h18"/>'},
+    {t:"Compare",tag:"3 differences",g:'<path class="gl" d="M-9-8h7v16h-7zM2-8h7v16h-7z"/>'},
+    {t:"Change notice",tag:"Approved",g:HUB_NODES[4].g},
+    {t:"Merge",tag:"2 kept, 1 rejected",g:'<path class="gl" d="M-7-9v5c0 4 7 4 7 8v5M7-9v5c0 4-7 4-7 8"/>'},
+    {t:"Package",tag:"Scripts + rollback",g:'<path class="gl" d="M-9-5l9-5 9 5v10l-9 5-9-5zM-9-5l9 5 9-5M0 0v10"/>'},
+    {t:"Deploy",tag:"QA → PROD",g:'<path class="gl" d="M0 4v-14M-6-4l6-6 6 6M-9 9h18"/>'},
+    {t:"Verify",tag:"Smoke tests pass",g:'<path class="gl" d="M-8 0l5 5 11-11"/>'}
+  ];
+  var lcEl=document.getElementById("lc"), lcSvg=document.getElementById("lcSvg"), lcPipes=document.getElementById("lcPipes"), lcBlocks=document.getElementById("lcBlocks"),
+      lcPk=document.getElementById("lcPk"), lcFoot=document.getElementById("lcFoot"), lcRun=0, LCL, LB=[];
+  function lcLayout(){ // wide: one row; phone: one column with the words beside each block
+    return hubMq.matches?{ph:1,w:400,h:600,a:22,bh:18,ft:15,fs:12,pos:function(i){return [52,52+i*84];}}
+      :{w:1000,h:210,a:32,bh:26,ft:16,fs:13,pos:function(i){return [75+i*141.6,112];}};
+  }
+  function lcPill(parent,x,y,txt,start){
+    var g=hsvg("g",{"class":"pill"},parent), r=hsvg("rect",{},g), t=hsvg("text",{x:0,y:LCL.fs*.36,"text-anchor":"middle","font-size":LCL.fs},g);
+    t.textContent=txt;var w=t.getComputedTextLength()+16, h=LCL.fs+9;
+    r.setAttribute("x",-w/2);r.setAttribute("y",-h/2);r.setAttribute("width",w);r.setAttribute("height",h);r.setAttribute("rx",h/2);
+    g.setAttribute("transform","translate("+(start?x+w/2:x)+","+y+")");return g;
+  }
+  function lcBuild(){
+    LCL=lcLayout();lcSvg.setAttribute("viewBox","0 0 "+LCL.w+" "+LCL.h);
+    lcPipes.textContent="";lcBlocks.textContent="";lcPk.textContent="";LB=[];
+    var P=LC.map(function(d,i){return LCL.pos(i);}), d="M"+P.map(function(q){return q[0]+" "+q[1];}).join("L");
+    hsvg("path",{"class":"fl-pipe",d:d},lcPipes);hsvg("path",{"class":"fl-core",d:d},lcPipes);
+    LC.forEach(function(st,i){
+      var x=P[i][0], y=P[i][1], a=LCL.a, h=LCL.bh, b=a/2, g=hsvg("g",{"class":"fb"},lcBlocks), B={g:g,x:x,y:y};
+      hsvg("ellipse",{"class":"fl-ring",cx:x,cy:y,rx:a+8,ry:b+4},g);
+      hsvg("polygon",{"class":"lf",points:poly([[x-a,y-h],[x,y-h+b],[x,y+b],[x-a,y]])},g);
+      hsvg("polygon",{"class":"rt",points:poly([[x,y-h+b],[x+a,y-h],[x+a,y],[x,y+b]])},g);
+      hsvg("polygon",{"class":"top",points:poly([[x,y-h-b],[x+a,y-h],[x,y-h+b],[x-a,y-h]])},g);
+      var t;
+      if(LCL.ph){
+        t=hsvg("text",{"class":"t",x:x+44,y:y-4,"font-size":LCL.ft},g);B.tx=x+44;B.ty=y+15;B.start=1;
+      }else{
+        var cy=y-h-b-24;
+        hsvg("rect",{"class":"chip",x:x-20,y:cy-15,width:40,height:30,rx:7},g);
+        hsvg("g",{transform:"translate("+x+","+cy+")"},g).innerHTML=st.g;
+        t=hsvg("text",{"class":"t",x:x,y:y+b+LCL.ft+8,"text-anchor":"middle","font-size":LCL.ft},g);
+        B.tx=x;B.ty=y+b+LCL.ft+LCL.fs+15-LCL.fs*.35;
+      }
+      t.textContent=st.t;LB.push(B);
+    });
+  }
+  function lcLight(i,ping){
+    var B=LB[i];B.g.setAttribute("class","fb "+(i===LC.length-1?"ok":"on"));
+    if(ping){void B.g.getBBox();B.g.classList.add("ping");}
+    lcPill(B.g,B.tx,B.ty,LC[i].tag,B.start).classList.add("tag");
+  }
+  function lcToken(i,run,cb){ // the notice crosses from stage i to stage i+1
+    var A=LB[i], Z=LB[i+1], dot=hsvg("circle",{r:7,fill:"#4cc3d6",filter:"url(#flGlow)",cx:A.x,cy:A.y},lcPk), lab=null, t0=performance.now();
+    if(!LCL.ph){lab=lcPill(lcPk,A.x,A.y-22,"CN-000041");lab.querySelector("rect").setAttribute("fill","#4cc3d6");}
+    (function step(){
+      if(run!==lcRun){dot.remove();if(lab)lab.remove();return;}
+      var q=Math.max(0,Math.min(1,(performance.now()-t0)/1100)), e=q*q*(3-2*q), x=A.x+(Z.x-A.x)*e, y=A.y+(Z.y-A.y)*e;
+      dot.setAttribute("cx",x);dot.setAttribute("cy",y);if(lab)lab.setAttribute("transform","translate("+x+","+(y-22)+")");
+      if(q<1)requestAnimationFrame(step);else{dot.remove();if(lab)lab.remove();cb();}
+    })();
+  }
+  function lcPlay(run){
+    var at=function(ms,fn){setTimeout(function(){if(run===lcRun)fn();},ms);};
+    lcBuild();lcFoot.classList.add("wait");
+    function step(i){
+      if(i>=LC.length-1){at(600,function(){lcFoot.classList.remove("wait");});at(7000,function(){lcPlay(run);});return;}
+      lcToken(i,run,function(){lcLight(i+1,true);at(700,function(){step(i+1);});});
+    }
+    at(700,function(){lcLight(0,true);at(800,function(){step(0);});});
+  }
+  function lcRest(){lcRun++;lcBuild();LC.forEach(function(d,i){lcLight(i,false);});lcFoot.classList.remove("wait");}
+  function lcStart(){lcPlay(++lcRun);}
+  var lcOn=false;
+  lcRest();
+  inView(lcEl,function(){lcOn=true;lcStart();},function(){lcOn=false;lcRest();});
+  hubMq.addEventListener("change",function(){if(lcOn&&!reduce)lcStart();else lcRest();});
 
   // Impact chart: four panels, each on its own scale (never a shared or dual axis). Example figures.
   var IMPACT=[
@@ -1128,6 +1222,7 @@ body.present .progress{display:block}
     if(slides[idx].id==="team"&&!reduce)crewLoop();
     if(slides[idx].id==="risk"&&!reduce)twLoop();
     if(slides[idx].id==="jobs"&&!reduce)flStart();
+    if(slides[idx].id==="lifecycle"&&!reduce)lcStart();
     if(slides[idx].id==="outcomes"&&!reduce)growImpact();
     pc.textContent=(idx+1)+" / "+slides.length;bar.style.width=((idx+1)/slides.length*100)+"%";
   }
