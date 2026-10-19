@@ -34,7 +34,7 @@
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-.run,.twoways,.crew{position:relative}
+.run,.crew{position:relative}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.6 var(--body);padding-inline:16px;padding-block:0}
 .wrap{max-width:68rem;margin-inline:auto}
@@ -148,47 +148,28 @@ section.sheet .wrap{display:grid;gap:28px}
 .versus div+div strong{color:var(--accent)}
 @media (max-width:560px){.versus{grid-template-columns:1fr}.versus div+div{border-left:0;border-top:1px solid var(--line)}}
 
-/* one change, two ways */
-.twoways{background:var(--sheet);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.tw-title{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--paper)}
-.tw-title b{font:700 1rem/1.3 var(--display)}
-.tw-title span{font-size:.88rem;color:var(--muted)}
-.tw-title code{font:500 .85rem var(--mono);color:var(--ink);background:var(--accent-soft);padding:1px 6px;border-radius:4px}
-.tw-lanes{display:grid;grid-template-columns:1fr 1fr}
-@media (max-width:900px){.tw-lanes{grid-template-columns:1fr}}
-.lane{padding:18px;display:grid;gap:14px;align-content:start;min-width:0}
-.lane.silo{border-right:1px solid var(--line)}
-@media (max-width:900px){.lane.silo{border-right:0;border-bottom:1px solid var(--line)}}
-.lane-h{display:flex;align-items:center;gap:8px;font:500 .7rem/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.lane.ctx .lane-h{color:var(--accent)}
-.blocks{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.blk{border:1px solid var(--line);border-radius:8px;padding:9px 11px;display:grid;gap:3px;transition:opacity .4s,border-color .4s,background .4s}
-.blk span{font-size:.72rem;color:var(--muted)}
-.blk strong{font:700 .92rem/1.2 var(--body)}
-.blk.dim{opacity:.38;border-style:dashed}
-.blk.scan{border-color:var(--accent);background:var(--accent-soft)}
-.blk.fine{border-color:var(--add)}
-.blk.fine strong{color:var(--add)}
-.blk.hit{border-color:var(--rem);background:var(--rem-bg)}
-.blk.hit strong{color:var(--rem)}
-.blk.miss{border-color:var(--rem);border-style:dashed}
-.blk.miss strong{color:var(--rem)}
-.tw-count{font:500 .78rem/1.3 var(--mono);color:var(--muted)}
-.tw-count b{font:700 1rem/1 var(--body);color:var(--ink)}
-.lane.ctx .tw-count b.n{color:var(--rem)}
+/* impact analysis: one web, checked twice */
 @keyframes draw{to{stroke-dashoffset:0}}
-.tl{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative}
-.tl li{display:grid;justify-items:center;gap:6px;font:500 .74rem/1 var(--mono);color:var(--muted);position:relative}
-.tl li::before{content:"";width:22px;height:22px;border-radius:50%;border:2px solid var(--line);background:var(--sheet);display:grid;place-items:center;font:700 .7rem/18px var(--body);text-align:center;transition:all .35s;z-index:1}
-.tl li:not(:last-child)::after{content:"";position:absolute;top:11px;left:50%;width:100%;height:2px;background:var(--line)}
-.tl li.ok::before{content:"✓";border-color:var(--add);background:var(--add-bg);color:var(--add)}
-.tl li.bad::before{content:"✗";border-color:var(--rem);background:var(--rem-bg);color:var(--rem);animation:alarm 1s ease-in-out 2}
-.tl li.bad{color:var(--rem);font-weight:700}
-@keyframes alarm{50%{box-shadow:0 0 0 8px var(--rem-bg)}}
-.verdict{border-radius:8px;padding:10px 12px;font-size:.88rem;line-height:1.45;transition:opacity .4s}
-.verdict.bad{background:var(--rem-bg);color:var(--rem)}
-.verdict.good{background:var(--add-bg);color:var(--add)}
-.verdict.wait{opacity:0}
+.ia-top{display:flex;justify-content:space-between;align-items:center;gap:10px 18px;flex-wrap:wrap;padding:14px 18px 0}
+.ia-ph{display:flex;gap:6px;flex-wrap:wrap}
+.ia-ph span{font:600 .82rem/1 var(--body);color:var(--code-dim);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:9px 14px;transition:all .3s}
+.ia-ph span.on{color:#06121a;background:#4cc3d6;border-color:#4cc3d6}
+.ia-env{list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:0}
+.ia-env li{display:flex;align-items:center;gap:6px;font:600 .72rem/1 var(--mono);color:var(--code-dim)}
+.ia-env li::before{content:"";width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(255,255,255,.22);display:grid;place-items:center;font:700 .66rem/1 var(--body);transition:all .3s}
+.ia-env li:not(:last-child)::after{content:"";width:22px;height:2px;margin:0 8px;background:rgba(255,255,255,.14)}
+.ia-env li.ok::before{content:"✓";background:#3fcf7f;border-color:#3fcf7f;color:#06121a}
+.ia-env li.bad::before{content:"✗";background:#ff8a80;border-color:#ff8a80;color:#2a0b08}
+.ia-env li.bad{color:#ff9d94}
+.ia-score{display:grid;border-top:1px solid rgba(255,255,255,.08)}
+.ia-row{display:grid;grid-template-columns:minmax(150px,1.1fr) 1fr 1fr 1.3fr;gap:6px 14px;align-items:baseline;padding:10px 18px;font-size:.88rem;color:#e4eef3;transition:opacity .5s}
+.ia-row + .ia-row{border-top:1px solid rgba(255,255,255,.06)}
+.ia-row.wait{opacity:.12}
+.ia-row b{font:500 .7rem/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--code-dim)}
+.ia-row em{font:800 1.15rem/1 var(--display);font-style:normal;color:#ffffff}
+.ia-row .r{color:#ff9d94}.ia-row .g{color:#7fe0a5}
+.ia-row em.r{color:#ff8a80}.ia-row em.g{color:#5fd18d}
+@media (max-width:760px){.ia-row{grid-template-columns:1fr 1fr}.ia-row b{grid-column:1 / -1}}
 
 /* 3. six jobs */
 .jobs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
@@ -399,6 +380,8 @@ body.present{overflow:hidden}
 body.present .bar, body.present footer{display:none}
 body.present section.sheet{position:fixed;inset:0;display:grid;align-items:center;padding:clamp(24px,5vw,64px);background:var(--paper);border:0;overflow:auto;visibility:hidden;opacity:0;transform:translateX(40px);transition:opacity .45s,transform .45s,visibility 0s .45s}
 body.present section.sheet > .wrap{width:100%}
+body.present #iaSvg{max-height:27vh}
+#ia .fl-say{min-height:0;padding-bottom:6px}
 body.present section.sheet.on{visibility:visible;opacity:1;transform:none;transition:opacity .45s,transform .45s}
 body.present section.sheet.left{transform:translateX(-40px)}
 .pctl{display:none}
@@ -476,23 +459,16 @@ body.present .progress{display:block}
       <li><em>EFFORT</em><h3>Release checks take admin days</h3><p class="muted">Admins compare exports by hand before each release, across a dozen configuration formats.</p></li>
       <li><em>DELAY</em><h3>Upgrades start blind</h3><p class="muted">Every upgrade begins by finding out what the site has customized and what the new release changes.</p></li>
     </ul>
-    <div class="twoways rv" id="twoways" aria-label="Illustrative: one change, removing the supplier user group. By hand, 1 of 6 areas is checked, no impact is found and the change causes an incident in Production. With TeamcenterGuru, all 6 are checked, 3 impacts are found and fixed before go-live">
-      <div class="tw-title"><b>One change, two ways</b><span>Change: remove the supplier user group</span></div>
-      <div class="tw-lanes">
-        <div class="lane silo">
-          <div class="lane-h"><svg class="who-ic" viewBox="0 0 18 22" aria-hidden="true"><circle cx="9" cy="5" r="4"/><path d="M1 21c0-5 3.6-8 8-8s8 3 8 8z"/></svg>By hand · one area at a time</div>
-          <div class="tw-count"><b id="cSiloChk">1 of 6</b> checked · <b id="cSiloHit">0</b> impacts found</div>
-          <div class="blocks" id="blkSilo"></div>
-          <ol class="tl" id="tlSilo"><li class="ok">Dev</li><li class="ok">QA</li><li class="bad">PROD</li></ol>
-          <div class="verdict bad" id="vSilo">Incident after go-live: suppliers lose access.</div>
-        </div>
-        <div class="lane ctx">
-          <div class="lane-h"><b class="ai-ic" aria-hidden="true">AI</b>With TeamcenterGuru · everything checked together</div>
-          <div class="tw-count"><b id="cCtxChk">6 of 6</b> checked · <b class="n" id="cCtxHit">3</b> impacts found</div>
-          <div class="blocks" id="blkCtx"></div>
-          <ol class="tl" id="tlCtx"><li class="ok">Dev</li><li class="ok">QA</li><li class="ok">PROD</li></ol>
-          <div class="verdict good" id="vCtx">3 impacts found and fixed before go-live.</div>
-        </div>
+    <div class="flow rv paused" id="ia" aria-label="Illustrative: one change, removing the supplier user group, is checked twice against the same six areas. By hand, 1 area is checked, no impact is found, and the change causes an incident in Production; the 3 impacted areas were missed. With TeamcenterGuru, all 6 areas are checked at once, the 3 impacts are found and fixed before deployment, and go-live is clean">
+      <div class="ia-top">
+        <div class="ia-ph"><span id="iaP1">1 · By hand</span><span id="iaP2" class="on">2 · With TeamcenterGuru</span></div>
+        <ol class="ia-env" id="iaEnv"><li class="ok">Dev</li><li class="ok">QA</li><li class="ok">PROD</li></ol>
+      </div>
+      <div class="fl-say"><span id="iaSay"></span></div>
+      <svg class="flsvg" id="iaSvg" viewBox="0 0 900 340" aria-hidden="true"><g id="iaLinks"></g><g id="iaNodes"></g><g id="iaPk"></g></svg>
+      <div class="ia-score">
+        <div class="ia-row" id="iaA"><b>By hand</b><span><em>1 of 6</em> checked</span><span><em class="r">0 of 3</em> impacts found</span><span class="r">✗ Incident after go-live</span></div>
+        <div class="ia-row" id="iaB"><b>With TeamcenterGuru</b><span><em>6 of 6</em> checked</span><span><em class="g">3 of 3</em> impacts found</span><span class="g">✓ Fixed before deployment</span></div>
       </div>
     </div>
     <div class="versus rv">
@@ -1069,59 +1045,111 @@ body.present .progress{display:block}
   });
   hubMq.addEventListener("change",function(){if(flOn&&!reduce)flStart();else flRest(flCur);});
 
-  // One change, two ways: the same six areas. By hand one is checked and the change ships;
-  // TeamcenterGuru checks all six and finds the three the change breaks.
-  var TW=[["User groups",0],["Access rules",1],["Approvals",1],["Settings",0],["Reports",1],["SAP integration",0]];
-  function twBoxes(id){
-    var el=document.getElementById(id);
-    return TW.map(function(a){
-      var b=document.createElement("div"), n=document.createElement("span"), st=document.createElement("strong");
-      n.textContent=a[0];b.appendChild(n);b.appendChild(st);el.appendChild(b);b.hit=a[1];return b;
+  // Impact analysis: one change at the centre of the six areas it could touch, checked twice.
+  // By hand one line is traced and the change ships; TeamcenterGuru traces all six and finds the three it breaks.
+  var IA=[
+    {t:"User groups",hit:0,g:FL_IC.person},
+    {t:"Access rules",hit:1,g:'<path class="gl" d="M-7-1h14v10h-14zM-4-1v-4a4 4 0 0 1 8 0v4"/>'},
+    {t:"Approvals",hit:1,g:'<path class="gl" d="M-8 0l5 5 11-11"/>'},
+    {t:"Settings",hit:0,g:HUB_NODES[1].g},
+    {t:"Reports",hit:1,g:'<path class="gl" d="M-9 9h18M-6 9v-6M0 9v-12M6 9v-8"/>'},
+    {t:"SAP integration",hit:0,g:HUB_NODES[3].g}
+  ];
+  var iaEl=document.getElementById("ia"), iaSvg=document.getElementById("iaSvg"), iaLinks=document.getElementById("iaLinks"), iaNodes=document.getElementById("iaNodes"),
+      iaPk=document.getElementById("iaPk"), iaSay=document.getElementById("iaSay"), iaP1=document.getElementById("iaP1"), iaP2=document.getElementById("iaP2"),
+      iaEnv=[].slice.call(document.querySelectorAll("#iaEnv li")), iaA=document.getElementById("iaA"), iaB=document.getElementById("iaB"), iaRun=0, IAL, IAN=[], iaOn=false;
+  function iaLayout(){ // wide: the change between two columns of three; phone: the change on top of one column
+    return hubMq.matches
+      ?{ph:1,w:400,h:600,hub:[56,58],a:26,bh:20,ha:36,hh:28,ft:14,fs:12,pos:function(i){return [56,150+i*74];}}
+      :{w:900,h:340,hub:[450,170],a:34,bh:26,ha:64,hh:44,ft:16,fs:13,pos:function(i){return [i<3?250:650,70+(i%3)*100];}};
+  }
+  function iaPill(parent,x,y,txt,side){ // side: -1 ends at x, 1 starts at x, 0 centred
+    var g=hsvg("g",{"class":"pill tag"},parent), r=hsvg("rect",{},g), t=hsvg("text",{x:0,y:IAL.fs*.36,"text-anchor":"middle","font-size":IAL.fs},g);
+    t.textContent=txt;var w=t.getComputedTextLength()+16, h=IAL.fs+9;
+    r.setAttribute("x",-w/2);r.setAttribute("y",-h/2);r.setAttribute("width",w);r.setAttribute("height",h);r.setAttribute("rx",h/2);
+    g.setAttribute("transform","translate("+(x+side*w/2)+","+y+")");return g;
+  }
+  function iaBlock(x,y,a,h,parent,cls){
+    var b=a/2, g=hsvg("g",{"class":cls},parent);
+    hsvg("ellipse",{"class":"fl-ring",cx:x,cy:y,rx:a+8,ry:b+4},g);
+    hsvg("polygon",{"class":"lf",points:poly([[x-a,y-h],[x,y-h+b],[x,y+b],[x-a,y]])},g);
+    hsvg("polygon",{"class":"rt",points:poly([[x,y-h+b],[x+a,y-h],[x+a,y],[x,y+b]])},g);
+    hsvg("polygon",{"class":"top",points:poly([[x,y-h-b],[x+a,y-h],[x,y-h+b],[x-a,y-h]])},g);
+    return g;
+  }
+  function iaText(g,x,y,cls,size,txt,anchor){var t=hsvg("text",{"class":cls,x:x,y:y,"text-anchor":anchor||"middle","font-size":size},g);t.textContent=txt;return t;}
+  function iaBuild(){
+    IAL=iaLayout();iaSvg.setAttribute("viewBox","0 0 "+IAL.w+" "+IAL.h);
+    iaLinks.textContent="";iaNodes.textContent="";iaPk.textContent="";IAN=[];
+    var H=IAL.hub;
+    IA.forEach(function(d,i){
+      var q=IAL.pos(i), path="M"+H[0]+" "+H[1]+"L"+q[0]+" "+q[1];
+      hsvg("path",{"class":"fl-pipe",d:path},iaLinks);
+      IAN.push({d:d,x:q[0],y:q[1],core:hsvg("path",{"class":"fl-core",d:path},iaLinks)});
+    });
+    var hb=iaBlock(H[0],H[1],IAL.ha,IAL.hh,iaNodes,"fb hub");
+    if(IAL.ph){iaText(hb,H[0]+IAL.ha+16,H[1]-6,"t",IAL.ft,"The change","start");iaText(hb,H[0]+IAL.ha+16,H[1]+12,"s",IAL.fs,"remove supplier group","start");}
+    else{iaText(hb,H[0],H[1]+IAL.ha/2+IAL.ft+10,"t",IAL.ft,"The change");iaText(hb,H[0],H[1]+IAL.ha/2+IAL.ft+IAL.fs+14,"s",IAL.fs,"remove supplier group");}
+    IAN.forEach(function(n){ // words beside each block: left column reads to the left, the rest to the right
+      var g=iaBlock(n.x,n.y,IAL.a,IAL.bh,iaNodes,"fb"), side=(!IAL.ph&&n.x<H[0])?-1:1, tx=n.x+side*(IAL.a+14);
+      iaText(g,tx,n.y-IAL.bh/2-2,"t",IAL.ft,n.d.t,side<0?"end":"start");
+      n.g=g;n.tx=tx;n.ty=n.y-IAL.bh/2+IAL.fs+8;n.side=side;n.tag=null;
     });
   }
-  var bSilo=twBoxes("blkSilo"), bCtx=twBoxes("blkCtx");
-  function twSet(b,cls,txt){b.className="blk "+cls;b.querySelector("strong").textContent=txt;}
-  function twFound(b){twSet(b,b.hit?"hit":"fine",b.hit?"⚠ Impact found":"✓ No impact");}
-  var tlSilo=[].slice.call(document.querySelectorAll("#tlSilo li")), tlCtx=[].slice.call(document.querySelectorAll("#tlCtx li")),
-      vSilo=document.getElementById("vSilo"), vCtx=document.getElementById("vCtx"),
-      cSiloChk=document.getElementById("cSiloChk"), cSiloHit=document.getElementById("cSiloHit"),
-      cCtxChk=document.getElementById("cCtxChk"), cCtxHit=document.getElementById("cCtxHit");
-  var twRun=0;
-  function twLoop(){
-    var run=++twRun, at=function(ms,f){setTimeout(function(){if(run===twRun)f();},ms);}, hits=0;
-    tlSilo.forEach(function(li){li.className="";});tlCtx.forEach(function(li){li.className="";});
-    vSilo.classList.add("wait");vCtx.classList.add("wait");
-    bSilo.concat(bCtx).forEach(function(b){twSet(b,"dim","not checked");});
-    cSiloChk.textContent="0 of 6";cSiloHit.textContent="0";cCtxChk.textContent="0 of 6";cCtxHit.textContent="0";
-    // by hand: one area checked, then straight on to Production
-    at(900,function(){twSet(bSilo[0],"scan","checking…");});
-    at(1800,function(){twFound(bSilo[0]);cSiloChk.textContent="1 of 6";});
-    at(2700,function(){tlSilo[0].className="ok";});
-    at(3500,function(){tlSilo[1].className="ok";});
-    at(4400,function(){tlSilo[2].className="bad";vSilo.classList.remove("wait");});
-    at(5600,function(){bSilo.forEach(function(b){if(b.hit)twSet(b,"miss","⚠ Missed");});});
-    // TeamcenterGuru: every area checked before anything moves
-    bCtx.forEach(function(b,i){
-      at(900+i*650,function(){twSet(b,"scan","checking…");});
-      at(900+i*650+450,function(){twFound(b);cCtxChk.textContent=(i+1)+" of 6";if(b.hit)cCtxHit.textContent=++hits;});
-    });
-    var done=900+6*650;
-    at(done+500,function(){vCtx.classList.remove("wait");});
-    at(done+1200,function(){tlCtx[0].className="ok";});
-    at(done+1800,function(){tlCtx[1].className="ok";});
-    at(done+2400,function(){tlCtx[2].className="ok";});
-    at(14500,twLoop);
+  function iaState(n,st,txt){
+    n.g.setAttribute("class","fb"+(st?" "+st:""));
+    if(n.tag){n.tag.remove();n.tag=null;}
+    if(txt)n.tag=iaPill(n.g,n.tx,n.ty,txt,n.side);
   }
-  function twRest(){
-    twRun++;
-    bSilo.forEach(function(b,i){if(!i)twFound(b);else if(b.hit)twSet(b,"miss","⚠ Missed");else twSet(b,"dim","not checked");});
-    bCtx.forEach(twFound);
-    cSiloChk.textContent="1 of 6";cSiloHit.textContent="0";cCtxChk.textContent="6 of 6";cCtxHit.textContent="3";
-    ["ok","ok","bad"].forEach(function(c,i){tlSilo[i].className=c;});tlCtx.forEach(function(li){li.className="ok";});
-    vSilo.classList.remove("wait");vCtx.classList.remove("wait");
+  function iaFound(n){iaState(n,n.d.hit?"bad":"ok",n.d.hit?"⚠ Impact found":"✓ No impact");}
+  function iaPacket(n,col,run,cb){ // a check travels from the change out to one area
+    var H=IAL.hub, dot=hsvg("circle",{r:6,fill:col,filter:"url(#flGlow)",cx:H[0],cy:H[1]},iaPk), t0=performance.now();
+    n.core.classList.add("hot");
+    (function step(){
+      if(run!==iaRun){dot.remove();n.core.classList.remove("hot");return;}
+      var q=Math.max(0,Math.min(1,(performance.now()-t0)/1000)), e=q*q*(3-2*q);
+      dot.setAttribute("cx",H[0]+(n.x-H[0])*e);dot.setAttribute("cy",H[1]+(n.y-H[1])*e);
+      if(q<1)requestAnimationFrame(step);else{dot.remove();n.core.classList.remove("hot");cb();}
+    })();
   }
-  twRest();
-  inView(document.getElementById("twoways"),twLoop,twRest);
+  function iaPhase(k){iaP1.classList.toggle("on",k===1);iaP2.classList.toggle("on",k===2);}
+  function iaEnvSet(states){iaEnv.forEach(function(li,i){li.className=states[i]||"";});}
+  function iaPlay(run){
+    var at=function(ms,fn){setTimeout(function(){if(run===iaRun)fn();},ms);};
+    iaBuild();iaA.classList.add("wait");iaB.classList.add("wait");
+    // 1 · by hand: one line traced, then on to Production
+    iaPhase(1);iaEnvSet([]);iaSay.textContent="By hand: one area at a time.";
+    at(800,function(){iaPacket(IAN[0],"#d7e6ee",run,function(){
+      iaFound(IAN[0]);iaSay.textContent="Looks fine, so the change goes ahead.";
+      at(900,function(){iaEnvSet(["ok"]);});
+      at(1600,function(){iaEnvSet(["ok","ok"]);});
+      at(2500,function(){iaEnvSet(["ok","ok","bad"]);iaSay.textContent="Incident after go-live: suppliers lose access.";});
+      at(3300,function(){IAN.forEach(function(n){if(n.d.hit)iaState(n,"bad","⚠ Missed");});iaA.classList.remove("wait");});
+      at(7000,function(){
+        // 2 · TeamcenterGuru: every line traced before anything moves
+        iaBuild();iaPhase(2);iaEnvSet([]);iaSay.textContent="With TeamcenterGuru: every area checked at once.";
+        var left=IAN.length;
+        IAN.forEach(function(n,i){at(700+i*160,function(){iaPacket(n,"#4cc3d6",run,function(){
+          iaFound(n);
+          if(!--left){
+            iaSay.textContent="3 impacts found and fixed before deployment.";
+            at(800,function(){iaEnvSet(["ok"]);});
+            at(1400,function(){iaEnvSet(["ok","ok"]);});
+            at(2000,function(){iaEnvSet(["ok","ok","ok"]);iaB.classList.remove("wait");});
+            at(9500,function(){iaPlay(run);});
+          }
+        });});});
+      });
+    });});
+  }
+  function iaRest(){ // the finished comparison, still
+    iaRun++;iaBuild();IAN.forEach(iaFound);iaPhase(2);iaEnvSet(["ok","ok","ok"]);
+    iaSay.textContent="3 impacts found and fixed before deployment.";iaA.classList.remove("wait");iaB.classList.remove("wait");
+  }
+  function iaStart(){iaEl.classList.remove("paused");iaPlay(++iaRun);}
+  iaRest();
+  inView(iaEl,function(){iaOn=true;iaStart();},function(){iaOn=false;iaEl.classList.add("paused");iaRest();});
+  hubMq.addEventListener("change",function(){if(iaOn&&!reduce)iaStart();else iaRest();});
 
   // Same team, more done: agents take the tasks over one by one; the people counter falls from 9 to 2.
   var PERSON='<svg viewBox="0 0 18 22" aria-hidden="true"><circle class="p-head" cx="9" cy="5" r="4"/><path class="p-body" d="M1 21c0-5 3.6-8 8-8s8 3 8 8z"/></svg>';
@@ -1191,7 +1219,7 @@ body.present .progress{display:block}
     if(slides[idx].id==="top"&&!reduce)runOnce();
     if(slides[idx].id==="hub"&&!reduce)hubLoop();
     if(slides[idx].id==="team"&&!reduce)crewLoop();
-    if(slides[idx].id==="risk"&&!reduce)twLoop();
+    if(slides[idx].id==="risk"&&!reduce)iaStart();
     if(slides[idx].id==="jobs"&&!reduce)flStart();
     if(slides[idx].id==="lifecycle"&&!reduce)lcStart();
     if(slides[idx].id==="outcomes"&&!reduce)growImpact();
