@@ -169,6 +169,10 @@ section.sheet .wrap{display:grid;gap:28px}
 .ia-row em{font:800 1.15rem/1 var(--display);font-style:normal;color:#ffffff}
 .ia-row .r{color:#ff9d94}.ia-row .g{color:#7fe0a5}
 .ia-row em.r{color:#ff8a80}.ia-row em.g{color:#5fd18d}
+.ia-pop{animation:whopop .5s cubic-bezier(.2,.7,.2,1.4) both;transform-box:fill-box;transform-origin:center}
+.ia-who.ai .chip{fill:#5b6ee8;stroke:#8fa4ff}
+.ia-who.ai .glf{fill:#ffffff}
+@keyframes whopop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
 @media (max-width:760px){.ia-row{grid-template-columns:1fr 1fr}.ia-row b{grid-column:1 / -1}}
 
 /* 3. six jobs */
@@ -1060,7 +1064,7 @@ body.present .progress{display:block}
       iaEnv=[].slice.call(document.querySelectorAll("#iaEnv li")), iaA=document.getElementById("iaA"), iaB=document.getElementById("iaB"), iaRun=0, IAL, IAN=[], iaOn=false;
   function iaLayout(){ // wide: the change between two columns of three; phone: the change on top of one column
     return hubMq.matches
-      ?{ph:1,w:400,h:600,hub:[56,58],a:26,bh:20,ha:36,hh:28,ft:14,fs:12,pos:function(i){return [56,150+i*74];}}
+      ?{ph:1,w:400,h:620,hub:[56,90],a:26,bh:20,ha:36,hh:28,ft:14,fs:12,pos:function(i){return [56,180+i*74];}}
       :{w:900,h:340,hub:[450,170],a:34,bh:26,ha:64,hh:44,ft:16,fs:13,pos:function(i){return [i<3?250:650,70+(i%3)*100];}};
   }
   function iaPill(parent,x,y,txt,side){ // side: -1 ends at x, 1 starts at x, 0 centred
@@ -1078,7 +1082,7 @@ body.present .progress{display:block}
     return g;
   }
   function iaText(g,x,y,cls,size,txt,anchor){var t=hsvg("text",{"class":cls,x:x,y:y,"text-anchor":anchor||"middle","font-size":size},g);t.textContent=txt;return t;}
-  function iaBuild(){
+  function iaBuild(k){ // k: 1 by hand, 2 TeamcenterGuru
     IAL=iaLayout();iaSvg.setAttribute("viewBox","0 0 "+IAL.w+" "+IAL.h);
     iaLinks.textContent="";iaNodes.textContent="";iaPk.textContent="";IAN=[];
     var H=IAL.hub;
@@ -1087,7 +1091,11 @@ body.present .progress{display:block}
       hsvg("path",{"class":"fl-pipe",d:path},iaLinks);
       IAN.push({d:d,x:q[0],y:q[1],core:hsvg("path",{"class":"fl-core",d:path},iaLinks)});
     });
-    var hb=iaBlock(H[0],H[1],IAL.ha,IAL.hh,iaNodes,"fb hub");
+    var hb=iaBlock(H[0],H[1],IAL.ha,IAL.hh,iaNodes,k===1?"fb":"fb hub"), wy=H[1]-IAL.hh-IAL.ha/2-28,
+        who=hsvg("g",{"class":"ia-who"+(k===1?"":" ai"),transform:"translate("+H[0]+","+wy+")"},hb);
+    var pop=hsvg("g",{"class":"ia-pop"},who); // translate, then pop, then the glyph's own scale
+    hsvg("rect",{"class":"chip",x:-24,y:-18,width:48,height:36,rx:9},pop);
+    hsvg("g",{transform:"scale(1.2)"},pop).innerHTML=k===1?FL_IC.person:FL_IC.ai;
     if(IAL.ph){iaText(hb,H[0]+IAL.ha+16,H[1]-6,"t",IAL.ft,"The change","start");iaText(hb,H[0]+IAL.ha+16,H[1]+12,"s",IAL.fs,"remove supplier group","start");}
     else{iaText(hb,H[0],H[1]+IAL.ha/2+IAL.ft+10,"t",IAL.ft,"The change");iaText(hb,H[0],H[1]+IAL.ha/2+IAL.ft+IAL.fs+14,"s",IAL.fs,"remove supplier group");}
     IAN.forEach(function(n){ // words beside each block: left column reads to the left, the rest to the right
@@ -1116,7 +1124,7 @@ body.present .progress{display:block}
   function iaEnvSet(states){iaEnv.forEach(function(li,i){li.className=states[i]||"";});}
   function iaPlay(run){
     var at=function(ms,fn){setTimeout(function(){if(run===iaRun)fn();},ms);};
-    iaBuild();iaA.classList.add("wait");iaB.classList.add("wait");
+    iaBuild(1);iaA.classList.add("wait");iaB.classList.add("wait");
     // 1 · by hand: one line traced, then on to Production
     iaPhase(1);iaEnvSet([]);iaSay.textContent="By hand: one area at a time.";
     at(800,function(){iaPacket(IAN[0],"#d7e6ee",run,function(){
@@ -1127,7 +1135,7 @@ body.present .progress{display:block}
       at(3300,function(){IAN.forEach(function(n){if(n.d.hit)iaState(n,"bad","⚠ Missed");});iaA.classList.remove("wait");});
       at(7000,function(){
         // 2 · TeamcenterGuru: every line traced before anything moves
-        iaBuild();iaPhase(2);iaEnvSet([]);iaSay.textContent="With TeamcenterGuru: every area checked at once.";
+        iaBuild(2);iaPhase(2);iaEnvSet([]);iaSay.textContent="With TeamcenterGuru: every area checked at once.";
         var left=IAN.length;
         IAN.forEach(function(n,i){at(700+i*160,function(){iaPacket(n,"#4cc3d6",run,function(){
           iaFound(n);
@@ -1143,7 +1151,7 @@ body.present .progress{display:block}
     });});
   }
   function iaRest(){ // the finished comparison, still
-    iaRun++;iaBuild();IAN.forEach(iaFound);iaPhase(2);iaEnvSet(["ok","ok","ok"]);
+    iaRun++;iaBuild(2);IAN.forEach(iaFound);iaPhase(2);iaEnvSet(["ok","ok","ok"]);
     iaSay.textContent="3 impacts found and fixed before deployment.";iaA.classList.remove("wait");iaB.classList.remove("wait");
   }
   function iaStart(){iaEl.classList.remove("paused");iaPlay(++iaRun);}
