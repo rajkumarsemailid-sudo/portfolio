@@ -154,7 +154,7 @@ section.sheet .wrap{display:grid;gap:28px}
 .tw-title b{font:700 1rem/1.3 var(--display)}
 .tw-title span{font-size:.88rem;color:var(--muted)}
 .tw-title code{font:500 .85rem var(--mono);color:var(--ink);background:var(--accent-soft);padding:1px 6px;border-radius:4px}
-.tw-lanes{display:grid;grid-template-columns:1fr 1.25fr}
+.tw-lanes{display:grid;grid-template-columns:1fr 1fr}
 @media (max-width:900px){.tw-lanes{grid-template-columns:1fr}}
 .lane{padding:18px;display:grid;gap:14px;align-content:start;min-width:0}
 .lane.silo{border-right:1px solid var(--line)}
@@ -162,28 +162,20 @@ section.sheet .wrap{display:grid;gap:28px}
 .lane-h{display:flex;align-items:center;gap:8px;font:500 .7rem/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .lane.ctx .lane-h{color:var(--accent)}
 .blocks{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.blk{border:1px solid var(--line);border-radius:8px;padding:9px 11px;display:grid;gap:2px;transition:opacity .4s,border-color .4s,background .4s}
-.blk strong{font:600 .86rem/1.2 var(--body)}
-.blk span{font-size:.76rem;color:var(--muted)}
-.blk.focus{border-color:var(--accent);background:var(--accent-soft)}
+.blk{border:1px solid var(--line);border-radius:8px;padding:9px 11px;display:grid;gap:3px;transition:opacity .4s,border-color .4s,background .4s}
+.blk span{font-size:.72rem;color:var(--muted)}
+.blk strong{font:700 .92rem/1.2 var(--body)}
 .blk.dim{opacity:.38;border-style:dashed}
-.graph{width:100%;height:auto;max-width:100%;display:block}
-.graph text{font-family:var(--body)}
-.gnode rect{fill:var(--paper);stroke:var(--line);stroke-width:1.5;transition:fill .4s,stroke .4s}
-.gnode .t{font-size:14px;font-weight:600;fill:var(--ink)}
-.gnode .s{font-size:11.5px;fill:var(--muted)}
-.gnode.hit rect{fill:var(--rem-bg);stroke:var(--rem)}
-.gnode.hit .s{fill:var(--rem);font-weight:600}
-.gnode.fine rect{stroke:var(--add)}
-.gnode.fine .s{fill:var(--add)}
-.gnode.center rect{fill:var(--ink);stroke:var(--ink)}
-.gnode.center .t{fill:var(--paper)}
-.gnode.center .s{fill:var(--paper);opacity:.75}
-.glink{fill:none;stroke:var(--line);stroke-width:2;transition:stroke .4s}
-.glink.on{stroke:var(--accent)}
-.glink.hit{stroke:var(--rem);stroke-width:2.5}
-.glink.fine{stroke:var(--add)}
-.glink.draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw .45s ease-out forwards}
+.blk.scan{border-color:var(--accent);background:var(--accent-soft)}
+.blk.fine{border-color:var(--add)}
+.blk.fine strong{color:var(--add)}
+.blk.hit{border-color:var(--rem);background:var(--rem-bg)}
+.blk.hit strong{color:var(--rem)}
+.blk.miss{border-color:var(--rem);border-style:dashed}
+.blk.miss strong{color:var(--rem)}
+.tw-count{font:500 .78rem/1.3 var(--mono);color:var(--muted)}
+.tw-count b{font:700 1rem/1 var(--body);color:var(--ink)}
+.lane.ctx .tw-count b.n{color:var(--rem)}
 @keyframes draw{to{stroke-dashoffset:0}}
 .tl{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative}
 .tl li{display:grid;justify-items:center;gap:6px;font:500 .74rem/1 var(--mono);color:var(--muted);position:relative}
@@ -479,30 +471,27 @@ body.present .progress{display:block}
   <div class="wrap">
     <div class="eyebrow">Why it matters</div>
     <h2>Configuration drift is a production risk.</h2>
-    <div class="twoways rv" id="twoways" aria-label="Illustrative: one change, removing the supplier user group, checked by hand one area at a time reaches Production and causes an incident; with everything checked together, three problems are caught before go-live">
+    <ul class="risks rv">
+      <li><em>RISK</em><h3>Unchecked changes reach Production</h3><p class="muted">One access rule or workflow step out of place can stop engineering work across the site.</p></li>
+      <li><em>EFFORT</em><h3>Release checks take admin days</h3><p class="muted">Admins compare exports by hand before each release, across a dozen configuration formats.</p></li>
+      <li><em>DELAY</em><h3>Upgrades start blind</h3><p class="muted">Every upgrade begins by finding out what the site has customized and what the new release changes.</p></li>
+    </ul>
+    <div class="twoways rv" id="twoways" aria-label="Illustrative: one change, removing the supplier user group. By hand, 1 of 6 areas is checked, no impact is found and the change causes an incident in Production. With TeamcenterGuru, all 6 are checked, 3 impacts are found and fixed before go-live">
       <div class="tw-title"><b>One change, two ways</b><span>Change: remove the supplier user group</span></div>
       <div class="tw-lanes">
         <div class="lane silo">
           <div class="lane-h"><svg class="who-ic" viewBox="0 0 18 22" aria-hidden="true"><circle cx="9" cy="5" r="4"/><path d="M1 21c0-5 3.6-8 8-8s8 3 8 8z"/></svg>By hand · one area at a time</div>
-          <div class="blocks">
-            <div class="blk focus" id="siloOrg"><strong>User groups</strong><span id="siloOrgTxt">Looks fine ✓</span></div>
-            <div class="blk dim"><strong>Access rules</strong><span>not checked</span></div>
-            <div class="blk dim"><strong>Approvals</strong><span>not checked</span></div>
-            <div class="blk dim"><strong>Settings</strong><span>not checked</span></div>
-            <div class="blk dim"><strong>Reports</strong><span>not checked</span></div>
-            <div class="blk dim"><strong>SAP integration</strong><span>not checked</span></div>
-          </div>
+          <div class="tw-count"><b id="cSiloChk">1 of 6</b> checked · <b id="cSiloHit">0</b> impacts found</div>
+          <div class="blocks" id="blkSilo"></div>
           <ol class="tl" id="tlSilo"><li class="ok">Dev</li><li class="ok">QA</li><li class="bad">PROD</li></ol>
           <div class="verdict bad" id="vSilo">Incident after go-live: suppliers lose access.</div>
         </div>
         <div class="lane ctx">
           <div class="lane-h"><b class="ai-ic" aria-hidden="true">AI</b>With TeamcenterGuru · everything checked together</div>
-          <svg class="graph" id="graph" viewBox="0 0 640 230" role="img" aria-label="The change linked to six areas; three depend on the group">
-            <g id="gLinks"></g>
-            <g id="gNodes"></g>
-          </svg>
+          <div class="tw-count"><b id="cCtxChk">6 of 6</b> checked · <b class="n" id="cCtxHit">3</b> impacts found</div>
+          <div class="blocks" id="blkCtx"></div>
           <ol class="tl" id="tlCtx"><li class="ok">Dev</li><li class="ok">QA</li><li class="ok">PROD</li></ol>
-          <div class="verdict good" id="vCtx">3 problems caught before go-live.</div>
+          <div class="verdict good" id="vCtx">3 impacts found and fixed before go-live.</div>
         </div>
       </div>
     </div>
@@ -1080,72 +1069,58 @@ body.present .progress{display:block}
   });
   hubMq.addEventListener("change",function(){if(flOn&&!reduce)flStart();else flRest(flCur);});
 
-  // One change, two ways: the silo misses what the whole configuration shows.
-  var NS="http://www.w3.org/2000/svg";
-  var GNODES=[
-    {id:"c",x:245,y:90,w:150,t:"Change",s:"remove supplier group",center:true},
-    {id:"org",x:10,y:10,t:"User groups",s:"the group itself",fine:true},
-    {id:"am",x:10,y:90,t:"Access rules",s:"suppliers' access to parts",hit:true},
-    {id:"wf",x:10,y:170,t:"Approvals",s:"engineering change review",hit:true},
-    {id:"pref",x:450,y:10,t:"Settings",s:"not affected",fine:true},
-    {id:"qry",x:450,y:90,t:"Reports",s:"supplier parts report",hit:true},
-    {id:"aig",x:450,y:170,t:"SAP integration",s:"not affected",fine:true}
-  ];
-  var gLinks=document.getElementById("gLinks"), gNodes=document.getElementById("gNodes"), gEls={}, gPaths={};
-  function svg(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);parent.appendChild(e);return e;}
-  GNODES.forEach(function(n){
-    var w=n.w||180, g=svg("g",{"class":"gnode"+(n.center?" center":""),transform:"translate("+n.x+","+n.y+")"},gNodes);
-    svg("rect",{width:w,height:50,rx:9},g);
-    var t=svg("text",{"class":"t",x:12,y:21},g);t.textContent=n.t;
-    var s=svg("text",{"class":"s",x:12,y:39},g);s.textContent=n.s;
-    n.w=w;gEls[n.id]={g:g,s:s,n:n};
-  });
-  var C=GNODES[0];
-  GNODES.slice(1).forEach(function(n){
-    var left=n.x<C.x, x1=left?C.x:C.x+C.w, y1=C.y+25, x2=left?n.x+n.w:n.x, y2=n.y+25, mx=(x1+x2)/2;
-    gPaths[n.id]=svg("path",{"class":"glink",d:"M"+x1+" "+y1+" C"+mx+" "+y1+" "+mx+" "+y2+" "+x2+" "+y2},gLinks);
-  });
+  // One change, two ways: the same six areas. By hand one is checked and the change ships;
+  // TeamcenterGuru checks all six and finds the three the change breaks.
+  var TW=[["User groups",0],["Access rules",1],["Approvals",1],["Settings",0],["Reports",1],["SAP integration",0]];
+  function twBoxes(id){
+    var el=document.getElementById(id);
+    return TW.map(function(a){
+      var b=document.createElement("div"), n=document.createElement("span"), st=document.createElement("strong");
+      n.textContent=a[0];b.appendChild(n);b.appendChild(st);el.appendChild(b);b.hit=a[1];return b;
+    });
+  }
+  var bSilo=twBoxes("blkSilo"), bCtx=twBoxes("blkCtx");
+  function twSet(b,cls,txt){b.className="blk "+cls;b.querySelector("strong").textContent=txt;}
+  function twFound(b){twSet(b,b.hit?"hit":"fine",b.hit?"⚠ Impact found":"✓ No impact");}
   var tlSilo=[].slice.call(document.querySelectorAll("#tlSilo li")), tlCtx=[].slice.call(document.querySelectorAll("#tlCtx li")),
-      vSilo=document.getElementById("vSilo"), vCtx=document.getElementById("vCtx"), siloOrgTxt=document.getElementById("siloOrgTxt");
-  function settle(id,run){ // a link is drawn, then its node shows what the context found
-    var n=gEls[id].n, p=gPaths[id];
-    p.style.setProperty("--len",p.getTotalLength?p.getTotalLength():300);
-    p.setAttribute("class","glink on draw");
-    setTimeout(function(){if(run!==twRun)return;
-      p.setAttribute("class","glink "+(n.hit?"hit":"fine"));
-      gEls[id].g.setAttribute("class","gnode "+(n.hit?"hit":"fine"));gEls[id].s.textContent=n.s;
-    },480);
-  }
-  function finalState(){
-    GNODES.slice(1).forEach(function(n){gPaths[n.id].setAttribute("class","glink "+(n.hit?"hit":"fine"));gEls[n.id].g.setAttribute("class","gnode "+(n.hit?"hit":"fine"));});
-  }
-  finalState();
+      vSilo=document.getElementById("vSilo"), vCtx=document.getElementById("vCtx"),
+      cSiloChk=document.getElementById("cSiloChk"), cSiloHit=document.getElementById("cSiloHit"),
+      cCtxChk=document.getElementById("cCtxChk"), cCtxHit=document.getElementById("cCtxHit");
   var twRun=0;
   function twLoop(){
-    var run=++twRun, at=function(ms,f){setTimeout(function(){if(run===twRun)f();},ms);};
-    // reset
+    var run=++twRun, at=function(ms,f){setTimeout(function(){if(run===twRun)f();},ms);}, hits=0;
     tlSilo.forEach(function(li){li.className="";});tlCtx.forEach(function(li){li.className="";});
-    vSilo.classList.add("wait");vCtx.classList.add("wait");siloOrgTxt.textContent="checking…";
-    GNODES.slice(1).forEach(function(n){gPaths[n.id].setAttribute("class","glink");gEls[n.id].g.setAttribute("class","gnode");gEls[n.id].s.textContent="…";});
-    // the silo: one export checked, then straight on to Production
-    at(900,function(){siloOrgTxt.textContent="Looks fine ✓";});
-    at(1800,function(){tlSilo[0].className="ok";});
-    at(2700,function(){tlSilo[1].className="ok";});
-    at(3800,function(){tlSilo[2].className="bad";vSilo.classList.remove("wait");});
-    // the context: every area the change touches is checked first
-    ["org","am","wf","pref","qry","aig"].forEach(function(id,i){at(900+i*550,function(){settle(id,run);});});
-    at(900+6*550+700,function(){vCtx.classList.remove("wait");});
-    at(900+6*550+1500,function(){tlCtx[0].className="ok";});
-    at(900+6*550+2100,function(){tlCtx[1].className="ok";});
-    at(900+6*550+2700,function(){tlCtx[2].className="ok";});
-    at(13500,twLoop);
+    vSilo.classList.add("wait");vCtx.classList.add("wait");
+    bSilo.concat(bCtx).forEach(function(b){twSet(b,"dim","not checked");});
+    cSiloChk.textContent="0 of 6";cSiloHit.textContent="0";cCtxChk.textContent="0 of 6";cCtxHit.textContent="0";
+    // by hand: one area checked, then straight on to Production
+    at(900,function(){twSet(bSilo[0],"scan","checking…");});
+    at(1800,function(){twFound(bSilo[0]);cSiloChk.textContent="1 of 6";});
+    at(2700,function(){tlSilo[0].className="ok";});
+    at(3500,function(){tlSilo[1].className="ok";});
+    at(4400,function(){tlSilo[2].className="bad";vSilo.classList.remove("wait");});
+    at(5600,function(){bSilo.forEach(function(b){if(b.hit)twSet(b,"miss","⚠ Missed");});});
+    // TeamcenterGuru: every area checked before anything moves
+    bCtx.forEach(function(b,i){
+      at(900+i*650,function(){twSet(b,"scan","checking…");});
+      at(900+i*650+450,function(){twFound(b);cCtxChk.textContent=(i+1)+" of 6";if(b.hit)cCtxHit.textContent=++hits;});
+    });
+    var done=900+6*650;
+    at(done+500,function(){vCtx.classList.remove("wait");});
+    at(done+1200,function(){tlCtx[0].className="ok";});
+    at(done+1800,function(){tlCtx[1].className="ok";});
+    at(done+2400,function(){tlCtx[2].className="ok";});
+    at(14500,twLoop);
   }
   function twRest(){
-    twRun++;siloOrgTxt.textContent="Looks fine ✓";
+    twRun++;
+    bSilo.forEach(function(b,i){if(!i)twFound(b);else if(b.hit)twSet(b,"miss","⚠ Missed");else twSet(b,"dim","not checked");});
+    bCtx.forEach(twFound);
+    cSiloChk.textContent="1 of 6";cSiloHit.textContent="0";cCtxChk.textContent="6 of 6";cCtxHit.textContent="3";
     ["ok","ok","bad"].forEach(function(c,i){tlSilo[i].className=c;});tlCtx.forEach(function(li){li.className="ok";});
     vSilo.classList.remove("wait");vCtx.classList.remove("wait");
-    GNODES.slice(1).forEach(function(n){gEls[n.id].s.textContent=n.s;});finalState();
   }
+  twRest();
   inView(document.getElementById("twoways"),twLoop,twRest);
 
   // Same team, more done: agents take the tasks over one by one; the people counter falls from 9 to 2.
