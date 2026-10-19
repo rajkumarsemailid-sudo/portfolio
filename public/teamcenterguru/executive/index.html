@@ -406,6 +406,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 body.present{overflow:hidden}
 body.present .bar, body.present footer{display:none}
 body.present section.sheet{position:fixed;inset:0;display:grid;align-items:center;padding:clamp(24px,5vw,64px);background:var(--paper);border:0;overflow:auto;visibility:hidden;opacity:0;transform:translateX(40px);transition:opacity .45s,transform .45s,visibility 0s .45s}
+body.present section.sheet > .wrap{width:100%}
 body.present section.sheet.on{visibility:visible;opacity:1;transform:none;transition:opacity .45s,transform .45s}
 body.present section.sheet.left{transform:translateX(-40px)}
 .pctl{display:none}
@@ -478,41 +479,36 @@ body.present .progress{display:block}
   <div class="wrap">
     <div class="eyebrow">Why it matters</div>
     <h2>Configuration drift is a production risk.</h2>
-    <ul class="risks rv">
-      <li><em>RISK</em><h3>Unchecked changes reach Production</h3></li>
-      <li><em>EFFORT</em><h3>Release checks take admin days</h3></li>
-      <li><em>DELAY</em><h3>Upgrades start blind</h3></li>
-    </ul>
-    <div class="twoways rv" id="twoways" aria-label="Illustrative: one change, removing group Wdg_Supplier, checked by hand in one export reaches Production and causes an incident; checked with the whole configuration in context, three broken references are caught before deploy">
-      <div class="tw-title"><b>One change, two ways</b><span>Change: remove group <code>Wdg_Supplier</code></span></div>
+    <div class="twoways rv" id="twoways" aria-label="Illustrative: one change, removing the supplier user group, checked by hand one area at a time reaches Production and causes an incident; with everything checked together, three problems are caught before go-live">
+      <div class="tw-title"><b>One change, two ways</b><span>Change: remove the supplier user group</span></div>
       <div class="tw-lanes">
         <div class="lane silo">
-          <div class="lane-h"><svg class="who-ic" viewBox="0 0 18 22" aria-hidden="true"><circle cx="9" cy="5" r="4"/><path d="M1 21c0-5 3.6-8 8-8s8 3 8 8z"/></svg>By hand · one config block at a time</div>
+          <div class="lane-h"><svg class="who-ic" viewBox="0 0 18 22" aria-hidden="true"><circle cx="9" cy="5" r="4"/><path d="M1 21c0-5 3.6-8 8-8s8 3 8 8z"/></svg>By hand · one area at a time</div>
           <div class="blocks">
-            <div class="blk focus" id="siloOrg"><strong>Organization</strong><span id="siloOrgTxt">Looks fine ✓</span></div>
-            <div class="blk dim"><strong>AM Rules</strong><span>not checked</span></div>
-            <div class="blk dim"><strong>Workflow</strong><span>not checked</span></div>
-            <div class="blk dim"><strong>Preferences</strong><span>not checked</span></div>
-            <div class="blk dim"><strong>Saved Queries</strong><span>not checked</span></div>
-            <div class="blk dim"><strong>Active Integration</strong><span>not checked</span></div>
+            <div class="blk focus" id="siloOrg"><strong>User groups</strong><span id="siloOrgTxt">Looks fine ✓</span></div>
+            <div class="blk dim"><strong>Access rules</strong><span>not checked</span></div>
+            <div class="blk dim"><strong>Approvals</strong><span>not checked</span></div>
+            <div class="blk dim"><strong>Settings</strong><span>not checked</span></div>
+            <div class="blk dim"><strong>Reports</strong><span>not checked</span></div>
+            <div class="blk dim"><strong>SAP integration</strong><span>not checked</span></div>
           </div>
           <ol class="tl" id="tlSilo"><li class="ok">Dev</li><li class="ok">QA</li><li class="bad">PROD</li></ol>
           <div class="verdict bad" id="vSilo">Incident after go-live: suppliers lose access.</div>
         </div>
         <div class="lane ctx">
-          <div class="lane-h"><b class="ai-ic" aria-hidden="true">AI</b>With TeamcenterGuru · the whole configuration in context</div>
-          <svg class="graph" id="graph" viewBox="0 0 640 230" role="img" aria-label="The change linked to six configuration areas; three reference the group">
+          <div class="lane-h"><b class="ai-ic" aria-hidden="true">AI</b>With TeamcenterGuru · everything checked together</div>
+          <svg class="graph" id="graph" viewBox="0 0 640 230" role="img" aria-label="The change linked to six areas; three depend on the group">
             <g id="gLinks"></g>
             <g id="gNodes"></g>
           </svg>
           <ol class="tl" id="tlCtx"><li class="ok">Dev</li><li class="ok">QA</li><li class="ok">PROD</li></ol>
-          <div class="verdict good" id="vCtx">3 references caught before deploy. Clean go-live.</div>
+          <div class="verdict good" id="vCtx">3 problems caught before go-live.</div>
         </div>
       </div>
     </div>
     <div class="versus rv">
-      <div><b>By hand</b><strong>Days per release</strong><span class="muted">exports compared one by one</span></div>
-      <div><b>With TeamcenterGuru</b><strong>About 10 seconds</strong><span class="muted">every area of every environment pair</span></div>
+      <div><b>By hand</b><strong>Days per release</strong><span class="muted">checked one area at a time</span></div>
+      <div><b>With TeamcenterGuru</b><strong>About 10 seconds</strong><span class="muted">every system, every release</span></div>
     </div>
   </div>
 </section>
@@ -1087,13 +1083,13 @@ body.present .progress{display:block}
   // One change, two ways: the silo misses what the whole configuration shows.
   var NS="http://www.w3.org/2000/svg";
   var GNODES=[
-    {id:"c",x:245,y:90,w:150,t:"Change",s:"remove Wdg_Supplier",center:true},
-    {id:"org",x:10,y:10,t:"Organization",s:"the group itself",fine:true},
-    {id:"am",x:10,y:90,t:"AM Rules",s:"ACL row names the group",hit:true},
-    {id:"wf",x:10,y:170,t:"Workflow",s:"Wdg_ECO review task",hit:true},
-    {id:"pref",x:450,y:10,t:"Preferences",s:"no reference",fine:true},
-    {id:"qry",x:450,y:90,t:"Saved Queries",s:"Supplier Parts query",hit:true},
-    {id:"aig",x:450,y:170,t:"Active Integration",s:"no reference",fine:true}
+    {id:"c",x:245,y:90,w:150,t:"Change",s:"remove supplier group",center:true},
+    {id:"org",x:10,y:10,t:"User groups",s:"the group itself",fine:true},
+    {id:"am",x:10,y:90,t:"Access rules",s:"suppliers' access to parts",hit:true},
+    {id:"wf",x:10,y:170,t:"Approvals",s:"engineering change review",hit:true},
+    {id:"pref",x:450,y:10,t:"Settings",s:"not affected",fine:true},
+    {id:"qry",x:450,y:90,t:"Reports",s:"supplier parts report",hit:true},
+    {id:"aig",x:450,y:170,t:"SAP integration",s:"not affected",fine:true}
   ];
   var gLinks=document.getElementById("gLinks"), gNodes=document.getElementById("gNodes"), gEls={}, gPaths={};
   function svg(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);parent.appendChild(e);return e;}
