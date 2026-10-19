@@ -1110,6 +1110,7 @@ body.present .progress{display:block}
     if(txt)n.tag=iaPill(n.g,n.tx,n.ty,txt,n.side);
   }
   function iaFound(n){iaState(n,n.d.hit?"bad":"ok",n.d.hit?"⚠ Impact found":"✓ No impact");}
+  function iaFixed(n){iaState(n,"ok",n.d.hit?"✓ Fixed":"✓ No impact");}
   function iaPacket(n,col,run,cb){ // a check travels from the change out to one area
     var H=IAL.hub, dot=hsvg("circle",{r:6,fill:col,filter:"url(#flGlow)",cx:H[0],cy:H[1]},iaPk), t0=performance.now();
     n.core.classList.add("hot");
@@ -1140,19 +1141,27 @@ body.present .progress{display:block}
         IAN.forEach(function(n,i){at(700+i*160,function(){iaPacket(n,"#4cc3d6",run,function(){
           iaFound(n);
           if(!--left){
-            iaSay.textContent="3 impacts found and fixed before deployment.";
-            at(800,function(){iaEnvSet(["ok"]);});
-            at(1400,function(){iaEnvSet(["ok","ok"]);});
-            at(2000,function(){iaEnvSet(["ok","ok","ok"]);iaB.classList.remove("wait");});
-            at(9500,function(){iaPlay(run);});
+            // found is not fixed: each impact is repaired in the change before anything deploys
+            iaSay.textContent="3 impacts found. Fixing them in the change.";
+            var hits=IAN.filter(function(m){return m.d.hit;}), open=hits.length;
+            hits.forEach(function(m,j){at(1400+j*300,function(){iaPacket(m,"#5fd18d",run,function(){
+              iaFixed(m);
+              if(!--open){
+                iaSay.textContent="All 3 fixed. Now it deploys.";
+                at(900,function(){iaEnvSet(["ok"]);});
+                at(1500,function(){iaEnvSet(["ok","ok"]);});
+                at(2100,function(){iaEnvSet(["ok","ok","ok"]);iaSay.textContent="Clean go-live: all 3 impacts fixed before deployment.";iaB.classList.remove("wait");});
+                at(9500,function(){iaPlay(run);});
+              }
+            });});});
           }
         });});});
       });
     });});
   }
   function iaRest(){ // the finished comparison, still
-    iaRun++;iaBuild(2);IAN.forEach(iaFound);iaPhase(2);iaEnvSet(["ok","ok","ok"]);
-    iaSay.textContent="3 impacts found and fixed before deployment.";iaA.classList.remove("wait");iaB.classList.remove("wait");
+    iaRun++;iaBuild(2);IAN.forEach(iaFixed);iaPhase(2);iaEnvSet(["ok","ok","ok"]);
+    iaSay.textContent="Clean go-live: all 3 impacts fixed before deployment.";iaA.classList.remove("wait");iaB.classList.remove("wait");
   }
   function iaStart(){iaEl.classList.remove("paused");iaPlay(++iaRun);}
   iaRest();
